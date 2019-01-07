@@ -11,5 +11,11 @@
 
     <artifactId>valid-annotation</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>valid-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

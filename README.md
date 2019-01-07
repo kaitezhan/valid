@@ -21,3 +21,7 @@ java 开发中，参数校验是非常常见的需求。
 [![Coverage Status](https://coveralls.io/repos/github/houbb/valid/badge.svg?branch=master)](https://coveralls.io/github/houbb/valid?branch=master)
 
 > [变更日志](doc/CHANGE_LOG.md)
+
+# 兼容 hiernate-valditor
+
+# 实现自定义注解。
