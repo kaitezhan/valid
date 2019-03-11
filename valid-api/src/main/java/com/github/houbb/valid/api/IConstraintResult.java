@@ -13,14 +13,7 @@ package com.github.houbb.valid.api;
  *
  * @author houbinbin
  */
-public interface IConstranit {
+public interface IConstraintResult {
 
-
-    /**
-     * 执行约束
-     * @param context 执行上下文
-     * @return 执行的结果
-     */
-    IConstranitResult constraint(IContext context);
-
+    
 }

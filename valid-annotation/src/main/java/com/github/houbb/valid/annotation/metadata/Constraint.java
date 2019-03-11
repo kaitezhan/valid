@@ -5,7 +5,7 @@
 
 package com.github.houbb.valid.annotation.metadata;
 
-import com.github.houbb.valid.api.IConstranit;
+import com.github.houbb.valid.api.IConstraint;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -29,6 +29,6 @@ public @interface Constraint {
      * 执行对应的实现类
      * @return 对应的实现类
      */
-    Class<? extends IConstranit> value();
+    Class<? extends IConstraint> value();
 
 }
