@@ -6,7 +6,7 @@
 package com.github.houbb.valid.api;
 
 /**
- * <p> </p>
+ * <p> 约束上下文 </p>
  *
  * <pre> Created: 2019/1/7 9:38 PM  </pre>
  * <pre> Project: valid  </pre>

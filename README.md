@@ -20,8 +20,8 @@ java 开发中，参数校验是非常常见的需求。
 [![Build Status](https://www.travis-ci.org/houbb/valid.svg?branch=master)](https://www.travis-ci.org/houbb/valid?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/houbb/valid/badge.svg?branch=master)](https://coveralls.io/github/houbb/valid?branch=master)
 
-> [变更日志](doc/CHANGE_LOG.md)
+> [变更日志](doc/CHANGELOG.md)
 
-# 兼容 hiernate-valditor
+# 兼容 hibernate-validator
 
 # 实现自定义注解。

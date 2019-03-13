@@ -6,7 +6,7 @@
 package com.github.houbb.valid.api;
 
 /**
- * <p> </p>
+ * <p> 约束结果 </p>
  *
  * <pre> Created: 2019/1/7 9:45 PM  </pre>
  * <pre> Project: valid  </pre>
@@ -14,6 +14,4 @@ package com.github.houbb.valid.api;
  * @author houbinbin
  */
 public interface IConstraintResult {
-
-    
 }
