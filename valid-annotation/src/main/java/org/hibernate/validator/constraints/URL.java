@@ -69,7 +69,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  *
  * @see <a href="http://www.ietf.org/rfc/rfc2396.txt">RFC2396</a>
- * @see org.hibernate.validator.cfg.ConstraintMapping#constraintDefinition(Class)
  * @author Hardy Ferentschik
  */
 @Documented
