@@ -13,12 +13,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p> </p>
+ * <p> 范围判断</p>
  *
  * <pre> Created: 2019/1/7 9:49 PM  </pre>
  * <pre> Project: valid  </pre>
  *
  * @author houbinbin
+ * @since 0.0.1
  */
 @Inherited
 @Documented
