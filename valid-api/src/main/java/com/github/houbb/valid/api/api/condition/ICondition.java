@@ -1,4 +1,4 @@
-package com.github.houbb.valid.api;
+package com.github.houbb.valid.api.api.condition;
 
 /**
  * 生效的条件

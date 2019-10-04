@@ -9,15 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>valid-api</artifactId>
-    <description>The api module integration validation-api and define api.</description>
+    <artifactId>valid-core</artifactId>
+    <description>The core module for valid.</description>
 
     <dependencies>
-
-        <!--============================== OTHER ==============================-->
+        <!--============================== SELF ==============================-->
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>valid-api</artifactId>
+        </dependency>
+
+        <!--============================== INTER ==============================-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
         </dependency>
     </dependencies>
+
 </project>

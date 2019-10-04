@@ -10,8 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>valid-annotation</module>
         <module>valid-api</module>
+        <module>valid-annotation</module>
+        <module>valid-core</module>
+        <module>valid-test</module>
     </modules>
 
     <properties>
@@ -31,8 +33,11 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
+        <heaven.version>0.1.29</heaven.version>
+
         <!--============================== OTHER ==============================-->
         <validation-api.version>1.1.0.Final</validation-api.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencyManagement>
@@ -50,13 +55,31 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>valid-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!--============================== INTER ==============================-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>heaven</artifactId>
+                <version>${heaven.version}</version>
+            </dependency>
 
             <!--============================== OTHER ==============================-->
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${validation-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
