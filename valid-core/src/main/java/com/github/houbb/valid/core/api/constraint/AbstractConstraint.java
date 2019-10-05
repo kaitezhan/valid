@@ -24,10 +24,11 @@ public abstract class AbstractConstraint implements IConstraint {
 
     /**
      * 预期值
+     * @param context 上下文
      * @return 预期值字符串描述
      * @since 0.0.3
      */
-    protected abstract String expectValue();
+    protected abstract String expectValue(final IConstraintContext context);
 
     /**
      * 约束名称
@@ -46,7 +47,7 @@ public abstract class AbstractConstraint implements IConstraint {
      * @since 0.0.3
      */
     protected String message(final IConstraintContext context) {
-        return "Expect is <"+expectValue()+">, but actual is <"+context.value()+">.";
+        return "Expect is <"+expectValue(context)+">, but actual is <"+context.value()+">.";
     }
 
     @Override

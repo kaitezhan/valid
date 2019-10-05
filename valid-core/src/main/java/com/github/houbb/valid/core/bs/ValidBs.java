@@ -1,6 +1,5 @@
 package com.github.houbb.valid.core.bs;
 
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
@@ -11,12 +10,11 @@ import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.result.IResult;
+import com.github.houbb.valid.api.api.result.IResultHandler;
 import com.github.houbb.valid.core.api.condition.context.DefaultConditionContext;
 import com.github.houbb.valid.core.api.constraint.context.DefaultConstraintContext;
-import com.github.houbb.valid.core.api.result.DetailResultHandler;
-import com.github.houbb.valid.core.api.result.SimpleResultHandler;
+import com.github.houbb.valid.core.api.result.ResultHandlers;
 import com.github.houbb.valid.core.constant.enums.FailTypeEnum;
-import com.github.houbb.valid.core.constant.enums.ResultEnum;
 import com.github.houbb.valid.core.model.ValidEntry;
 
 import java.util.ArrayList;
@@ -127,11 +125,12 @@ public final class ValidBs {
     /**
      * 对信息进行校验
      * （1）结合 {@link #failType} 失败模式
-     * @param resultEnum 结果枚举
+     * @param resultHandler 结果处理方式
      * @return 结果
+     * @since 0.0.2
      */
-    public IResult result(final ResultEnum resultEnum) {
-        ArgUtil.notNull(resultEnum, "resultEnum");
+    public IResult result(final IResultHandler resultHandler) {
+        ArgUtil.notNull(resultHandler, "resultHandler");
 
         // 执行校验
         List<IConstraintResult> constraintResultList = Guavas.newArrayList();
@@ -158,12 +157,7 @@ public final class ValidBs {
         }
 
         // 对结果进行处理
-        if(ResultEnum.SIMPLE.equals(resultEnum)) {
-            return Instances.singleton(SimpleResultHandler.class).handle(constraintResultList);
-        } else if (ResultEnum.DETAIL.equals(resultEnum)){
-            return Instances.singleton(DetailResultHandler.class).handle(constraintResultList);
-        }
-        throw new UnsupportedOperationException();
+        return resultHandler.handle(constraintResultList);
     }
 
     /**
@@ -172,7 +166,7 @@ public final class ValidBs {
      * @since 0.0.2
      */
     public IResult result() {
-        return this.result(ResultEnum.SIMPLE);
+        return this.result(ResultHandlers.SIMPLE);
     }
 
 }

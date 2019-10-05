@@ -18,7 +18,7 @@ public class NotNullConstraint extends AbstractConstraint {
     }
 
     @Override
-    protected String expectValue() {
+    protected String expectValue(final IConstraintContext context) {
         return "not null";
     }
 
