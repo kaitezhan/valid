@@ -5,21 +5,21 @@ import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 
 /**
- * 不可为 null 约束
+ * 为 null 约束
  * @author binbin.hou
- * @since 0.0.2
+ * @since 0.0.3
  */
 @ThreadSafe
-public class NotNullConstraint extends AbstractConstraint {
+public class NullConstraint extends AbstractConstraint {
 
     @Override
     protected boolean pass(IConstraintContext context) {
-        return ObjectUtil.isNotNull(context.value());
+        return ObjectUtil.isNull(context.value());
     }
 
     @Override
     protected String expectValue() {
-        return "not null";
+        return "null";
     }
 
 }
