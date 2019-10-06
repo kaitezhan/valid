@@ -4,6 +4,8 @@ import com.github.houbb.heaven.util.guava.Guavas;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +25,12 @@ final class SupportClassTypeUtil {
      */
     private static final List<Class> DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST;
 
+    /**
+     * 时间过去未来支持的类型列表
+     * @since 0.0.3
+     */
+    private static final List<Class> PAST_FUTURE_SUPPORT_CLASS_LIST;
+
     static {
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST = Guavas.newArrayList(11);
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST.add(CharSequence.class);
@@ -36,15 +44,29 @@ final class SupportClassTypeUtil {
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST.add(Long.class);
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST.add(byte.class);
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST.add(Byte.class);
+
+        PAST_FUTURE_SUPPORT_CLASS_LIST = Guavas.newArrayList(2);
+        PAST_FUTURE_SUPPORT_CLASS_LIST.add(Date.class);
+        PAST_FUTURE_SUPPORT_CLASS_LIST.add(Calendar.class);
     }
 
     /**
      * 获取 {@link javax.validation.constraints.DecimalMin} 和 {@link javax.validation.constraints.DecimalMax}
      * 支持的数据类型列表
      * @return 列表信息
+     * @since 0.0.3
      */
-    public static List<Class> getDecimalMaxMinSupportClassList() {
+    static List<Class> getDecimalMaxMinSupportClassList() {
         return DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST;
     }
 
+    /**
+     * 获取 {@link javax.validation.constraints.Future} 和 {@link javax.validation.constraints.Past}
+     * 支持的数据类型列表
+     * @return 列表信息
+     * @since 0.0.3
+     */
+    static List<Class> getPastFutureSupportClassList() {
+        return PAST_FUTURE_SUPPORT_CLASS_LIST;
+    }
 }
