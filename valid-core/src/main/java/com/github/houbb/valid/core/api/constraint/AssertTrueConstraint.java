@@ -12,8 +12,8 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 public class AssertTrueConstraint extends AbstractConstraint {
 
     @Override
-    protected boolean pass(IConstraintContext context) {
-        return Boolean.TRUE.equals(context.value());
+    protected boolean pass(final IConstraintContext context, final Object value) {
+        return Boolean.TRUE.equals(value);
     }
 
     @Override

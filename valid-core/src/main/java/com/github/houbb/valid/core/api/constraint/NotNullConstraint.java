@@ -6,6 +6,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 
 /**
  * 不可为 null 约束
+ * TODO: 可以考虑约束为等于。
  * @author binbin.hou
  * @since 0.0.2
  */
@@ -13,8 +14,8 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 public class NotNullConstraint extends AbstractConstraint {
 
     @Override
-    protected boolean pass(IConstraintContext context) {
-        return ObjectUtil.isNotNull(context.value());
+    protected boolean pass(final IConstraintContext context, final Object value) {
+        return ObjectUtil.isNotNull(value);
     }
 
     @Override

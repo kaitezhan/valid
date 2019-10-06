@@ -4,23 +4,27 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
+import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.result.DefaultConstraintResult;
 
 /**
  * 抽象约束实现
  * @author binbin.hou
  * @since 0.0.3
+ * @param <T> 泛型
  */
 @ThreadSafe
-public abstract class AbstractConstraint implements IConstraint {
+public abstract class AbstractConstraint<T> implements IConstraint {
 
     /**
      * 是否通过验证
+     * （1）当前校验值非常需要使用，所以为了方便，直接放在子类属性中。
      * @param context 上下文
+     * @param value 当前校验值
      * @return 是否通过
      * @since 0.0.3
      */
-    protected abstract boolean pass(final IConstraintContext context);
+    protected abstract boolean pass(final IConstraintContext context, final T value);
 
     /**
      * 预期值
@@ -29,6 +33,19 @@ public abstract class AbstractConstraint implements IConstraint {
      * @since 0.0.3
      */
     protected abstract String expectValue(final IConstraintContext context);
+
+
+
+    /**
+     * 是否支持的数据字段类型
+     * （1）不同的实现类可以重写此方法。
+     * @param valueClassType 当前字段类型
+     * @return true
+     * @since 0.0.3
+     */
+    protected boolean supportClassType(final Class valueClassType) {
+        return true;
+    }
 
     /**
      * 约束名称
@@ -51,11 +68,15 @@ public abstract class AbstractConstraint implements IConstraint {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public IConstraintResult constraint(IConstraintContext context) {
+        // 类型是否支持校验
+        supportType(context);
+
         DefaultConstraintResult result = DefaultConstraintResult.newInstance();
 
-        Object value = context.value();
-        if(pass(context)) {
+        T value = (T) context.value();
+        if(pass(context, value)) {
             result.pass(true);
         } else {
             final String message = message(context);
@@ -65,6 +86,27 @@ public abstract class AbstractConstraint implements IConstraint {
         final String constraint = constraint();
         result.value(value).constraint(constraint);
         return result;
+    }
+
+    /**
+     * 支持的（数据）类型
+     * （1）null 默认支持
+     * @param context 上下文
+     * @since 0.0.3
+     */
+    private void supportType(final IConstraintContext context) {
+        final Object value = context.value();
+        if(null == value) {
+            return;
+        }
+
+        final Class valueClass = value.getClass();
+        boolean supportClassType = this.supportClassType(valueClass);
+        if(!supportClassType) {
+            final String tips = String.format("UnSupport class type <%s> for constraint: <%s>",
+                    valueClass, this.constraint());
+            throw new ValidRuntimeException(tips);
+        }
     }
 
 }

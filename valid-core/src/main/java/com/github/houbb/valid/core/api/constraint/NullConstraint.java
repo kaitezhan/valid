@@ -13,8 +13,8 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 public class NullConstraint extends AbstractConstraint {
 
     @Override
-    protected boolean pass(IConstraintContext context) {
-        return ObjectUtil.isNull(context.value());
+    protected boolean pass(final IConstraintContext context, final Object value) {
+        return ObjectUtil.isNull(value);
     }
 
     @Override

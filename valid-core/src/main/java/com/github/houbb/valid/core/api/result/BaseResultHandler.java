@@ -49,7 +49,7 @@ public class BaseResultHandler implements IResultHandler {
                 notPassList.add(result);
             }
         }
-        return constraintResultList;
+        return notPassList;
     }
 
     /**
