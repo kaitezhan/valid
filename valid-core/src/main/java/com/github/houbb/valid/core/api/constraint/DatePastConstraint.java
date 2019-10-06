@@ -14,7 +14,7 @@ import java.util.Date;
  * @since 0.0.3
  */
 @ThreadSafe
-public class DatePastConstraint extends AbstractLessThanConstraint<Date> {
+class DatePastConstraint extends AbstractLessThanConstraint<Date> {
 
     public DatePastConstraint(boolean inclusive, Date expect) {
         super(inclusive, expect);

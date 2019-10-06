@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * @see BigDecimal
  */
 @ThreadSafe
-public class BigDecimalMaxConstraint extends AbstractLessThanConstraint<BigDecimal> {
+class BigDecimalMaxConstraint extends AbstractLessThanConstraint<BigDecimal> {
 
     public BigDecimalMaxConstraint(boolean inclusive, BigDecimal expect) {
         super(inclusive, expect);

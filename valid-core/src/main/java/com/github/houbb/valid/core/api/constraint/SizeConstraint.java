@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * 为 size 约束
+ * TODO: 这里可以拆分为具体的 size 实现。省去不必要的分支判断。
+ * 初期可以不做此类性能优化处理。
  * @see java.lang.reflect.Array#getLength(Object)  数组
  * @see CharSequence#length()
  * @see Collection#size()

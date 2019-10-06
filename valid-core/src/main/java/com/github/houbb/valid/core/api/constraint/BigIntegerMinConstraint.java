@@ -12,7 +12,7 @@ import java.math.BigInteger;
  * @see java.math.BigInteger
  */
 @ThreadSafe
-public class BigIntegerMinConstraint extends AbstractGreatThanConstraint<BigInteger> {
+class BigIntegerMinConstraint extends AbstractGreatThanConstraint<BigInteger> {
 
     public BigIntegerMinConstraint(boolean inclusive, BigInteger expect) {
         super(inclusive, expect);

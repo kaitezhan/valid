@@ -7,7 +7,7 @@ import java.util.Calendar;
  * @author binbin.hou
  * @since 0.0.3
  */
-public class CalendarFutureConstraint extends AbstractGreatThanConstraint<Calendar> {
+class CalendarFutureConstraint extends AbstractGreatThanConstraint<Calendar> {
 
     public CalendarFutureConstraint(boolean inclusive, Calendar expect) {
         super(inclusive, expect);

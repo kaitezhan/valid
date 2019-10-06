@@ -14,7 +14,7 @@ import java.util.Date;
  * @since 0.0.3
  */
 @ThreadSafe
-public class DateFutureConstraint extends AbstractGreatThanConstraint<Date> {
+class DateFutureConstraint extends AbstractGreatThanConstraint<Date> {
 
     public DateFutureConstraint(boolean inclusive, Date expect) {
         super(inclusive, expect);
