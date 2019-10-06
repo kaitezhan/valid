@@ -14,6 +14,11 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 public class NotNullConstraint extends AbstractConstraint {
 
     @Override
+    protected boolean isNullPass(Object value) {
+        return false;
+    }
+
+    @Override
     protected boolean pass(final IConstraintContext context, final Object value) {
         return ObjectUtil.isNotNull(value);
     }

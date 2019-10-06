@@ -31,6 +31,12 @@ final class SupportClassTypeUtil {
      */
     private static final List<Class> PAST_FUTURE_SUPPORT_CLASS_LIST;
 
+    /**
+     * 位数类型列表
+     * @since 0.0.3
+     */
+    private static final List<Class> DIGITS_SUPPORT_CLASS_LIST;
+
     static {
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST = Guavas.newArrayList(11);
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST.add(CharSequence.class);
@@ -48,6 +54,19 @@ final class SupportClassTypeUtil {
         PAST_FUTURE_SUPPORT_CLASS_LIST = Guavas.newArrayList(2);
         PAST_FUTURE_SUPPORT_CLASS_LIST.add(Date.class);
         PAST_FUTURE_SUPPORT_CLASS_LIST.add(Calendar.class);
+
+        DIGITS_SUPPORT_CLASS_LIST = Guavas.newArrayList(11);
+        DIGITS_SUPPORT_CLASS_LIST.add(CharSequence.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(BigDecimal.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(BigInteger.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(int.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(Integer.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(short.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(Short.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(long.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(Long.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(byte.class);
+        DIGITS_SUPPORT_CLASS_LIST.add(Byte.class);
     }
 
     /**
@@ -69,4 +88,14 @@ final class SupportClassTypeUtil {
     static List<Class> getPastFutureSupportClassList() {
         return PAST_FUTURE_SUPPORT_CLASS_LIST;
     }
+
+    /**
+     * 获取 {@link javax.validation.constraints.Digits} 支持的数据类型
+     * @return 列表信息
+     * @since 0.0.3
+     */
+    static List<Class> getDigitsSupportClassList() {
+        return DIGITS_SUPPORT_CLASS_LIST;
+    }
+
 }

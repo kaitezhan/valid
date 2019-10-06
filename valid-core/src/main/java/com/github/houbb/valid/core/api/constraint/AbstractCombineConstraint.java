@@ -1,9 +1,10 @@
 package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -30,20 +31,38 @@ public abstract class AbstractCombineConstraint extends AbstractConstraint {
      */
     protected abstract AbstractConstraint getConstraintInstance(final IConstraintContext context);
 
+    /**
+     * 对值进行处理
+     * @param value  值
+     * @return 格式化后的结果
+     * @since 0.0.3
+     */
+    protected Object formatValue(final Object value) {
+        // 字符串相关进行处理
+        if(value instanceof CharSequence) {
+            CharSequence charSequence = (CharSequence)value;
+            return new BigDecimal(charSequence.toString());
+        }
+
+        return value;
+    }
+
     @Override
     protected boolean supportClassType(Class valueClassType) {
-        return getSupportClassList().contains(valueClassType);
+        for(Class supportClass : getSupportClassList()) {
+            if(supportClass.isAssignableFrom(valueClassType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     protected boolean pass(IConstraintContext context, Object value) {
-        if(ObjectUtil.isNull(value)) {
-            return true;
-        }
-
         AbstractConstraint abstractConstraint = getConstraintInstance(context);
-        return abstractConstraint.pass(context, value);
+        final Object formatValue = this.formatValue(value);
+        return abstractConstraint.pass(context, formatValue);
     }
 
     @Override

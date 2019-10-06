@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 
 import java.math.BigDecimal;
@@ -22,6 +23,17 @@ import java.util.List;
 @ThreadSafe
 public class DecimalMaxConstraint extends AbstractCombineConstraint {
 
+    /**
+     * 预期值
+     * @since 0.0.3
+     */
+    private final Object expectValue;
+
+    public DecimalMaxConstraint(Object expectValue) {
+        ArgUtil.notNull(expectValue, "expectValue");
+        this.expectValue = expectValue;
+    }
+
     @Override
     protected List<Class> getSupportClassList() {
         return SupportClassTypeUtil.getDecimalMaxMinSupportClassList();
@@ -36,26 +48,22 @@ public class DecimalMaxConstraint extends AbstractCombineConstraint {
     @Override
     protected AbstractConstraint getConstraintInstance(final IConstraintContext context) {
         final Object value = context.value();
+        final Object exceptValue = super.formatValue(value);
 
         if(value instanceof CharSequence) {
-            CharSequence charSequence = (CharSequence)value;
-            BigDecimal bigDecimal = new BigDecimal(charSequence.toString());
-            return new BigDecimalMaxConstraint(bigDecimal);
+            return new BigDecimalMaxConstraint((BigDecimal) exceptValue);
         }
 
         if(value instanceof BigDecimal) {
-            BigDecimal bigDecimal = (BigDecimal)value;
-            return new BigDecimalMaxConstraint(bigDecimal);
+            return new BigDecimalMaxConstraint((BigDecimal) exceptValue);
         }
 
         if(value instanceof  BigInteger) {
-            BigInteger bigInteger = (BigInteger)value;
-            return new BigIntegerMaxConstraint(bigInteger);
+            return new BigIntegerMaxConstraint((BigInteger) exceptValue);
         }
 
         // 其他，直接使用 max long 进行处理
-        Long longValue = (Long)value;
-        return new MaxConstraint(longValue);
+        return new MaxConstraint((Long) expectValue);
     }
 
 }

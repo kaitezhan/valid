@@ -16,6 +16,21 @@ import java.util.List;
 @ThreadSafe
 public class FutureConstraint extends AbstractCombineConstraint {
 
+    /**
+     * 预期值
+     * @since 0.0.3
+     */
+    private final Object expect;
+
+    /**
+     * 构造器
+     * @since 0.0.3
+     * @param expect 预期值
+     */
+    public FutureConstraint(Object expect) {
+        this.expect = expect;
+    }
+
     @Override
     protected List<Class> getSupportClassList() {
         return SupportClassTypeUtil.getPastFutureSupportClassList();
@@ -25,12 +40,12 @@ public class FutureConstraint extends AbstractCombineConstraint {
     protected AbstractConstraint getConstraintInstance(IConstraintContext context) {
         final Object value = context.value();
         if(value instanceof Date) {
-            Date date = (Date)value;
-            return new DateFutureConstraint(date);
+            Date exceptDate = (Date)expect;
+            return new DateFutureConstraint(exceptDate);
         }
 
-        Calendar calendar = (Calendar)value;
-        return new CalendarFutureConstraint(calendar);
+        Calendar exceptCalendar = (Calendar)expect;
+        return new CalendarFutureConstraint(exceptCalendar);
     }
 
 }
