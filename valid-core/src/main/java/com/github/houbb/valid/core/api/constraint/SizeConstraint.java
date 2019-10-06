@@ -22,7 +22,7 @@ import java.util.Map;
  * @see javax.validation.constraints.Size
  */
 @ThreadSafe
-public class SizeConstraint extends AbstractConstraint {
+class SizeConstraint extends AbstractConstraint {
 
     /**
      * 最小值

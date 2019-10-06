@@ -14,7 +14,7 @@ import java.util.List;
  * @since 0.0.3
  */
 @ThreadSafe
-public abstract class AbstractCombineConstraint extends AbstractConstraint {
+abstract class AbstractCombineConstraint extends AbstractConstraint {
 
     /**
      * 获取支持的数据类型列表

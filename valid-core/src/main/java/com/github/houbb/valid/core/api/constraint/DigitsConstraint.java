@@ -20,7 +20,7 @@ import java.util.List;
  * @see Long
  */
 @ThreadSafe
-public class DigitsConstraint extends AbstractCombineConstraint {
+class DigitsConstraint extends AbstractCombineConstraint {
 
     /**
      * 整数部分最多多少位

@@ -9,7 +9,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
  * @since 0.0.3
  */
 @ThreadSafe
-public class MaxConstraint extends AbstractLessThanConstraint<Long> {
+class MaxConstraint extends AbstractLessThanConstraint<Long> {
 
     public MaxConstraint(boolean inclusive, Long expect) {
         super(inclusive, expect);

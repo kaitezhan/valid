@@ -22,7 +22,7 @@ import java.math.BigInteger;
  * @since 0.0.3
  */
 @ThreadSafe
-public abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
+abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
 
     /**
      * 整数部分最多多少位

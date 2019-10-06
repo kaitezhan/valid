@@ -21,7 +21,7 @@ import java.util.List;
  * @see CharSequence
  */
 @ThreadSafe
-public class DecimalMinConstraint extends AbstractCombineConstraint {
+class DecimalMinConstraint extends AbstractCombineConstraint {
 
     /**
      * 预期值

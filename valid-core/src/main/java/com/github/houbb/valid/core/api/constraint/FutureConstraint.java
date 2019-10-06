@@ -14,7 +14,7 @@ import java.util.List;
  * @since 0.0.3
  */
 @ThreadSafe
-public class FutureConstraint extends AbstractCombineConstraint {
+class FutureConstraint extends AbstractCombineConstraint {
 
     /**
      * 预期值

@@ -11,7 +11,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
  * @see javax.validation.constraints.Pattern 正则表达式注解
  */
 @ThreadSafe
-public class PatternConstraint extends AbstractConstraint<CharSequence> {
+class PatternConstraint extends AbstractConstraint<CharSequence> {
 
     /**
      * 正则表达式

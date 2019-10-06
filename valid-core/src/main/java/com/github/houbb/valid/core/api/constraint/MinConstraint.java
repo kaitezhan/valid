@@ -12,7 +12,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
  * @see Byte
  */
 @ThreadSafe
-public class MinConstraint extends AbstractGreatThanConstraint<Long> {
+class MinConstraint extends AbstractGreatThanConstraint<Long> {
 
     public MinConstraint(boolean inclusive, Long expect) {
         super(inclusive, expect);

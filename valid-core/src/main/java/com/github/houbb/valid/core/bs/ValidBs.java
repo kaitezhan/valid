@@ -61,27 +61,37 @@ public final class ValidBs {
     private List<ValidEntry> validEntryList;
 
     /**
-     * 指定失败类型
-     * @param failType 失败类型
+     * 新建一个实例
+     * @since 0.0.3
+     * @param failType 失败类型枚举
      * @return this
-     * @since 0.0.2
      */
-    public static ValidBs failType(final FailTypeEnum failType) {
-        ArgUtil.notNull(failType, "failType");
-
+    public static ValidBs newInstance(final FailTypeEnum failType) {
         ValidBs validBs = new ValidBs();
-        validBs.failType = failType;
         validBs.validEntryList = new ArrayList<>();
+        validBs.failType(failType);
         return validBs;
     }
 
     /**
-     * 不指定失败类型，默认为快速失败模式
+     * 新建一个实例
+     * @since 0.0.3
      * @return this
-     * @since 0.0.2
      */
-    public static ValidBs failType() {
-        return failType(FailTypeEnum.FAIL_FAST);
+    public static ValidBs newInstance() {
+        return newInstance(FailTypeEnum.FAIL_FAST);
+    }
+
+    /**
+     * 指定失败类型
+     * @param failType 失败类型枚举
+     * @return this
+     * @since 0.0.3
+     */
+    public ValidBs failType(FailTypeEnum failType) {
+        ArgUtil.notNull(failType, "failType");
+        this.failType = failType;
+        return this;
     }
 
     /**
