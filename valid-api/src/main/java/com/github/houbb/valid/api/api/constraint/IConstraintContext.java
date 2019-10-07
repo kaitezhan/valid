@@ -14,4 +14,11 @@ public interface IConstraintContext {
      */
     Object value();
 
+    /**
+     * 指定描述消息
+     * @return 描述消息
+     * @since 0.0.4
+     */
+    String message();
+
 }

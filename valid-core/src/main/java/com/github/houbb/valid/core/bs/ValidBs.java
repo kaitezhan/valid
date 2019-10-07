@@ -96,19 +96,50 @@ public final class ValidBs {
 
     /**
      * 指定验证的对象
-     * TODO: constraint 可以实现一个 pipeline，同时多个约束形成约束链。
      * 问题是，如果这样，那么和 {@link #when(ICondition)} 之间的关系会怎么样？
      *
      * 最简单的方式就是直接上一个（约束链）生效，和原来一样。
-     * @param object 对象信息
+     * @param value 对象信息
      * @param constraint 约束条件
      * @return this
      * @since 0.0.2
      */
-    public ValidBs on(final Object object, final IConstraint constraint) {
+    public ValidBs on(final Object value, final IConstraint constraint) {
+        return this.on(value, constraint, null);
+    }
+
+    /**
+     * 指定校验的条件等相关信息
+     * @param value 待校验对象
+     * @param constraint 约束条件
+     * @param message 消息
+     * @return this
+     * @since 0.0.4
+     */
+    public ValidBs on(final Object value, final IConstraint constraint,
+                      final String message) {
+        return this.on(value, constraint, message, null);
+    }
+
+    /**
+     * 指定校验的条件等相关信息
+     * @param value 待校验对象
+     * @param constraint 约束条件
+     * @param message 消息
+     * @param condition 约束条件
+     * @return this
+     * @since 0.0.4
+     */
+    public ValidBs on(final Object value, final IConstraint constraint,
+                      final String message, final ICondition condition) {
         ArgUtil.notNull(constraint, "constraint");
 
-        this.validEntryList.add(ValidEntry.newInstance().value(object).constraint(constraint));
+        ValidEntry validEntry = ValidEntry.newInstance().value(value)
+                .constraint(constraint)
+                .message(message)
+                .condition(condition);
+        this.validEntryList.add(validEntry);
+
         return this;
     }
 
@@ -120,14 +151,26 @@ public final class ValidBs {
      * @since 0.0.2
      */
     public ValidBs when(final ICondition condition) {
-        ArgUtil.notNull(condition, "condition");
-
         // 获取上一个信息
         if(CollectionUtil.isNotEmpty(validEntryList)) {
             ValidEntry lastEntry = validEntryList.get(validEntryList.size()-1);
             lastEntry.condition(condition);
         }
 
+        return this;
+    }
+
+    /**
+     * 指定上一个约束条件的拦截信息
+     * @param message 信息
+     * @return this
+     */
+    public ValidBs message(final String message) {
+        // 获取上一个信息
+        if(CollectionUtil.isNotEmpty(validEntryList)) {
+            ValidEntry lastEntry = validEntryList.get(validEntryList.size()-1);
+            lastEntry.message(message);
+        }
         return this;
     }
 
@@ -153,7 +196,8 @@ public final class ValidBs {
             if(ObjectUtil.isNull(condition)
                 || condition.condition(conditionContext)) {
                 // 构建约束上下文
-                IConstraintContext constraintContext = DefaultConstraintContext.newInstance().value(value);
+                IConstraintContext constraintContext = DefaultConstraintContext.newInstance().value(value)
+                        .message(validEntry.message());
                 IConstraintResult constraintResult = validEntry.constraint().constraint(constraintContext);
                 constraintResultList.add(constraintResult);
 

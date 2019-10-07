@@ -76,11 +76,16 @@ public abstract class AbstractConstraint<T> implements IConstraint {
     /**
      * 构建信息描述
      * （1）防止痴呆设计，给出提示的具体信息。
+     * （2）如果用户指定了自己的描述，则直接返回用户自定义的信息。@since 0.0.4
      * @param context 上下文
      * @return 信息描述
      * @since 0.0.3
      */
     protected String message(final IConstraintContext context) {
+        final String defineMsg = context.message();
+        if(StringUtil.isNotEmpty(defineMsg)) {
+            return defineMsg;
+        }
         return "Expect is <"+expectValue(context)+">, but actual is <"+actualValue(context)+">.";
     }
 

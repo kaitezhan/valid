@@ -17,4 +17,18 @@ public class ValidBsTest {
         System.out.println(result);
     }
 
+    /**
+     * 消息指定测试
+     * @since 0.0.4
+     */
+    @Test
+    public void messageTest() {
+        IResult result = ValidBs.newInstance()
+                .on(null, Constraints.notNullConstraint())
+                .message("指定值必填")
+                .result();
+
+        System.out.println(result);
+    }
+
 }

@@ -15,6 +15,12 @@ public class DefaultConstraintContext implements IConstraintContext {
      */
     private Object value;
 
+    /**
+     * 消息信息
+     * @since 0.0.4
+     */
+    private String message;
+
     public static DefaultConstraintContext newInstance() {
         return new DefaultConstraintContext();
     }
@@ -29,4 +35,13 @@ public class DefaultConstraintContext implements IConstraintContext {
         return this;
     }
 
+    @Override
+    public String message() {
+        return message;
+    }
+
+    public DefaultConstraintContext message(String message) {
+        this.message = message;
+        return this;
+    }
 }

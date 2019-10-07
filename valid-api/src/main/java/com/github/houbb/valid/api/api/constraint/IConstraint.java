@@ -11,6 +11,7 @@ public interface IConstraint {
      * 触发约束规则
      * @param context 上下文
      * @return 结果
+     * @since 0.0.3
      */
     IConstraintResult constraint(final IConstraintContext context);
 

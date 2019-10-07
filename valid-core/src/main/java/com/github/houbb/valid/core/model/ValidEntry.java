@@ -25,6 +25,12 @@ public class ValidEntry {
      */
     private ICondition condition;
 
+    /**
+     * 拦截信息
+     * @since 0.0.4
+     */
+    private String message;
+
     public static ValidEntry newInstance() {
         return new ValidEntry();
     }
@@ -56,13 +62,22 @@ public class ValidEntry {
         return this;
     }
 
+    public String message() {
+        return message;
+    }
+
+    public ValidEntry message(String message) {
+        this.message = message;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ValidEntry{" +
                 "value=" + value +
                 ", constraint=" + constraint +
                 ", condition=" + condition +
+                ", message='" + message + '\'' +
                 '}';
     }
-
 }
