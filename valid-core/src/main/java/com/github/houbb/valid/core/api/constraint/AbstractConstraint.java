@@ -123,8 +123,12 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         }
 
         final String constraint = constraint();
-        final String expectValue = this.expectValue(context);
-        result.value(value).constraint(constraint).expectValue(expectValue);
+        result.value(value).constraint(constraint);
+        // 如果未通过校验，则添加预期值
+        if(!result.pass()) {
+            final String expectValue = this.expectValue(context);
+            result.expectValue(expectValue);
+        }
         return result;
     }
 
