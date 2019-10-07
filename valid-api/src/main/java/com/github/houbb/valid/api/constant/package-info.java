@@ -1,0 +1,5 @@
+/**
+ * 常量包
+ * @since 0.0.2
+ */
+package com.github.houbb.valid.api.constant;

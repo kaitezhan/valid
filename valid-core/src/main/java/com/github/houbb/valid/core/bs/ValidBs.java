@@ -11,11 +11,10 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.api.result.IResultHandler;
+import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.api.condition.context.DefaultConditionContext;
 import com.github.houbb.valid.core.api.constraint.context.DefaultConstraintContext;
 import com.github.houbb.valid.core.api.result.ResultHandlers;
-import com.github.houbb.valid.core.api.result.SimpleResultHandler;
-import com.github.houbb.valid.core.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.model.ValidEntry;
 
 import java.util.ArrayList;
@@ -197,8 +196,9 @@ public final class ValidBs {
             if(ObjectUtil.isNull(condition)
                 || condition.condition(conditionContext)) {
                 // 构建约束上下文
+                // failType 对于 chain 也要保证语义的一致性。
                 IConstraintContext constraintContext = DefaultConstraintContext.newInstance().value(value)
-                        .message(validEntry.message());
+                        .message(validEntry.message()).failType(failType);
                 IConstraintResult constraintResult = validEntry.constraint().constraint(constraintContext);
                 constraintResultList.add(constraintResult);
 
@@ -208,7 +208,6 @@ public final class ValidBs {
                     break;
                 }
             }
-            //TODO: 可以添加是否进行验证的处理信息返回。
         }
 
         // 对结果进行处理

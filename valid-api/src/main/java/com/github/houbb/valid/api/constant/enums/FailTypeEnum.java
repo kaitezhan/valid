@@ -1,4 +1,4 @@
-package com.github.houbb.valid.core.constant.enums;
+package com.github.houbb.valid.api.constant.enums;
 
 /**
  * 失败类型枚举

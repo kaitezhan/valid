@@ -1,6 +1,10 @@
 package com.github.houbb.valid.core.api.constraint.context;
 
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 默认约束条件上下文
@@ -20,6 +24,18 @@ public class DefaultConstraintContext implements IConstraintContext {
      * @since 0.0.4
      */
     private String message;
+
+    /**
+     * 失败模式
+     * @since 0.0.4
+     */
+    private FailTypeEnum failType;
+
+    /**
+     * 属性 map
+     * @since 0.0.4
+     */
+    private Map<String, Object> attrMap = new ConcurrentHashMap<>();
 
     public static DefaultConstraintContext newInstance() {
         return new DefaultConstraintContext();
@@ -44,4 +60,27 @@ public class DefaultConstraintContext implements IConstraintContext {
         this.message = message;
         return this;
     }
+
+    @Override
+    public FailTypeEnum failType() {
+        return failType;
+    }
+
+    @Override
+    public IConstraintContext putAttr(String key, Object object) {
+        this.attrMap.put(key, object);
+        return this;
+    }
+
+    @Override
+    public Object getAttr(String key) {
+        return attrMap.get(key);
+    }
+
+    public DefaultConstraintContext failType(FailTypeEnum failType) {
+        this.failType = failType;
+        return this;
+    }
+
+
 }
