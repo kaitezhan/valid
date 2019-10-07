@@ -38,6 +38,12 @@ public class DefaultConstraintResult implements IConstraintResult {
      */
     private String constraint;
 
+    /**
+     * 预期值
+     * @since 0.0.4
+     */
+    private String expectValue;
+
     public static DefaultConstraintResult newInstance() {
         return new DefaultConstraintResult();
     }
@@ -83,12 +89,24 @@ public class DefaultConstraintResult implements IConstraintResult {
     }
 
     @Override
+    public String expectValue() {
+        return expectValue;
+    }
+
+    public DefaultConstraintResult expectValue(String expectValue) {
+        this.expectValue = expectValue;
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "DefaultConstraintResult{" +
                 "pass=" + pass +
                 ", message='" + message + '\'' +
                 ", value=" + value +
-                ", constraint=" + constraint +
+                ", constraint='" + constraint + '\'' +
+                ", expectValue='" + expectValue + '\'' +
                 '}';
     }
+
 }

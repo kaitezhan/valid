@@ -2,10 +2,12 @@ package com.github.houbb.valid.core.api.constraint.chain;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.constant.PunctuationConst;
+import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.support.pipeline.impl.DefaultPipeline;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
@@ -21,7 +23,23 @@ import java.util.List;
  * @since 0.0.4
  */
 @ThreadSafe
-public abstract class AbstractConstraintChain extends AbstractConstraint {
+abstract class AbstractConstraintChain extends AbstractConstraint {
+
+    /**
+     * 约束链
+     * TODO: 不太建议使用这种方式。
+     * @since 0.0.4
+     */
+    private List<IConstraint> constraintList;
+
+    /**
+     * 初始化监听器列表
+     * @param pipeline 泳道
+     * @param context 重试信息
+     * @since 0.0.4
+     */
+    abstract void init(final Pipeline<IConstraint> pipeline,
+                       final IConstraintContext context);
 
     @Override
     protected boolean pass(IConstraintContext context, Object value) {
@@ -30,8 +48,8 @@ public abstract class AbstractConstraintChain extends AbstractConstraint {
         Pipeline<IConstraint> pipeline = new DefaultPipeline<>();
         this.init(pipeline, context);
 
-        //执行
-        final List<IConstraint> constraintList = pipeline.list();
+        this.constraintList = pipeline.list();
+
         // 预期结果列表
         List<String> expectValueList = Guavas.newArrayList();
 
@@ -40,9 +58,7 @@ public abstract class AbstractConstraintChain extends AbstractConstraint {
             IConstraintResult constraintResult = constraint.constraint(context);
 
             if(!constraintResult.pass()) {
-                // TODO: 这里可以优化，添加预期值属性。
-                expectValueList.add(constraintResult.message());
-
+                expectValueList.add(constraintResult.expectValue());
                 passFlag = false;
             }
             // 快速失败模式
@@ -51,9 +67,12 @@ public abstract class AbstractConstraintChain extends AbstractConstraint {
                 break;
             }
         }
-        // 将构建好的信息放在 context
-        context.putAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_EXPECT_VALUE,
-                StringUtil.join(expectValueList, PunctuationConst.OR));
+
+        // 如果不通过，将构建好的信息放在 context
+        if(!passFlag) {
+            context.putAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_EXPECT_VALUE,
+                    StringUtil.join(expectValueList, PunctuationConst.OR));
+        }
 
         // 返回结果
         return passFlag;
@@ -65,13 +84,20 @@ public abstract class AbstractConstraintChain extends AbstractConstraint {
         return (String) context.getAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_EXPECT_VALUE);
     }
 
-    /**
-     * 初始化监听器列表
-     * @param pipeline 泳道
-     * @param context 重试信息
-     * @since 0.0.4
-     */
-    protected abstract void init(final Pipeline<IConstraint> pipeline,
-                                 final IConstraintContext context);
+    @Override
+    protected String constraint() {
+        if(CollectionUtil.isEmpty(constraintList)) {
+            return AbstractConstraintChain.class.getSimpleName();
+        }
+
+        // 获取类表名称
+        List<String> nameList = CollectionUtil.toList(constraintList, new IHandler<IConstraint, String>() {
+            @Override
+            public String handle(IConstraint constraint) {
+                return constraint.getClass().getSimpleName();
+            }
+        });
+        return StringUtil.join(nameList, PunctuationConst.COMMA);
+    }
 
 }

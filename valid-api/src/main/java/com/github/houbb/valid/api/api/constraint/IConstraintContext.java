@@ -24,6 +24,7 @@ public interface IConstraintContext {
     String message();
 
     /**
+     * 失败模式
      * @return 失败模式
      * @since 0.0.4
      */

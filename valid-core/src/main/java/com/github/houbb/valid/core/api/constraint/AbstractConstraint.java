@@ -41,9 +41,11 @@ public abstract class AbstractConstraint<T> implements IConstraint {
 
     /**
      * 确切的值
-     * TODO: 性能优化，这里每次获取真实值都要重新计算，很麻烦。
      * （1）但是为了保证线程安全，此处不建议使用内部变量。
      * （2）可以考虑 {@link ThreadLocal} 结合 value 保存结果，然后取出。
+     *
+     * 建议使用这种方式：
+     * （3）结合 {@link IConstraintContext#putAttr(String, Object)} 设置和获取
      * @param context 上下文
      * @return 确切的值
      * @since 0.0.3
@@ -121,7 +123,8 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         }
 
         final String constraint = constraint();
-        result.value(value).constraint(constraint);
+        final String expectValue = this.expectValue(context);
+        result.value(value).constraint(constraint).expectValue(expectValue);
         return result;
     }
 

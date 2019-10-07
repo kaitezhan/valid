@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.constant.ContextAttrKeyConst;
 import com.github.houbb.valid.core.util.NumUtil;
 
 import java.math.BigDecimal;
@@ -108,6 +109,12 @@ abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
             && fractionDigits <= fraction) {
             return true;
         }
+
+        // 不通过的时候设置属性
+        context.putAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_INTEGER_DIGITS, integerDigits);
+        context.putAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_FRACTION_DIGITS, fractionDigits);
+
+        // 返回结果
         return false;
     }
 
@@ -122,9 +129,8 @@ abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
     @Override
     @SuppressWarnings("unchecked")
     protected String actualValue(IConstraintContext context) {
-        T actualValue = (T) formatValue(context.value());
-        final int integerDigits = getIntegerDigits(actualValue);
-        final int fractionDigits = getFractionDigits(actualValue);
+        final int integerDigits = (int) context.getAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_INTEGER_DIGITS);
+        final int fractionDigits = (int) context.getAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_FRACTION_DIGITS);
 
         return String.format("integer digits [%d], fraction digits [%d]",
                 integerDigits, fractionDigits);

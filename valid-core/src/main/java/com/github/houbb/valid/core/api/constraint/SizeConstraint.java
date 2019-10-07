@@ -4,6 +4,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.constant.ContextAttrKeyConst;
 import com.github.houbb.valid.core.util.SupportClassTypeUtil;
 
 import java.util.Collection;
@@ -53,7 +54,12 @@ class SizeConstraint extends AbstractConstraint {
         //类型判断，根据概率 CharSequence > collection > map > array
         final Object object = context.value();
         final int size = actualSize(object);
-        return sizeCheck(size);
+        boolean pass = sizeCheck(size);
+
+        // 设置具体的属性信息
+        context.putAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_SIZE, size);
+
+        return pass;
     }
 
     @Override
@@ -78,7 +84,8 @@ class SizeConstraint extends AbstractConstraint {
 
     @Override
     protected String actualValue(IConstraintContext context) {
-        return actualSize(context.value())+"";
+        int actualSize = (int) context.getAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_SIZE);
+        return actualSize+"";
     }
 
     /**
