@@ -15,7 +15,7 @@ import java.util.List;
  * @since 0.0.2
  */
 @ThreadSafe
-public class BaseResultHandler implements IResultHandler {
+public class BaseResultHandler implements IResultHandler<IResult> {
 
     @Override
     public IResult handle(final List<IConstraintResult> constraintResultList) {

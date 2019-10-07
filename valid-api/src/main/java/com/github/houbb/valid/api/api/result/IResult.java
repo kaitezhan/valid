@@ -6,6 +6,14 @@ import java.util.List;
 
 /**
  * 结果处理
+ * TODO:
+ * （1）可以考虑添加 print() 接口，输出相关结果信息。
+ * print 可以指定相关配置，输出位置，输出级别等等。
+ *
+ * （2）添加 throws 未通过的信息。
+ * 详细程度。
+ *
+ * 二者可以抽象为结果的 handler。
  * @author binbin.hou
  * @since 0.0.2
  */

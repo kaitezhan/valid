@@ -14,6 +14,7 @@ import com.github.houbb.valid.api.api.result.IResultHandler;
 import com.github.houbb.valid.core.api.condition.context.DefaultConditionContext;
 import com.github.houbb.valid.core.api.constraint.context.DefaultConstraintContext;
 import com.github.houbb.valid.core.api.result.ResultHandlers;
+import com.github.houbb.valid.core.api.result.SimpleResultHandler;
 import com.github.houbb.valid.core.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.model.ValidEntry;
 
@@ -182,7 +183,7 @@ public final class ValidBs {
      * @return 结果
      * @since 0.0.2
      */
-    public IResult result(final IResultHandler resultHandler) {
+    public <T> T result(final IResultHandler<T> resultHandler) {
         ArgUtil.notNull(resultHandler, "resultHandler");
 
         // 执行校验
@@ -220,7 +221,7 @@ public final class ValidBs {
      * @since 0.0.2
      */
     public IResult result() {
-        return this.result(ResultHandlers.SIMPLE);
+        return this.result(ResultHandlers.simple());
     }
 
 }
