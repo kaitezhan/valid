@@ -181,6 +181,7 @@ public final class ValidBs {
      * @param resultHandler 结果处理方式
      * @return 结果
      * @since 0.0.2
+     * @param <T> 自定义处理结果泛型
      */
     public <T> T result(final IResultHandler<T> resultHandler) {
         ArgUtil.notNull(resultHandler, "resultHandler");
