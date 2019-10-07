@@ -43,10 +43,14 @@ class AbstractGreatThanConstraint<T extends Comparable> extends AbstractConstrai
         this(true, expect);
     }
 
+    protected T formatValue(final Object contextValue) {
+            return (T) contextValue;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected boolean pass(final IConstraintContext context, final Object value) {
-        final T comparableValue = (T)value;
+        final T comparableValue = formatValue(value);
         if(inclusive) {
             return comparableValue.compareTo(expect) >= 0;
         }

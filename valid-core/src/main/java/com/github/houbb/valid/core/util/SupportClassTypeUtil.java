@@ -1,12 +1,11 @@
-package com.github.houbb.valid.core.api.constraint;
+package com.github.houbb.valid.core.util;
 
 import com.github.houbb.heaven.util.guava.Guavas;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 支持的数据类型
@@ -15,7 +14,7 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.3
  */
-final class SupportClassTypeUtil {
+public final class SupportClassTypeUtil {
 
     private SupportClassTypeUtil(){}
 
@@ -36,6 +35,18 @@ final class SupportClassTypeUtil {
      * @since 0.0.3
      */
     private static final List<Class> DIGITS_SUPPORT_CLASS_LIST;
+
+    /**
+     * SIZE 支持类型列表
+     * @since 0.0.3
+     */
+    private static final List<Class> SIZE_SUPPORT_CLASS_LIST;
+
+    /**
+     * TRUE/FALSE 支持类型列表
+     * @since 0.0.3
+     */
+    private static final List<Class> ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST;
 
     static {
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST = Guavas.newArrayList(11);
@@ -67,6 +78,16 @@ final class SupportClassTypeUtil {
         DIGITS_SUPPORT_CLASS_LIST.add(Long.class);
         DIGITS_SUPPORT_CLASS_LIST.add(byte.class);
         DIGITS_SUPPORT_CLASS_LIST.add(Byte.class);
+
+        SIZE_SUPPORT_CLASS_LIST = Guavas.newArrayList(4);
+        SIZE_SUPPORT_CLASS_LIST.add(CharSequence.class);
+        SIZE_SUPPORT_CLASS_LIST.add(Collection.class);
+        SIZE_SUPPORT_CLASS_LIST.add(Map.class);
+        SIZE_SUPPORT_CLASS_LIST.add(Array.class);
+
+        ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST = Guavas.newArrayList(2);
+        ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST.add(boolean.class);
+        ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST.add(Boolean.class);
     }
 
     /**
@@ -75,7 +96,7 @@ final class SupportClassTypeUtil {
      * @return 列表信息
      * @since 0.0.3
      */
-    static List<Class> getDecimalMaxMinSupportClassList() {
+    public static List<Class> getDecimalMaxMinSupportClassList() {
         return DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST;
     }
 
@@ -85,7 +106,7 @@ final class SupportClassTypeUtil {
      * @return 列表信息
      * @since 0.0.3
      */
-    static List<Class> getPastFutureSupportClassList() {
+    public static List<Class> getPastFutureSupportClassList() {
         return PAST_FUTURE_SUPPORT_CLASS_LIST;
     }
 
@@ -94,8 +115,27 @@ final class SupportClassTypeUtil {
      * @return 列表信息
      * @since 0.0.3
      */
-    static List<Class> getDigitsSupportClassList() {
+    public static List<Class> getDigitsSupportClassList() {
         return DIGITS_SUPPORT_CLASS_LIST;
+    }
+
+    /**
+     * 获取 {@link javax.validation.constraints.Size} 支持的数据类型
+     * @return 列表信息
+     * @since 0.0.3
+     */
+    public static List<Class> getSizeSupportClassList() {
+        return SIZE_SUPPORT_CLASS_LIST;
+    }
+
+    /**
+     * 获取 {@link javax.validation.constraints.AssertFalse} 支持的数据类型
+     * 获取 {@link javax.validation.constraints.AssertTrue} 支持的数据类型
+     * @return 列表信息
+     * @since 0.0.3
+     */
+    public static List<Class> getAssertTrueFalseSupportClassList() {
+        return ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST;
     }
 
 }

@@ -3,6 +3,8 @@ package com.github.houbb.valid.core.api.constraint;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.util.NumUtil;
+import com.github.houbb.valid.core.util.SupportClassTypeUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -24,14 +26,24 @@ import java.util.List;
 class DecimalMinConstraint extends AbstractCombineConstraint {
 
     /**
+     * 是否包含
+     */
+    private final boolean inclusive;
+
+    /**
      * 预期值
      * @since 0.0.3
      */
     private final Object expectValue;
 
-    public DecimalMinConstraint(Object expectValue) {
+    public DecimalMinConstraint(boolean inclusive, Object expectValue) {
         ArgUtil.notNull(expectValue, "expectValue");
+        this.inclusive = inclusive;
         this.expectValue = expectValue;
+    }
+
+    public DecimalMinConstraint(Object expectValue) {
+        this(true, expectValue);
     }
 
     @Override
@@ -48,22 +60,23 @@ class DecimalMinConstraint extends AbstractCombineConstraint {
     @Override
     protected AbstractConstraint getConstraintInstance(final IConstraintContext context) {
         final Object value = context.value();
-        final Object exceptValue = super.formatValue(value);
+        final Object exceptValue = super.formatValue(expectValue);
 
         if(value instanceof CharSequence) {
-            return new BigDecimalMinConstraint((BigDecimal) exceptValue);
+            return new BigDecimalMinConstraint(inclusive, (BigDecimal) exceptValue);
         }
 
         if(value instanceof BigDecimal) {
-            return new BigDecimalMinConstraint((BigDecimal) exceptValue);
+            return new BigDecimalMinConstraint(inclusive, (BigDecimal) exceptValue);
         }
 
         if(value instanceof  BigInteger) {
-            return new BigIntegerMinConstraint((BigInteger) exceptValue);
+            return new BigIntegerMinConstraint(inclusive, (BigInteger) exceptValue);
         }
 
         // 其他，直接使用 Min long 进行处理
-        return new MinConstraint((Long) exceptValue);
+        Long longVal = NumUtil.parseLong(exceptValue);
+        return new MinConstraint(inclusive, longVal);
     }
 
 }

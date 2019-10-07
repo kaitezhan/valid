@@ -4,13 +4,14 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.util.SupportClassTypeUtil;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 为 size 约束
- * TODO: 这里可以拆分为具体的 size 实现。省去不必要的分支判断。
  * 初期可以不做此类性能优化处理。
  * @see java.lang.reflect.Array#getLength(Object)  数组
  * @see CharSequence#length()
@@ -49,44 +50,15 @@ class SizeConstraint extends AbstractConstraint {
             return true;
         }
 
-        //类型判断，根据概率 String > collection > map > array
-        if(value instanceof String) {
-            String string = (String)value;
-            return sizeCheck(string.length());
-        }
-        if(value instanceof Collection) {
-            Collection collection = (Collection)value;
-            return sizeCheck(collection.size());
-        }
-        if(value instanceof Map) {
-            Map map = (Map)value;
-            return sizeCheck(map.size());
-        }
-        if(ClassTypeUtil.isArray(value.getClass())) {
-            Object[] array = (Object[])value;
-            return sizeCheck(array.length);
-        }
-
-        // 直接认为通过
-        return true;
+        //类型判断，根据概率 CharSequence > collection > map > array
+        final Object object = context.value();
+        final int size = actualSize(object);
+        return sizeCheck(size);
     }
 
     @Override
-    protected boolean supportClassType(Class valueClassType) {
-        if(String.class == valueClassType) {
-            return true;
-        }
-        if(ClassTypeUtil.isCollection(valueClassType)) {
-            return true;
-        }
-        if(ClassTypeUtil.isArray(valueClassType)) {
-            return true;
-        }
-        if(ClassTypeUtil.isMap(valueClassType)) {
-            return true;
-        }
-
-        return false;
+    protected List<Class> getSupportClassList() {
+        return SupportClassTypeUtil.getSizeSupportClassList();
     }
 
     /**
@@ -102,6 +74,40 @@ class SizeConstraint extends AbstractConstraint {
     @Override
     protected String expectValue(final IConstraintContext context) {
         return "size must be in ["+min+","+max+"]";
+    }
+
+    @Override
+    protected String actualValue(IConstraintContext context) {
+        return actualSize(context.value())+"";
+    }
+
+    /**
+     * 计算对应的大小
+     * （1）此处不用判空，因为 null 不会走到这里
+     * @param value 实际值
+     * @return 对应的 size
+     * @since 0.0.3
+     */
+    private int actualSize(final Object value) {
+        //类型判断，根据概率 CharSequence > collection > map > array
+        if(value instanceof CharSequence) {
+            CharSequence string = (CharSequence)value;
+            return string.length();
+        }
+        if(value instanceof Collection) {
+            Collection collection = (Collection)value;
+            return collection.size();
+        }
+        if(value instanceof Map) {
+            Map map = (Map)value;
+            return map.size();
+        }
+        if(ClassTypeUtil.isArray(value.getClass())) {
+            Object[] array = (Object[])value;
+            return array.length;
+        }
+        // 这里按理说也不应该走到
+        return 0;
     }
 
 }

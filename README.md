@@ -8,7 +8,13 @@ java 开发中，参数校验是非常常见的需求。
 [![Build Status](https://www.travis-ci.org/houbb/valid.svg?branch=master)](https://www.travis-ci.org/houbb/valid?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/houbb/valid/badge.svg?branch=master)](https://coveralls.io/github/houbb/valid?branch=master)
 
+## 变更日志
+
 > [变更日志](doc/CHANGELOG.md)
+
+## v0.0.3 版本特性
+
+- 实现 JSR-303 所有约束注解对应 API 实现
 
 # 创作目的
 
@@ -63,8 +69,8 @@ Maven 3.X+
 ## 例子
 
 ```java
-public void helloTest() {
-    IResult result = ValidBs.failType().on(null, new NotNullConstraint()).result();
+public void simpleTest() {
+    IResult result = ValidBs.newInstance().on(null, Constraints.notNullConstraint()).result();
     System.out.println(result);
 }
 ```
@@ -72,5 +78,5 @@ public void helloTest() {
 - 日志信息
 
 ```
-DefaultResult{pass=false, notPassList=[DefaultConstraintResult{pass=false, message='expect not null, but actual is null.', value=null, constraint=NotNullConstraint}], allList=null}
+DefaultResult{pass=false, notPassList=[DefaultConstraintResult{pass=false, message='Expect is <not null>, but actual is <null>.', value=null, constraint=NotNullConstraint}], allList=null}
 ```

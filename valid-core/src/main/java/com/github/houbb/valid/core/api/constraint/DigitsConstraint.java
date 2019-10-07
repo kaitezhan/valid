@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.util.SupportClassTypeUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -58,11 +59,8 @@ class DigitsConstraint extends AbstractCombineConstraint {
     protected AbstractConstraint getConstraintInstance(final IConstraintContext context) {
         final Object value = context.value();
 
-        if(value instanceof CharSequence) {
-            return new DigitsBigDecimalConstraint(integer, fraction);
-        }
-
-        if(value instanceof BigDecimal) {
+        if(value instanceof CharSequence
+            || value instanceof BigDecimal) {
             return new DigitsBigDecimalConstraint(integer, fraction);
         }
 
@@ -72,6 +70,18 @@ class DigitsConstraint extends AbstractCombineConstraint {
 
         // 其他，直接使用 long 进行处理
         return new DigitsLongConstraint(integer, fraction);
+    }
+
+    /**
+     * 重写真实值描述
+     * @since 0.0.3
+     * @param context 上下文
+     * @return 真实描述
+     */
+    @Override
+    protected String actualValue(IConstraintContext context) {
+        AbstractDigitsConstraint abstractDigitsConstraint = (AbstractDigitsConstraint) getConstraintInstance(context);
+        return abstractDigitsConstraint.actualValue(context);
     }
 
 }

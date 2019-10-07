@@ -4,8 +4,6 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.List;
 
 /**
  * 抽象组合约束实现
@@ -15,13 +13,6 @@ import java.util.List;
  */
 @ThreadSafe
 abstract class AbstractCombineConstraint extends AbstractConstraint {
-
-    /**
-     * 获取支持的数据类型列表
-     * @return 支持的类型列表
-     * @since 0.0.3
-     */
-    protected abstract List<Class> getSupportClassList();
 
     /**
      * 获取对应的约束实现
@@ -45,16 +36,6 @@ abstract class AbstractCombineConstraint extends AbstractConstraint {
         }
 
         return value;
-    }
-
-    @Override
-    protected boolean supportClassType(Class valueClassType) {
-        for(Class supportClass : getSupportClassList()) {
-            if(supportClass.isAssignableFrom(valueClassType)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

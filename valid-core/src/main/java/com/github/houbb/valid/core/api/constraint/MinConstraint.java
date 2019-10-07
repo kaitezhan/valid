@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.valid.core.util.NumUtil;
 
 /**
  * 元素 min 约束
@@ -10,6 +11,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
  * @see Integer
  * @see Short
  * @see Byte
+ * @see javax.validation.constraints.Min
  */
 @ThreadSafe
 class MinConstraint extends AbstractGreatThanConstraint<Long> {
@@ -21,4 +23,10 @@ class MinConstraint extends AbstractGreatThanConstraint<Long> {
     public MinConstraint(Long expect) {
         super(expect);
     }
+
+    @Override
+    protected Long formatValue(Object contextValue) {
+        return NumUtil.parseLong(contextValue);
+    }
+
 }

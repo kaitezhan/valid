@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.util.NumUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -74,10 +75,34 @@ abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
         return 0;
     }
 
+    /**
+     * 对值进行处理
+     * @param value  值
+     * @return 格式化后的结果
+     * @since 0.0.3
+     */
+    protected Object formatValue(final Object value) {
+        // 字符串相关进行处理
+        if(value instanceof CharSequence) {
+            CharSequence charSequence = (CharSequence)value;
+            return new BigDecimal(charSequence.toString());
+        }
+        // BigInteger/BigDecimal 返回本身
+        if(value instanceof BigDecimal
+            || value instanceof BigInteger) {
+            return value;
+        }
+
+        // 转换为 long
+        return NumUtil.parseLong(value);
+    }
+
     @Override
-    protected boolean pass(IConstraintContext context, T value) {
-        final int integerDigits = getIntegerDigits(value);
-        final int fractionDigits = getFractionDigits(value);
+    @SuppressWarnings("unchecked")
+    protected boolean pass(IConstraintContext context, Object value) {
+        T actualValue = (T) formatValue(value);
+        final int integerDigits = getIntegerDigits(actualValue);
+        final int fractionDigits = getFractionDigits(actualValue);
 
         if(integerDigits <= integer
             && fractionDigits <= fraction) {
@@ -89,9 +114,20 @@ abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
     @Override
     @SuppressWarnings("unchecked")
     protected String expectValue(IConstraintContext context) {
-        final T value = (T)context.value();
-        return String.format("integer digits <%d>, fraction digits <%d>",
-                getIntegerDigits(value), getFractionDigits(value));
+        return String.format("integer digits [%d], fraction digits [%d]",
+                integer, fraction);
+    }
+
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected String actualValue(IConstraintContext context) {
+        T actualValue = (T) formatValue(context.value());
+        final int integerDigits = getIntegerDigits(actualValue);
+        final int fractionDigits = getFractionDigits(actualValue);
+
+        return String.format("integer digits [%d], fraction digits [%d]",
+                integerDigits, fractionDigits);
     }
 
 }

@@ -1,12 +1,16 @@
 package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
-import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.result.DefaultConstraintResult;
+
+import java.lang.reflect.Array;
+import java.util.List;
 
 /**
  * 抽象约束实现
@@ -36,14 +40,27 @@ public abstract class AbstractConstraint<T> implements IConstraint {
     protected abstract String expectValue(final IConstraintContext context);
 
     /**
-     * 是否支持的数据字段类型
-     * （1）不同的实现类可以重写此方法。
-     * @param valueClassType 当前字段类型
-     * @return true
+     * 确切的值
+     * TODO: 性能优化，这里每次获取真实值都要重新计算，很麻烦。
+     * （1）但是为了保证线程安全，此处不建议使用内部变量。
+     * （2）可以考虑 {@link ThreadLocal} 结合 value 保存结果，然后取出。
+     * @param context 上下文
+     * @return 确切的值
      * @since 0.0.3
      */
-    protected boolean supportClassType(final Class valueClassType) {
-        return true;
+    protected String actualValue(final IConstraintContext context) {
+        return StringUtil.objectToString(context.value());
+    }
+
+    /**
+     * 获取支持的数据类型列表
+     * @return 支持的类型列表
+     * @since 0.0.3
+     */
+    protected List<Class> getSupportClassList() {
+        List<Class> classList = Guavas.newArrayList(1);
+        classList.add(Object.class);
+        return classList;
     }
 
     /**
@@ -58,12 +75,13 @@ public abstract class AbstractConstraint<T> implements IConstraint {
 
     /**
      * 构建信息描述
+     * （1）防止痴呆设计，给出提示的具体信息。
      * @param context 上下文
      * @return 信息描述
      * @since 0.0.3
      */
     protected String message(final IConstraintContext context) {
-        return "Expect is <"+expectValue(context)+">, but actual is <"+context.value()+">.";
+        return "Expect is <"+expectValue(context)+">, but actual is <"+actualValue(context)+">.";
     }
 
     /**
@@ -103,8 +121,35 @@ public abstract class AbstractConstraint<T> implements IConstraint {
     }
 
     /**
+     * 是否支持的数据字段类型
+     * （1）是否为指定类型的子类
+     * （2）是否与指定类型相同
+     * （3）数组的支持，通过类型 {@link Array} 进行指定。
+     * @param valueClassType 当前字段类型
+     * @return true
+     * @since 0.0.3
+     */
+    @SuppressWarnings("unchecked")
+    private boolean supportClassType(final Class valueClassType) {
+        List<Class> classList = getSupportClassList();
+        for(Class supportClass : classList) {
+            if(supportClass.isAssignableFrom(valueClassType)
+                    || supportClass == valueClassType) {
+                return true;
+            }
+            // 对数组的支持
+            if(Array.class == supportClass
+                && valueClassType.isArray()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 支持的（数据）类型
      * （1）null 默认支持
+     * （2）防止痴呆设计，自动提示出支持的数据类型。
      * @param context 上下文
      * @since 0.0.3
      */
@@ -117,9 +162,8 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         final Class valueClass = value.getClass();
         boolean supportClassType = this.supportClassType(valueClass);
         if(!supportClassType) {
-            final String tips = String.format("UnSupport class type <%s> for constraint: <%s>",
-                    valueClass, this.constraint());
-            throw new ValidRuntimeException(tips);
+            final String tips = String.format("Valid un-support class type <%s> for constraint: <%s>, supported class list: <%s>", valueClass, this.constraint(), this.getSupportClassList());
+            throw new ClassCastException(tips);
         }
     }
 

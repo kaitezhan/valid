@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.valid.core.util.NumUtil;
 
 /**
  * 元素 max 约束
@@ -17,5 +18,10 @@ class MaxConstraint extends AbstractLessThanConstraint<Long> {
 
     public MaxConstraint(Long expect) {
         super(expect);
+    }
+
+    @Override
+    protected Long formatValue(Object contextValue) {
+        return NumUtil.parseLong(contextValue);
     }
 }

@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 
 import java.math.BigDecimal;
 

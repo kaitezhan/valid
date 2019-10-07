@@ -3,6 +3,9 @@ package com.github.houbb.valid.core.api.constraint;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.util.SupportClassTypeUtil;
+
+import java.util.List;
 
 /**
  * 为 true 约束
@@ -37,4 +40,8 @@ class AssertTrueConstraint extends AbstractConstraint {
         return "true";
     }
 
+    @Override
+    protected List<Class> getSupportClassList() {
+        return SupportClassTypeUtil.getAssertTrueFalseSupportClassList();
+    }
 }

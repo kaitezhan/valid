@@ -2,8 +2,6 @@ package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,48 +44,6 @@ public final class Constraints {
      */
     public static IConstraint notNullConstraint() {
         return NotNullConstraint.getInstance();
-    }
-
-    /**
-     * 最小约束条件
-     * @param inclusive 是否相等
-     * @param expect 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint minConstraint(final boolean inclusive, final long expect) {
-        return new MinConstraint(inclusive, expect);
-    }
-
-    /**
-     * 最小约束条件
-     * @param expect 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint minConstraint(final long expect) {
-        return new MinConstraint(expect);
-    }
-
-    /**
-     * 最大约束条件
-     * @param inclusive 是否相等
-     * @param expect 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint maxConstraint(final boolean inclusive, final long expect) {
-        return new MaxConstraint(inclusive, expect);
-    }
-
-    /**
-     * 最大约束条件
-     * @param expect 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint maxConstraint(final long expect) {
-        return new MaxConstraint(expect);
     }
 
     /**
@@ -170,146 +126,6 @@ public final class Constraints {
     }
 
     /**
-     *
-     * @param charSequence 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final CharSequence charSequence) {
-        return new DecimalMaxConstraint(charSequence);
-    }
-
-    /**
-     *
-     * @param bigDecimal 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final BigDecimal bigDecimal) {
-        return new DecimalMaxConstraint(bigDecimal);
-    }
-
-    /**
-     *
-     * @param bigInteger 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final BigInteger bigInteger) {
-        return new DecimalMaxConstraint(bigInteger);
-    }
-
-    /**
-     *
-     * @param aLong 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final Long aLong) {
-        return new DecimalMaxConstraint(aLong);
-    }
-
-    /**
-     *
-     * @param integer 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final Integer integer) {
-        return new DecimalMaxConstraint(integer);
-    }
-
-    /**
-     *
-     * @param aShort 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final Short aShort) {
-        return new DecimalMaxConstraint(aShort);
-    }
-
-    /**
-     *
-     * @param aByte 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMaxConstraint(final Byte aByte) {
-        return new DecimalMaxConstraint(aByte);
-    }
-
-    /**
-     *
-     * @param charSequence 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final CharSequence charSequence) {
-        return new DecimalMinConstraint(charSequence);
-    }
-
-    /**
-     *
-     * @param bigDecimal 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final BigDecimal bigDecimal) {
-        return new DecimalMinConstraint(bigDecimal);
-    }
-
-    /**
-     *
-     * @param bigInteger 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final BigInteger bigInteger) {
-        return new DecimalMinConstraint(bigInteger);
-    }
-
-    /**
-     *
-     * @param aLong 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final Long aLong) {
-        return new DecimalMinConstraint(aLong);
-    }
-
-    /**
-     *
-     * @param integer 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final Integer integer) {
-        return new DecimalMinConstraint(integer);
-    }
-
-    /**
-     *
-     * @param aShort 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final Short aShort) {
-        return new DecimalMinConstraint(aShort);
-    }
-
-    /**
-     *
-     * @param aByte 阈值
-     * @return 约束条件
-     * @since 0.0.3
-     */
-    public static IConstraint decimalMinConstraint(final Byte aByte) {
-        return new DecimalMinConstraint(aByte);
-    }
-
-    /**
      * 位数约束
      * @param integer 整数
      * @param fraction 精度
@@ -330,4 +146,87 @@ public final class Constraints {
         return new DigitsConstraint(integer);
     }
 
+    /**
+     *
+     * @param charSequence 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint decimalMaxConstraint(final CharSequence charSequence) {
+        return new DecimalMaxConstraint(charSequence);
+    }
+
+    /**
+     *
+     * @param inclusive 是否包含
+     * @param charSequence 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint decimalMaxConstraint(final boolean inclusive, final CharSequence charSequence) {
+        return new DecimalMaxConstraint(inclusive, charSequence);
+    }
+
+    /**
+     *
+     * @param charSequence 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint decimalMinConstraint(final CharSequence charSequence) {
+        return new DecimalMinConstraint(charSequence);
+    }
+
+    /**
+     *
+     * @param inclusive  是否包含
+     * @param charSequence 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint decimalMinConstraint(final boolean inclusive, final CharSequence charSequence) {
+        return new DecimalMinConstraint(inclusive, charSequence);
+    }
+
+    /**
+     * 最小约束条件
+     * @param inclusive 是否相等
+     * @param expect 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint minConstraint(final boolean inclusive, final long expect) {
+        return new MinConstraint(inclusive, expect);
+    }
+
+    /**
+     * 最小约束条件
+     * @param expect 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint minConstraint(final long expect) {
+        return new MinConstraint(expect);
+    }
+
+    /**
+     * 最大约束条件
+     * @param inclusive 是否相等
+     * @param expect 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint maxConstraint(final boolean inclusive, final long expect) {
+        return new MaxConstraint(inclusive, expect);
+    }
+
+    /**
+     * 最大约束条件
+     * @param expect 阈值
+     * @return 约束条件
+     * @since 0.0.3
+     */
+    public static IConstraint maxConstraint(final long expect) {
+        return new MaxConstraint(expect);
+    }
 }

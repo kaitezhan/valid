@@ -37,10 +37,14 @@ class AbstractLessThanConstraint<T extends Comparable> extends AbstractConstrain
         this(true, expect);
     }
 
+    protected T formatValue(final Object contextValue) {
+        return (T) contextValue;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected boolean pass(final IConstraintContext context, final Object value) {
-        final T comparableValue = (T)value;
+        final T comparableValue = this.formatValue(value);
         if(inclusive) {
             return comparableValue.compareTo(expect) <= 0;
         }
