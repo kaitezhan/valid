@@ -93,7 +93,7 @@ public abstract class AbstractConstraint<T> implements IConstraint {
 
     /**
      * 为 null 的时候，是否验证通过。
-     * 根据 JDK-303 标准，除了 {@link javax.validation.constraints.NotNull} 需要验证为 Null,其他都是通过的。
+     * 根据 JDK-303 标准，除了 javax.validation.constraints.NotNull 需要验证为 Null,其他都是通过的。
      * @param value 值
      * @return 是否通过
      * @since 0.0.3
