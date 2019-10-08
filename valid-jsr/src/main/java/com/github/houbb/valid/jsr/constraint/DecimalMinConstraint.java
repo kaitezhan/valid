@@ -2,10 +2,10 @@ package com.github.houbb.valid.jsr.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.common.ArgUtil;
+import com.github.houbb.heaven.util.lang.NumUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.core.api.constraint.AbstractCombineConstraint;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
-import com.github.houbb.valid.core.util.NumUtil;
 import com.github.houbb.valid.jsr.util.JsrSupportClassUtil;
 
 import java.math.BigDecimal;

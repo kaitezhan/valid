@@ -1,8 +1,8 @@
 package com.github.houbb.valid.jsr.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.util.lang.NumUtil;
 import com.github.houbb.valid.core.api.constraint.AbstractGreatThanConstraint;
-import com.github.houbb.valid.core.util.NumUtil;
 
 /**
  * 元素 min 约束

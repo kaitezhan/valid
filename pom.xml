@@ -33,7 +33,7 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.1.29</heaven.version>
+        <heaven.version>0.1.30</heaven.version>
 
         <!--============================== OTHER ==============================-->
         <validation-api.version>1.1.0.Final</validation-api.version>
