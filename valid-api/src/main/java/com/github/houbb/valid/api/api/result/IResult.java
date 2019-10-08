@@ -5,15 +5,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import java.util.List;
 
 /**
- * 结果处理
- * TODO:
- * （1）可以考虑添加 print() 接口，输出相关结果信息。
- * print 可以指定相关配置，输出位置，输出级别等等。
- *
- * （2）添加 throws 未通过的信息。
- * 详细程度。
- *
- * 二者可以抽象为结果的 handler。
+ * 结果接口
  * @author binbin.hou
  * @since 0.0.2
  */
@@ -39,5 +31,32 @@ public interface IResult {
      * @since 0.0.2
      */
     List<IConstraintResult> allList();
+
+    /**
+     * 输出信息到控台
+     * （1）主要是为了方便调整
+     * （2）该功能其实可以做增强，比如输出到文件/数据库等等。
+     * @return this
+     * @since 0.0.6
+     */
+    IResult print();
+
+    /**
+     * 对于未通过的信息，
+     * （1）未通过的界定。
+     *  {@link IConstraintResult#pass()} 为 false
+     *
+     * （2）内容信息
+     * 抛出运行时异常 {@link com.github.houbb.valid.api.exception.ValidRuntimeException}，异常信息为 {@link IConstraintResult#message()} 消息
+     * （3）内容限定
+     *  为了避免异常内容过多，只抛出第一条即可。
+     *  （4）改方法的增强空间
+     *  4.1 可以指定什么情况下抛出异常
+     *  4.2 抛出异常的信息和类别
+     *
+     * @return this
+     * @since 0.0.6
+     */
+    IResult throwsEx();
 
 }

@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.result.result;
 
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.result.IResult;
+import com.github.houbb.valid.api.exception.ValidRuntimeException;
 
 import java.util.List;
 
@@ -57,6 +58,21 @@ public class DefaultResult implements IResult {
     @Override
     public List<IConstraintResult> allList() {
         return allList;
+    }
+
+    @Override
+    public IResult print() {
+        System.out.println(this);
+        return this;
+    }
+
+    @Override
+    public IResult throwsEx() {
+        if(!pass) {
+            final String message = this.notPassList.get(0).message();
+            throw new ValidRuntimeException(message);
+        }
+        return this;
     }
 
     public DefaultResult allList(List<IConstraintResult> allList) {

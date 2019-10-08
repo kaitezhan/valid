@@ -2,6 +2,7 @@ package com.github.houbb.valid.test;
 
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
+import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.core.model.ConstraintEntry;
@@ -84,6 +85,28 @@ public class ValidBsTest {
 
         Assert.assertEquals(1, result.notPassList().size());
         System.out.println(result);
+    }
+
+    /**
+     * 结果输出测试
+     * @since 0.0.6
+     */
+    @Test
+    public void resultPrintTest() {
+        ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint())
+                .result()
+                .print();
+    }
+
+    /**
+     * 结果抛出异常测试
+     * @since 0.0.6
+     */
+    @Test(expected = ValidRuntimeException.class)
+    public void resultThrowsExTest() {
+        ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint())
+                .result()
+                .throwsEx();
     }
 
 }
