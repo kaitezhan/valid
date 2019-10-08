@@ -3,10 +3,13 @@ package com.github.houbb.valid.core.model;
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 
+import java.util.Arrays;
+
 /**
  * 验证的明细信息
  * @author binbin.hou
  * @since 0.0.2
+ * @see ConstraintEntry 可以考虑继承这个类，暂时不做调整。
  */
 public class ValidEntry {
 
@@ -30,6 +33,18 @@ public class ValidEntry {
      * @since 0.0.4
      */
     private String message;
+
+    /**
+     * 约束分组信息
+     * @since 0.0.5
+     */
+    private Class[] group;
+
+    /**
+     * 命中的约束分组信息类
+     * @since 0.0.5
+     */
+    private Class matchGroup;
 
     public static ValidEntry newInstance() {
         return new ValidEntry();
@@ -71,13 +86,22 @@ public class ValidEntry {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "ValidEntry{" +
-                "value=" + value +
-                ", constraint=" + constraint +
-                ", condition=" + condition +
-                ", message='" + message + '\'' +
-                '}';
+    public Class[] group() {
+        return group;
     }
+
+    public ValidEntry group(Class[] group) {
+        this.group = group;
+        return this;
+    }
+
+    public Class matchGroup() {
+        return matchGroup;
+    }
+
+    public ValidEntry matchGroup(Class matchGroup) {
+        this.matchGroup = matchGroup;
+        return this;
+    }
+
 }

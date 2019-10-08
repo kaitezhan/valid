@@ -5,6 +5,8 @@ import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.api.constraint.Constraints;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.bs.ValidBs;
+import com.github.houbb.valid.core.model.ConstraintEntry;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -46,6 +48,41 @@ public class ValidBsTest {
                 .message("指定值必须满足约束链条件")
                 .result();
 
+        System.out.println(result);
+    }
+
+    /**
+     * 多个约束条件测试
+     * @since 0.0.5
+     */
+    @Test
+    public void multiConstraintTest() {
+        IResult result = ValidBs.newInstance()
+                .failType(FailTypeEnum.FAIL_OVER)
+                .on("12", ConstraintEntry.newInstance(Constraints.sizeConstraint(5, 10)),
+                        ConstraintEntry.newInstance(Constraints.sizeConstraint(10, 20)))
+                .result();
+
+        Assert.assertEquals(2, result.notPassList().size());
+        System.out.println(result);
+    }
+
+    /**
+     * 分组信息验证
+     * （1）指定验证的分组为 String.class，只会命中第一个约束条件。
+     */
+    @Test
+    public void groupTest() {
+        IResult result = ValidBs.newInstance()
+                .failType(FailTypeEnum.FAIL_OVER)
+                // 指定一个分组信息
+                .validGroup(String.class)
+                .on("12", ConstraintEntry.newInstance(Constraints.sizeConstraint(5, 10))
+                        .group(String.class),
+                        ConstraintEntry.newInstance(Constraints.sizeConstraint(10, 20)))
+                .result();
+
+        Assert.assertEquals(1, result.notPassList().size());
         System.out.println(result);
     }
 

@@ -37,6 +37,12 @@ public class DefaultConstraintContext implements IConstraintContext {
      */
     private Map<String, Object> attrMap = new ConcurrentHashMap<>();
 
+    /**
+     * 命中的分组信息
+     * @since 0.0.5
+     */
+    private Class matchGroup;
+
     public static DefaultConstraintContext newInstance() {
         return new DefaultConstraintContext();
     }
@@ -82,5 +88,13 @@ public class DefaultConstraintContext implements IConstraintContext {
         return this;
     }
 
+    @Override
+    public Class matchGroup() {
+        return matchGroup;
+    }
 
+    public DefaultConstraintContext matchGroup(Class matchGroup) {
+        this.matchGroup = matchGroup;
+        return this;
+    }
 }

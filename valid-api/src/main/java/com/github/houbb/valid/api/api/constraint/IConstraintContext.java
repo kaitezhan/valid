@@ -47,4 +47,11 @@ public interface IConstraintContext {
      */
     Object getAttr(final String key);
 
+    /**
+     * 获取匹配的分组信息
+     * @return 分组信息
+     * @since 0.0.5
+     */
+    Class matchGroup();
+
 }
