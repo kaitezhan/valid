@@ -9,7 +9,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
  * @since 0.0.3
  */
 @ThreadSafe
-class AbstractGreatThanConstraint<T extends Comparable> extends AbstractConstraint {
+public class AbstractGreatThanConstraint<T extends Comparable> extends AbstractConstraint {
 
     /**
      * 是否包含等于，默认为等于

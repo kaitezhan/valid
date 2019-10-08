@@ -11,8 +11,8 @@
 
     <modules>
         <module>valid-api</module>
-        <module>valid-annotation</module>
         <module>valid-core</module>
+        <module>valid-jsr</module>
         <module>valid-test</module>
     </modules>
 
@@ -51,13 +51,13 @@
 
             <dependency>
                 <groupId>com.github.houbb</groupId>
-                <artifactId>valid-annotation</artifactId>
+                <artifactId>valid-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.houbb</groupId>
-                <artifactId>valid-core</artifactId>
+                <artifactId>valid-jsr</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

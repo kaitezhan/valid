@@ -1,7 +1,5 @@
 package com.github.houbb.valid.core.constant;
 
-import com.github.houbb.heaven.util.lang.StringUtil;
-
 /**
  * 属性 key
  * @author binbin.hou

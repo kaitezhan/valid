@@ -2,10 +2,10 @@ package com.github.houbb.valid.test;
 
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
-import com.github.houbb.valid.core.api.constraint.Constraints;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.core.model.ConstraintEntry;
+import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class ValidBsTest {
 
     @Test
     public void simpleTest() {
-        IResult result = ValidBs.newInstance().on(null, Constraints.notNullConstraint()).result();
+        IResult result = ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint()).result();
         System.out.println(result);
     }
 
@@ -28,7 +28,7 @@ public class ValidBsTest {
     @Test
     public void messageTest() {
         IResult result = ValidBs.newInstance()
-                .on(null, Constraints.notNullConstraint())
+                .on(null, JsrConstraints.notNullConstraint())
                 .message("指定值必填")
                 .result();
 
@@ -43,8 +43,8 @@ public class ValidBsTest {
     public void chainTest() {
         IResult result = ValidBs.newInstance()
                 .failType(FailTypeEnum.FAIL_OVER)
-                .on("12", ConstraintChains.chain(Constraints.sizeConstraint(5, 10),
-                        Constraints.sizeConstraint(10, 20)))
+                .on("12", ConstraintChains.chain(JsrConstraints.sizeConstraint(5, 10),
+                        JsrConstraints.sizeConstraint(10, 20)))
                 .message("指定值必须满足约束链条件")
                 .result();
 
@@ -59,8 +59,8 @@ public class ValidBsTest {
     public void multiConstraintTest() {
         IResult result = ValidBs.newInstance()
                 .failType(FailTypeEnum.FAIL_OVER)
-                .on("12", ConstraintEntry.newInstance(Constraints.sizeConstraint(5, 10)),
-                        ConstraintEntry.newInstance(Constraints.sizeConstraint(10, 20)))
+                .on("12", ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(5, 10)),
+                        ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(10, 20)))
                 .result();
 
         Assert.assertEquals(2, result.notPassList().size());
@@ -77,9 +77,9 @@ public class ValidBsTest {
                 .failType(FailTypeEnum.FAIL_OVER)
                 // 指定一个分组信息
                 .validGroup(String.class)
-                .on("12", ConstraintEntry.newInstance(Constraints.sizeConstraint(5, 10))
+                .on("12", ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(5, 10))
                         .group(String.class),
-                        ConstraintEntry.newInstance(Constraints.sizeConstraint(10, 20)))
+                        ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(10, 20)))
                 .result();
 
         Assert.assertEquals(1, result.notPassList().size());

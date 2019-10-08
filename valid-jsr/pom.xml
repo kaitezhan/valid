@@ -9,27 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>valid-test</artifactId>
-    <description>The test module for valid.</description>
+    <artifactId>valid-jsr</artifactId>
+    <description>The jsr-303 module for valid framework.</description>
 
     <dependencies>
-        <!--============================== SELF ==============================-->
+        <!--============================== INTER ==============================-->
         <dependency>
-            <groupId>com.github.houbb</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>valid-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>valid-jsr</artifactId>
         </dependency>
 
         <!--============================== OTHER ==============================-->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>

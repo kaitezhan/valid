@@ -8,16 +8,24 @@ import com.github.houbb.valid.api.api.condition.ICondition;
  * @author binbin.hou
  * @since 0.0.3
  */
-public class Conditions {
+public final class Conditions {
+
+    private Conditions(){}
 
     /**
      * 永远为真
+     * @since 0.0.6
      */
-    public static final ICondition ALWAYS_TRUE = Instances.singleton(AlwaysTrueCondition.class);
+    public static ICondition alwaysTrue() {
+        return Instances.singleton(AlwaysTrueCondition.class);
+    }
 
     /**
      * 永远为假
+     * @since 0.0.6
      */
-    public static final ICondition ALWAYS_FALSE = Instances.singleton(AlwaysFalseCondition.class);
+    public static ICondition alwaysFalse() {
+        return Instances.singleton(AlwaysFalseCondition.class);
+    }
 
 }

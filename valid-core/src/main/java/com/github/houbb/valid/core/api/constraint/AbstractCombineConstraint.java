@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * @since 0.0.3
  */
 @ThreadSafe
-abstract class AbstractCombineConstraint extends AbstractConstraint {
+public abstract class AbstractCombineConstraint extends AbstractConstraint {
 
     /**
      * 获取对应的约束实现

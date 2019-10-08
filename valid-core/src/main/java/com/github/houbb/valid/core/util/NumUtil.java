@@ -2,7 +2,6 @@ package com.github.houbb.valid.core.util;
 
 import com.github.houbb.heaven.annotation.CommonEager;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
-import com.github.houbb.valid.api.exception.ValidRuntimeException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -68,8 +67,7 @@ public final class NumUtil {
             return bigDecimal.longValue();
         }
 
-        throw new ClassCastException("Class cast exception for parse long, only support type: "+
-                SupportClassTypeUtil.getDecimalMaxMinSupportClassList());
+        throw new ClassCastException("Class cast exception for parse long");
     }
 
 }
