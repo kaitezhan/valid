@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.i18n.I18N;
 
 /**
  * 抽象大于约束实现
@@ -61,9 +62,9 @@ public class AbstractGreatThanConstraint<T extends Comparable> extends AbstractC
     protected String expectValue(IConstraintContext context) {
         final String value = expect.toString();
         if(inclusive) {
-            return "great than or equals " + value;
+            return I18N.get(I18N.Key.GREAT_THAN_OR_EQUALS) + value;
         }
-        return "great than " + value;
+        return I18N.get(I18N.Key.GREAT_THAN) + value;
     }
 
 }

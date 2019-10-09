@@ -8,6 +8,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.core.api.constraint.result.DefaultConstraintResult;
+import com.github.houbb.valid.core.i18n.I18N;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -96,10 +97,10 @@ public abstract class AbstractConstraint<T> implements IConstraint {
 
         // 描述调整，
         if(StringUtil.isEmpty(exptecValue)) {
-            return String.format("Value <%s> is not expected.", actualValue);
+            return String.format(I18N.get(I18N.Key.MESSAGE_VALUE_NOT_EXPECTED), actualValue);
         }
 
-        return "Expect is <"+expectValue(context)+">, but actual is <"+actualValue(context)+">.";
+        return String.format(I18N.get(I18N.Key.MESSAGE_EXPECT_BUT_ACTUAL), exptecValue, actualValue);
     }
 
     /**
@@ -185,7 +186,8 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         final Class valueClass = value.getClass();
         boolean supportClassType = this.supportClassType(valueClass);
         if(!supportClassType) {
-            final String tips = String.format("Valid un-support class type <%s> for constraint: <%s>, supported class list: <%s>", valueClass, this.constraint(), this.getSupportClassList());
+            final String tips = String.format(I18N.get(I18N.Key.SUPPORT_CLASS_TYPE_TIPS),
+                    valueClass, this.constraint(), this.getSupportClassList());
             throw new ClassCastException(tips);
         }
     }

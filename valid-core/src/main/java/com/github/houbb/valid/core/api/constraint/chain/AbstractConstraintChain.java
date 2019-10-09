@@ -13,6 +13,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
+import com.github.houbb.valid.core.api.fail.context.DefaultFailContext;
 import com.github.houbb.valid.core.constant.ContextAttrKeyConst;
 
 import java.util.List;
@@ -53,6 +54,12 @@ abstract class AbstractConstraintChain extends AbstractConstraint {
         // 预期结果列表
         List<String> expectValueList = Guavas.newArrayList();
 
+        // 执行校验
+        List<IConstraintResult> constraintResultList = Guavas.newArrayList();
+        // 失败处理上下文
+        DefaultFailContext failContext = DefaultFailContext.newInstance();
+
+        //TODO: 这里的代码，和 validBs 中有些重复，后期优化掉。
         for(IConstraint constraint : constraintList) {
             // 失败模式
             IConstraintResult constraintResult = constraint.constraint(context);
@@ -60,11 +67,16 @@ abstract class AbstractConstraintChain extends AbstractConstraint {
             if(!constraintResult.pass()) {
                 expectValueList.add(constraintResult.expectValue());
                 passFlag = false;
-            }
-            // 快速失败模式
-            if(FailTypeEnum.FAIL_FAST.equals(context.fail())
-                && !constraintResult.pass()) {
-                break;
+
+                // 构建上下文
+                constraintResultList.add(constraintResult);
+                failContext.constraintResultList(constraintResultList).constraintResult(constraintResult);
+
+                // 执行判断
+                FailTypeEnum failTypeEnum = context.fail().fail(failContext);
+                if(FailTypeEnum.FAIL_FAST.equals(failTypeEnum)) {
+                    break;
+                }
             }
         }
 

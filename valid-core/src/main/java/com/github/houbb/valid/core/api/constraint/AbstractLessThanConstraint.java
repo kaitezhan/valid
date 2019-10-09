@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.core.i18n.I18N;
 
 /**
  * 抽象小于等于约束实现
@@ -56,9 +57,9 @@ public class AbstractLessThanConstraint<T extends Comparable> extends AbstractCo
         final String value = expect.toString();
 
         if(inclusive) {
-            return "less than or equals " + value;
+            return I18N.get(I18N.Key.LESS_THAN_OR_EQUALS) + value;
         }
-        return "less than " + value;
+        return I18N.get(I18N.Key.LESS_THAN) + value;
     }
 
 }

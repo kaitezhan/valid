@@ -14,6 +14,8 @@ import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Locale;
+
 /**
  * @author binbin.hou
  * @since 0.0.2
@@ -26,6 +28,21 @@ public class ValidBsTest {
      */
     @Test
     public void simpleTest() {
+        ValidBs.newInstance().on(null, new AbstractStrictConstraint() {
+            @Override
+            protected boolean pass(IConstraintContext context, Object value) {
+                return ObjectUtil.isNotNull(value);
+            }
+        }).result().print();
+    }
+
+    /**
+     * i18n 测试
+     * @since 0.0.8
+     */
+    @Test
+    public void i18nTest() {
+        Locale.setDefault(Locale.ENGLISH);
         ValidBs.newInstance().on(null, new AbstractStrictConstraint() {
             @Override
             protected boolean pass(IConstraintContext context, Object value) {
