@@ -4,6 +4,7 @@ import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
+import com.github.houbb.valid.core.api.fail.Fails;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.core.model.ConstraintEntry;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
@@ -43,7 +44,7 @@ public class ValidBsTest {
     @Test
     public void chainTest() {
         IResult result = ValidBs.newInstance()
-                .failType(FailTypeEnum.FAIL_OVER)
+                .fail(Fails.failOver())
                 .on("12", ConstraintChains.chain(JsrConstraints.sizeConstraint(5, 10),
                         JsrConstraints.sizeConstraint(10, 20)))
                 .message("指定值必须满足约束链条件")
@@ -59,7 +60,7 @@ public class ValidBsTest {
     @Test
     public void multiConstraintTest() {
         IResult result = ValidBs.newInstance()
-                .failType(FailTypeEnum.FAIL_OVER)
+                .fail(Fails.failOver())
                 .on("12", ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(5, 10)),
                         ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(10, 20)))
                 .result();
@@ -75,7 +76,7 @@ public class ValidBsTest {
     @Test
     public void groupTest() {
         IResult result = ValidBs.newInstance()
-                .failType(FailTypeEnum.FAIL_OVER)
+                .fail(Fails.failOver())
                 // 指定一个分组信息
                 .validGroup(String.class)
                 .on("12", ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(5, 10))

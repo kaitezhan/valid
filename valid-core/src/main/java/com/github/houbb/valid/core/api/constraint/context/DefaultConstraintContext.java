@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.constraint.context;
 
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
+import com.github.houbb.valid.api.api.fail.IFail;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 
 import java.util.Map;
@@ -26,22 +27,16 @@ public class DefaultConstraintContext implements IConstraintContext {
     private String message;
 
     /**
-     * 失败模式
-     * @since 0.0.4
+     * 失败处理实现
+     * @since 0.0.7
      */
-    private FailTypeEnum failType;
+    private IFail fail;
 
     /**
      * 属性 map
      * @since 0.0.4
      */
     private Map<String, Object> attrMap = new ConcurrentHashMap<>();
-
-    /**
-     * 命中的分组信息
-     * @since 0.0.5
-     */
-    private Class matchGroup;
 
     public static DefaultConstraintContext newInstance() {
         return new DefaultConstraintContext();
@@ -68,8 +63,13 @@ public class DefaultConstraintContext implements IConstraintContext {
     }
 
     @Override
-    public FailTypeEnum failType() {
-        return failType;
+    public IFail fail() {
+        return fail;
+    }
+
+    public DefaultConstraintContext fail(IFail fail) {
+        this.fail = fail;
+        return this;
     }
 
     @Override
@@ -83,18 +83,4 @@ public class DefaultConstraintContext implements IConstraintContext {
         return attrMap.get(key);
     }
 
-    public DefaultConstraintContext failType(FailTypeEnum failType) {
-        this.failType = failType;
-        return this;
-    }
-
-    @Override
-    public Class matchGroup() {
-        return matchGroup;
-    }
-
-    public DefaultConstraintContext matchGroup(Class matchGroup) {
-        this.matchGroup = matchGroup;
-        return this;
-    }
 }

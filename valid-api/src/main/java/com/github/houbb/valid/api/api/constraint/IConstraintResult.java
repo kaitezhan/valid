@@ -43,11 +43,4 @@ public interface IConstraintResult {
      */
     String expectValue();
 
-    /**
-     * 匹配的分组信息
-     * @since 0.0.5
-     * @return 匹配分组信息
-     */
-    Class matchGroup();
-
 }

@@ -9,6 +9,7 @@ public enum FailTypeEnum {
 
     /**
      * 快速失败
+     * 遇到失败之后，直接返回。
      */
     FAIL_FAST,
 

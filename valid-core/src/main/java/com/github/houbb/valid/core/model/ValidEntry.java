@@ -3,8 +3,6 @@ package com.github.houbb.valid.core.model;
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 
-import java.util.Arrays;
-
 /**
  * 验证的明细信息
  * @author binbin.hou
@@ -41,10 +39,10 @@ public class ValidEntry {
     private Class[] group;
 
     /**
-     * 命中的约束分组信息类
-     * @since 0.0.5
+     * 待验证约束分组信息
+     * @since 0.0.7
      */
-    private Class matchGroup;
+    private Class[] validGroup;
 
     public static ValidEntry newInstance() {
         return new ValidEntry();
@@ -95,13 +93,12 @@ public class ValidEntry {
         return this;
     }
 
-    public Class matchGroup() {
-        return matchGroup;
+    public Class[] validGroup() {
+        return validGroup;
     }
 
-    public ValidEntry matchGroup(Class matchGroup) {
-        this.matchGroup = matchGroup;
+    public ValidEntry validGroup(Class[] validGroup) {
+        this.validGroup = validGroup;
         return this;
     }
-
 }

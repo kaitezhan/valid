@@ -1,6 +1,6 @@
 package com.github.houbb.valid.api.api.constraint;
 
-import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
+import com.github.houbb.valid.api.api.fail.IFail;
 
 /**
  * 约束条件上下文接口
@@ -28,7 +28,7 @@ public interface IConstraintContext {
      * @return 失败模式
      * @since 0.0.4
      */
-    FailTypeEnum failType();
+    IFail fail();
 
     /**
      * 设置属性值
@@ -46,12 +46,5 @@ public interface IConstraintContext {
      * @since 0.0.4
      */
     Object getAttr(final String key);
-
-    /**
-     * 获取匹配的分组信息
-     * @return 分组信息
-     * @since 0.0.5
-     */
-    Class matchGroup();
 
 }

@@ -1,6 +1,6 @@
 package com.github.houbb.valid.core.api.constraint.chain;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.annotation.NotThreadSafe;
 import com.github.houbb.heaven.constant.PunctuationConst;
 import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.4
  */
-@ThreadSafe
+@NotThreadSafe
 abstract class AbstractConstraintChain extends AbstractConstraint {
 
     /**
@@ -62,7 +62,7 @@ abstract class AbstractConstraintChain extends AbstractConstraint {
                 passFlag = false;
             }
             // 快速失败模式
-            if(FailTypeEnum.FAIL_FAST.equals(context.failType())
+            if(FailTypeEnum.FAIL_FAST.equals(context.fail())
                 && !constraintResult.pass()) {
                 break;
             }

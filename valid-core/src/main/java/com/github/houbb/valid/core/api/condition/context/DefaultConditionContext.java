@@ -14,6 +14,18 @@ public class DefaultConditionContext implements IConditionContext {
      */
     private Object value;
 
+    /**
+     * 约束类分组信息
+     * @since 0.0.7
+     */
+    private Class[] group;
+
+    /**
+     * 期望验证的分组信息
+     * @since 0.0.7
+     */
+    private Class[] validGroup;
+
     public static DefaultConditionContext newInstance() {
         return new DefaultConditionContext();
     }
@@ -28,4 +40,23 @@ public class DefaultConditionContext implements IConditionContext {
         return this;
     }
 
+    @Override
+    public Class[] group() {
+        return group;
+    }
+
+    public DefaultConditionContext group(Class[] group) {
+        this.group = group;
+        return this;
+    }
+
+    @Override
+    public Class[] validGroup() {
+        return validGroup;
+    }
+
+    public DefaultConditionContext validGroup(Class[] validGroup) {
+        this.validGroup = validGroup;
+        return this;
+    }
 }

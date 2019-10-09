@@ -15,6 +15,7 @@ public final class Conditions {
     /**
      * 永远为真
      * @since 0.0.6
+     * @return 条件实现
      */
     public static ICondition alwaysTrue() {
         return Instances.singleton(AlwaysTrueCondition.class);
@@ -23,9 +24,19 @@ public final class Conditions {
     /**
      * 永远为假
      * @since 0.0.6
+     * @return 条件实现
      */
     public static ICondition alwaysFalse() {
         return Instances.singleton(AlwaysFalseCondition.class);
+    }
+
+    /**
+     * 分组条件
+     * @since 0.0.7
+     * @return 条件实现
+     */
+    public static ICondition groupCondition() {
+        return Instances.singleton(GroupCondition.class);
     }
 
 }

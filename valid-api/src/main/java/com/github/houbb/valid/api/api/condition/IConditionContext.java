@@ -14,4 +14,19 @@ public interface IConditionContext {
      */
     Object value();
 
+    /**
+     * 约束类分组信息
+     * @return 分组信息
+     * @since 0.0.7
+     */
+    Class[] group();
+
+    /**
+     * 期望验证的分组信息
+     * @return 分组信息
+     * @since 0.0.7
+     */
+    Class[] validGroup();
+
+
 }

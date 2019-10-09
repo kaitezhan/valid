@@ -44,12 +44,6 @@ public class DefaultConstraintResult implements IConstraintResult {
      */
     private String expectValue;
 
-    /**
-     * 匹配的分组信息
-     * @since 0.0.5
-     */
-    private Class matchGroup;
-
     public static DefaultConstraintResult newInstance() {
         return new DefaultConstraintResult();
     }
@@ -105,16 +99,6 @@ public class DefaultConstraintResult implements IConstraintResult {
     }
 
     @Override
-    public Class matchGroup() {
-        return matchGroup;
-    }
-
-    public DefaultConstraintResult matchGroup(Class matchGroup) {
-        this.matchGroup = matchGroup;
-        return this;
-    }
-
-    @Override
     public String toString() {
         return "DefaultConstraintResult{" +
                 "pass=" + pass +
@@ -122,7 +106,6 @@ public class DefaultConstraintResult implements IConstraintResult {
                 ", value=" + value +
                 ", constraint='" + constraint + '\'' +
                 ", expectValue='" + expectValue + '\'' +
-                ", matchGroup=" + matchGroup +
                 '}';
     }
 

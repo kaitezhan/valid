@@ -10,11 +10,17 @@ import com.github.houbb.valid.api.api.condition.IConditionContext;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
+import com.github.houbb.valid.api.api.fail.IFail;
+import com.github.houbb.valid.api.api.fail.IFailContext;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.api.result.IResultHandler;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
+import com.github.houbb.valid.core.api.condition.Conditions;
+import com.github.houbb.valid.core.api.condition.chain.ConditionChains;
 import com.github.houbb.valid.core.api.condition.context.DefaultConditionContext;
 import com.github.houbb.valid.core.api.constraint.context.DefaultConstraintContext;
+import com.github.houbb.valid.core.api.fail.Fails;
+import com.github.houbb.valid.core.api.fail.context.DefaultFailContext;
 import com.github.houbb.valid.core.api.result.ResultHandlers;
 import com.github.houbb.valid.core.model.ConstraintEntry;
 import com.github.houbb.valid.core.model.ValidEntry;
@@ -26,7 +32,7 @@ import java.util.List;
  * valid 引导类
  *
  * <pre>
- * ValidBs.failType()
+ * ValidBs.fail()
  *  .on(value, validator).when("XXX")
  *  .on(value, validator)
  *  .lang(XXX)  -- 默认使用当地，不存在则使用 EN
@@ -52,9 +58,9 @@ public final class ValidBs {
 
     /**
      * 失败模式
-     * @since 0.0.2
+     * @since 0.0.7
      */
-    private FailTypeEnum failType;
+    private IFail fail;
 
     /**
      * 待验证明细列表
@@ -73,34 +79,24 @@ public final class ValidBs {
     /**
      * 新建一个实例
      * @since 0.0.3
-     * @param failType 失败类型枚举
      * @return this
      */
-    public static ValidBs newInstance(final FailTypeEnum failType) {
+    public static ValidBs newInstance() {
         ValidBs validBs = new ValidBs();
         validBs.validEntryList = new ArrayList<>();
-        validBs.failType(failType);
+        validBs.fail = Fails.failFast();
         return validBs;
     }
 
     /**
-     * 新建一个实例
-     * @since 0.0.3
-     * @return this
-     */
-    public static ValidBs newInstance() {
-        return newInstance(FailTypeEnum.FAIL_FAST);
-    }
-
-    /**
      * 指定失败类型
-     * @param failType 失败类型枚举
+     * @param fail 失败类型实现
      * @return this
      * @since 0.0.3
      */
-    public ValidBs failType(FailTypeEnum failType) {
-        ArgUtil.notNull(failType, "failType");
-        this.failType = failType;
+    public ValidBs fail(final IFail fail) {
+        ArgUtil.notNull(fail, "fail");
+        this.fail = fail;
         return this;
     }
 
@@ -178,7 +174,8 @@ public final class ValidBs {
                 .constraint(constraint)
                 .message(message)
                 .condition(condition)
-                .group(group);
+                .group(group)
+                .validGroup(validGroup);
         this.validEntryList.add(validEntry);
 
         return this;
@@ -253,7 +250,7 @@ public final class ValidBs {
 
     /**
      * 对信息进行校验
-     * （1）结合 {@link #failType} 失败模式
+     * （1）结合 {@link #fail} 失败模式
      * @param resultHandler 结果处理方式
      * @return 结果
      * @since 0.0.2
@@ -265,22 +262,28 @@ public final class ValidBs {
         // 执行校验
         List<IConstraintResult> constraintResultList = Guavas.newArrayList();
 
-        for(ValidEntry validEntry : validEntryList) {
-            final Object value = validEntry.value();
+        // 失败处理上下文
+        DefaultFailContext failContext = DefaultFailContext.newInstance();
 
-            // 是否满足执行条件
+        for(ValidEntry validEntry : validEntryList) {
             if(conditionConstraint(validEntry)) {
                 // 构建约束上下文
-                // failType 对于 chain 也要保证语义的一致性。
-                IConstraintContext constraintContext = DefaultConstraintContext.newInstance().value(value)
-                        .message(validEntry.message()).failType(failType).matchGroup(validEntry.matchGroup());
+                // fail 对于 chain 也要保证语义的一致性。
+                IConstraintContext constraintContext = DefaultConstraintContext.newInstance()
+                        .value(validEntry.value())
+                        .message(validEntry.message())
+                        .fail(fail);
                 IConstraintResult constraintResult = validEntry.constraint().constraint(constraintContext);
                 constraintResultList.add(constraintResult);
 
-                // 根据失败模式返回
-                if(FailTypeEnum.FAIL_FAST.equals(this.failType)
-                    && !constraintResult.pass()) {
-                    break;
+                // 根据失败实现进行处理 @since0.0.7
+                if(!constraintResult.pass()) {
+                    failContext.constraintResult(constraintResult).constraintResultList(constraintResultList);
+                    FailTypeEnum failTypeEnum = this.fail.fail(failContext);
+
+                    if(FailTypeEnum.FAIL_FAST.equals(failTypeEnum)) {
+                        break;
+                    }
                 }
             }
         }
@@ -293,48 +296,24 @@ public final class ValidBs {
      * 符合指定条件的约束信息
      * （1）判断 condition
      * （2）判断 group 信息
-     *
-     * （3）设置符合的 group 信息到 context 中去。
      * @param validEntry 验证明细
      * @return 是否需要执行
      * @since 0.0.5
      */
     private boolean conditionConstraint(final ValidEntry validEntry) {
-        final Object value = validEntry.value();
-        ICondition condition = validEntry.condition();
-        final IConditionContext conditionContext = DefaultConditionContext.newInstance().value(value);
+        // 是否满足执行条件
+        DefaultConditionContext conditionContext = DefaultConditionContext
+                .newInstance()
+                .value(validEntry.value())
+                .group(validEntry.group())
+                .validGroup(validEntry.validGroup());
 
-        //1. 满足 condition
-        if(ObjectUtil.isNull(condition)
-                || condition.condition(conditionContext)) {
+        // 构建调用链
+        ICondition condition = ConditionChains.chain(Conditions.groupCondition(),
+                validEntry.condition());
 
-            // 2. 满足 group
-            // 2.1 未指定，直接认为满足
-            if(ArrayUtil.isEmpty(validGroup)) {
-                return true;
-            }
-
-            // 2.2 指定，则判断 group 是否满足
-            Class[] constraintGroup = validEntry.group();
-            // 2.2.1 约束 group 为空
-            if(ArrayUtil.isEmpty(constraintGroup)) {
-                return false;
-            }
-            // 2.2.2 遍历比较，如果有一个匹配，则直接返回 true
-            for(Class validClass : validGroup) {
-                //2.2.3 设置匹配的 group 到 context 中
-                for(Class constraintGroupClass : constraintGroup) {
-                    if(validClass == constraintGroupClass) {
-                        // 设置
-                        validEntry.matchGroup(validClass);
-
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        // 返回结果
+        return condition.condition(conditionContext);
     }
 
     /**

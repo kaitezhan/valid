@@ -12,10 +12,6 @@ java 开发中，参数校验是非常常见的需求。
 
 > [变更日志](doc/CHANGELOG.md)
 
-## v0.0.3 版本特性
-
-- 实现 JSR-303 所有约束注解对应 API 实现
-
 # 创作目的
 
 ## hibernate-validator 无法满足的场景
