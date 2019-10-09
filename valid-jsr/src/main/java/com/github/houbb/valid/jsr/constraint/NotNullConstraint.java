@@ -5,6 +5,7 @@ import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
+import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
 
 /**
  * 不可为 null 约束
@@ -12,7 +13,7 @@ import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
  * @since 0.0.2
  */
 @ThreadSafe
-class NotNullConstraint extends AbstractConstraint {
+class NotNullConstraint extends AbstractStrictConstraint {
 
     /**
      * 唯一实例
@@ -27,11 +28,6 @@ class NotNullConstraint extends AbstractConstraint {
      */
     static IConstraint getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    protected boolean isNullPass(Object value) {
-        return false;
     }
 
     @Override

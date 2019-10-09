@@ -37,7 +37,9 @@ public abstract class AbstractConstraint<T> implements IConstraint {
      * @return 预期值字符串描述
      * @since 0.0.3
      */
-    protected abstract String expectValue(final IConstraintContext context);
+    protected String expectValue(final IConstraintContext context) {
+        return StringUtil.EMPTY;
+    }
 
     /**
      * 确切的值
@@ -88,6 +90,15 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         if(StringUtil.isNotEmpty(defineMsg)) {
             return defineMsg;
         }
+
+        final String exptecValue = expectValue(context);
+        final String actualValue = actualValue(context);
+
+        // 描述调整，
+        if(StringUtil.isEmpty(exptecValue)) {
+            return String.format("Value <%s> is not expected.", actualValue);
+        }
+
         return "Expect is <"+expectValue(context)+">, but actual is <"+actualValue(context)+">.";
     }
 

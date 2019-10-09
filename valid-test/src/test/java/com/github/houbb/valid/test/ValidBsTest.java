@@ -1,8 +1,11 @@
 package com.github.houbb.valid.test;
 
+import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.api.exception.ValidRuntimeException;
+import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.api.fail.Fails;
 import com.github.houbb.valid.core.bs.ValidBs;
@@ -17,10 +20,18 @@ import org.junit.Test;
  */
 public class ValidBsTest {
 
+    /**
+     * 自定义非空判断实现
+     * @since 0.0.8
+     */
     @Test
     public void simpleTest() {
-        IResult result = ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint()).result();
-        System.out.println(result);
+        ValidBs.newInstance().on(null, new AbstractStrictConstraint() {
+            @Override
+            protected boolean pass(IConstraintContext context, Object value) {
+                return ObjectUtil.isNotNull(value);
+            }
+        }).result().print();
     }
 
     /**

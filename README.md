@@ -66,13 +66,17 @@ Maven 3.X+
 
 ```java
 public void simpleTest() {
-    IResult result = ValidBs.newInstance().on(null, Constraints.notNullConstraint()).result();
-    System.out.println(result);
+    ValidBs.newInstance().on(null, new AbstractStrictConstraint() {
+        @Override
+        protected boolean pass(IConstraintContext context, Object value) {
+            return ObjectUtil.isNotNull(value);
+        }
+    }).result().print();
 }
 ```
 
 - 日志信息
 
 ```
-DefaultResult{pass=false, notPassList=[DefaultConstraintResult{pass=false, message='Expect is <not null>, but actual is <null>.', value=null, constraint=NotNullConstraint}], allList=null}
+DefaultResult{pass=false, notPassList=[DefaultConstraintResult{pass=false, message='Value <null> is not expected.', value=null, constraint='', expectValue=''}], allList=null}
 ```
