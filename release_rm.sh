@@ -2,9 +2,9 @@
 echo "============================= RELEASE START..."
 
 ## 版本号信息(需要手动指定)
-oldVersion="0.0.2"
-newVersion="0.0.2"
-projectName="sensitive"
+oldVersion="0.0.8"
+newVersion="0.0.8"
+projectName="valid"
 
 # 删除分支
 oldBranchName="release_"${oldVersion}
