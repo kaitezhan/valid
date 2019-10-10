@@ -11,6 +11,7 @@ import com.github.houbb.valid.core.api.fail.Fails;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.core.model.ConstraintEntry;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
+import com.github.houbb.valid.test.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -136,6 +137,22 @@ public class ValidBsTest {
         ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint())
                 .result()
                 .throwsEx();
+    }
+
+    /**
+     * 对象验证测试
+     * @since 0.0.9
+     */
+    @Test
+    public void beanValidTest() {
+//        Locale.setDefault(Locale.ENGLISH);
+        User user = new User();
+        user.sex("what").password("old").password2("new");
+
+        ValidBs.newInstance()
+                .on(user)
+                .result()
+                .print();
     }
 
 }

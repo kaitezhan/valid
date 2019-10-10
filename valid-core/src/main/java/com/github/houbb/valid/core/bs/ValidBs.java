@@ -3,15 +3,12 @@ package com.github.houbb.valid.core.bs;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
-import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.valid.api.api.condition.ICondition;
-import com.github.houbb.valid.api.api.condition.IConditionContext;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.fail.IFail;
-import com.github.houbb.valid.api.api.fail.IFailContext;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.api.result.IResultHandler;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
@@ -111,6 +108,28 @@ public final class ValidBs {
         ArgUtil.notEmpty(validGroup, "validGroup");
 
         this.validGroup = validGroup;
+        return this;
+    }
+
+    /**
+     * 指定验证的对象
+     * （1）如果为 null，则认为校验通过
+     * （2）直接对改对象的字段进行相应处理。
+     *
+     * 暂时忽略所有的 {@link #when(ICondition)} {@link #message(String)} {@link #group(Class[])}
+     * 后期可以调整为对所有的验证属性都应用这些属性，但是用途不大。不建议使用。
+     * @param value 对象信息
+     * @return this
+     * @since 0.0.9
+     */
+    public ValidBs on(final Object value) {
+        if(ObjectUtil.isNull(value)) {
+            return this;
+        }
+
+        List<ValidEntry> beanList = ValidEntryBs.newInstance(this.validGroup).buildValidEntryList(value);
+        this.validEntryList.addAll(beanList);
+
         return this;
     }
 
@@ -270,9 +289,12 @@ public final class ValidBs {
                 // 构建约束上下文
                 // fail 对于 chain 也要保证语义的一致性。
                 IConstraintContext constraintContext = DefaultConstraintContext.newInstance()
+                        .fail(fail)
                         .value(validEntry.value())
                         .message(validEntry.message())
-                        .fail(fail);
+                        .instance(validEntry.instance())
+                        .fieldList(validEntry.fieldList())
+                        ;
                 IConstraintResult constraintResult = validEntry.constraint().constraint(constraintContext);
                 constraintResultList.add(constraintResult);
 

@@ -4,10 +4,12 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.util.Optional;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.core.api.constraint.result.DefaultConstraintResult;
+import com.github.houbb.valid.core.constant.ConstraintConst;
 import com.github.houbb.valid.core.i18n.I18N;
 
 import java.lang.reflect.Array;
@@ -92,15 +94,21 @@ public abstract class AbstractConstraint<T> implements IConstraint {
             return defineMsg;
         }
 
-        final String exptecValue = expectValue(context);
+        // 获取默认内置注解的 i18n 消息
+        Optional<String> i18nMsg = ConstraintConst.getMessageI18n(this.getClass());
+        if(i18nMsg.isPresent()) {
+            return i18nMsg.get();
+        }
+
+        final String expectValue = expectValue(context);
         final String actualValue = actualValue(context);
 
         // 描述调整，
-        if(StringUtil.isEmpty(exptecValue)) {
+        if(StringUtil.isEmpty(expectValue)) {
             return String.format(I18N.get(I18N.Key.MESSAGE_VALUE_NOT_EXPECTED), actualValue);
         }
 
-        return String.format(I18N.get(I18N.Key.MESSAGE_EXPECT_BUT_ACTUAL), exptecValue, actualValue);
+        return String.format(I18N.get(I18N.Key.MESSAGE_EXPECT_BUT_ACTUAL), expectValue, actualValue);
     }
 
     /**

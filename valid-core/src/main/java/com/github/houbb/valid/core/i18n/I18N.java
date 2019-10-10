@@ -19,6 +19,8 @@ import java.util.ResourceBundle;
  */
 public final class I18N {
 
+    private I18N(){}
+
     /**
      * 默认的配置文件
      */
@@ -39,6 +41,11 @@ public final class I18N {
      * 固定的键值标识
      */
     public static class Key {
+
+        /**
+         * @since 0.0.9
+         */
+        private Key(){}
 
         /**
          * 消息-值不是预期值

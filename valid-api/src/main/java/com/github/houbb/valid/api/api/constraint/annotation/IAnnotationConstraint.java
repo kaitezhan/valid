@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 
 /**
  * 注解约束规则接口
+ * 注意：所有的实现类都需要提供无参构造函数。
  * @author binbin.hou
  * @since 0.0.9
  */

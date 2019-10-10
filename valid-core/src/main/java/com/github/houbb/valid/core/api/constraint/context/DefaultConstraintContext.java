@@ -46,7 +46,7 @@ public class DefaultConstraintContext implements IConstraintContext {
      * 所有的字段列表信息
      * @since 0.0.9
      */
-    private List<Field> allFieldList;
+    private List<Field> fieldList;
 
     /**
      * 当前对应的对象实例信息
@@ -101,23 +101,23 @@ public class DefaultConstraintContext implements IConstraintContext {
 
     /**
      * 设置字段列表信息
-     * @param allFieldList 所有字段列表信息
+     * @param fieldList 所有字段列表信息
      * @return this
      * @since 0.0.9
      */
-    public DefaultConstraintContext allFieldList(List<Field> allFieldList) {
-        this.allFieldList = allFieldList;
+    public DefaultConstraintContext fieldList(List<Field> fieldList) {
+        this.fieldList = fieldList;
         return this;
     }
 
     @Override
     public Object getFieldValue(String fieldName) {
-        if(CollectionUtil.isEmpty(allFieldList)
+        if(CollectionUtil.isEmpty(fieldList)
             || ObjectUtil.isNull(instance)) {
             return null;
         }
 
-        for(Field field : allFieldList) {
+        for(Field field : fieldList) {
             if(field.getName().equals(fieldName)) {
                 return ReflectFieldUtil.getValue(field, instance);
             }

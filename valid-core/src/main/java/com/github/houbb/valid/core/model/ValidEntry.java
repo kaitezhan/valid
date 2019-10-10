@@ -1,7 +1,11 @@
 package com.github.houbb.valid.core.model;
 
+import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * 验证的明细信息
@@ -43,6 +47,18 @@ public class ValidEntry {
      * @since 0.0.7
      */
     private Class[] validGroup;
+
+    /**
+     * 对象实例
+     * @since 0.0.9
+     */
+    private Object instance;
+
+    /**
+     * 全部字段列表
+     * @since 0.0.9
+     */
+    private List<Field> fieldList;
 
     public static ValidEntry newInstance() {
         return new ValidEntry();
@@ -99,6 +115,24 @@ public class ValidEntry {
 
     public ValidEntry validGroup(Class[] validGroup) {
         this.validGroup = validGroup;
+        return this;
+    }
+
+    public Object instance() {
+        return instance;
+    }
+
+    public ValidEntry instance(Object instance) {
+        this.instance = instance;
+        return this;
+    }
+
+    public List<Field> fieldList() {
+        return fieldList;
+    }
+
+    public ValidEntry fieldList(List<Field> fieldList) {
+        this.fieldList = fieldList;
         return this;
     }
 }
