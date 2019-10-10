@@ -4,7 +4,6 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
-import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
 import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
 
 /**

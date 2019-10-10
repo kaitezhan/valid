@@ -1,18 +1,24 @@
 package com.github.houbb.valid.core.bs;
 
+import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
 import com.github.houbb.heaven.util.lang.reflect.ReflectAnnotationUtil;
 import com.github.houbb.heaven.util.lang.reflect.ReflectFieldUtil;
+import com.github.houbb.heaven.util.util.ArrayPrimitiveUtil;
+import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.Optional;
 import com.github.houbb.valid.api.annotation.constraint.Constraint;
 import com.github.houbb.valid.api.api.constraint.annotation.IAnnotationConstraint;
 import com.github.houbb.valid.core.constant.AnnotationConst;
 import com.github.houbb.valid.core.model.ValidEntry;
 
+import javax.validation.Valid;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,9 +53,17 @@ class ValidEntryBs {
             return Collections.emptyList();
         }
 
-        List<ValidEntry> validEntryList = Guavas.newArrayList();
+        final Class clazz = object.getClass();
+        // 不处理的类型
+        if(ClassTypeUtil.isMap(clazz)
+            || ClassTypeUtil.isAbstractOrInterface(clazz)
+            || ClassTypeUtil.isPrimitive(clazz)
+            || ClassTypeUtil.isJavaBean(clazz)) {
+            return Collections.emptyList();
+        }
 
-        List<Field> fieldList = ClassUtil.getAllFieldList(object.getClass());
+        List<ValidEntry> validEntryList = Guavas.newArrayList();
+        List<Field> fieldList = ClassUtil.getAllFieldList(clazz);
         for(Field field : fieldList) {
             List<ValidEntry> fieldValidEntry = buildValidEntryList(fieldList, field, object);
             validEntryList.addAll(fieldValidEntry);
@@ -72,7 +86,7 @@ class ValidEntryBs {
     private List<ValidEntry> buildValidEntryList(final List<Field> fieldList,
                                                         final Field field,
                                                         final Object instance) {
-        List<ValidEntry> validEntryList = Guavas.newArrayList();
+        final List<ValidEntry> validEntryList = Guavas.newArrayList();
 
         Annotation[] annotations = field.getAnnotations();
 
@@ -98,7 +112,33 @@ class ValidEntryBs {
 
             validEntryList.add(validEntry);
 
-            // TODO: 是否需要进行明细验证
+            Valid valid = field.getAnnotation(Valid.class);
+            if(ObjectUtil.isNotNull(valid)
+                && ObjectUtil.isNotNull(fieldValue)) {
+                final Class fieldClazz = field.getType();
+                // 判断是否为集合
+                if(ClassTypeUtil.isCollection(fieldClazz)) {
+                    Collection collection = (Collection)fieldValue;
+                    for(Object entry : collection) {
+                        List<ValidEntry> entryList = this.buildValidEntryList(entry);
+                        validEntryList.addAll(entryList);
+                    }
+                } else if(ClassTypeUtil.isArray(fieldClazz)) {
+                    // 是否为数组
+                    ArrayUtil.toList(fieldValue, new IHandler() {
+                        @Override
+                        public Object handle(Object o) {
+                            List<ValidEntry> entryList = buildValidEntryList(o);
+                            validEntryList.addAll(entryList);
+                            return o;
+                        }
+                    });
+                } else {
+                    // 其他场景
+                    List<ValidEntry> entryList = buildValidEntryList(fieldValue);
+                    validEntryList.addAll(entryList);
+                }
+            }
         }
         return validEntryList;
     }
