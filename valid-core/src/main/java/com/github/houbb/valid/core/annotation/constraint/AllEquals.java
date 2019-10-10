@@ -3,30 +3,31 @@
  * valid All rights reserved.
  */
 
-package com.github.houbb.valid.api.annotation.constraint;
+package com.github.houbb.valid.core.annotation.constraint;
 
 import java.lang.annotation.*;
 
 /**
- * <p> 范围判断 </p>
+ * <p> 指定的字段和当前字段全部相等 </p>
  *
  * <pre> Created: 2019/1/7 9:49 PM  </pre>
  * <pre> Project: valid  </pre>
  *
  * @author houbinbin
- * @since 0.0.1
+ * @since 0.0.9
  */
 @Inherited
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Ranges {
+public @interface AllEquals {
 
     /**
-     * 当前字段必须在指定的范围内
+     * 当前字段及其指定的字段 全部相等
+     * 1. 字段类型及其他字段相同
      * @return 指定的字段列表
      */
-    String[] value() default {};
+    String[] value();
 
     /**
      * 提示消息

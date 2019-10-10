@@ -3,7 +3,7 @@
  * valid All rights reserved.
  */
 
-package com.github.houbb.valid.api.annotation.constraint;
+package com.github.houbb.valid.core.annotation.constraint;
 
 import java.lang.annotation.*;
 
@@ -14,7 +14,7 @@ import java.lang.annotation.*;
  * <pre> Project: valid  </pre>
  *
  * @author houbinbin
- * @since 0.0.6
+ * @since 0.0.9
  */
 @Inherited
 @Documented
@@ -26,7 +26,7 @@ public @interface EnumRanges {
      * 当前字段必须在枚举值指定的范围内
      * @return 指定的字段列表
      */
-    Class<? extends Enum> value();
+    Class<Enum> value();
 
     /**
      * 提示消息

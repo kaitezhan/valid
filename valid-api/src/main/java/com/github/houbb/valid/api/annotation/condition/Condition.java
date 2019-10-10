@@ -6,28 +6,20 @@ import com.github.houbb.valid.api.api.condition.ICondition;
 import java.lang.annotation.*;
 
 /**
- * 约束注解生效的条件
- * （1）不添加当前注解，则默认当前字段所有的约束都是要生效的。
- *
+ * 指定注解生效的条件的元注解
  * @author binbin.hou
- * @since 0.0.1
+ * @since 0.0.9
  */
 @Inherited
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Condition {
 
     /**
-     * 生效条件
+     * 生效条件实现类
      * @return 对应的 class 实现
      */
-    Class<? extends ICondition> condition();
-
-    /**
-     * 约束注解的关联注解类
-     * @return 对应的注解类列表
-     */
-    Class<? extends Annotation>[] constrains() default {};
+    Class<? extends ICondition> value();
 
 }

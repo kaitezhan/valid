@@ -3,7 +3,7 @@
  * valid All rights reserved.
  */
 
-package com.github.houbb.valid.api.annotation.constraint;
+package com.github.houbb.valid.core.annotation.constraint;
 
 import java.lang.annotation.*;
 
@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AtLeastOneNotNull {
+public @interface HasNotNull {
 
     /**
      * 当前字段及其指定的字段 至少有一个不为 null
