@@ -97,7 +97,7 @@ abstract class AbstractConstraintChain extends AbstractConstraint {
     }
 
     @Override
-    protected String constraint() {
+    protected String constraintName() {
         if(CollectionUtil.isEmpty(constraintList)) {
             return AbstractConstraintChain.class.getSimpleName();
         }

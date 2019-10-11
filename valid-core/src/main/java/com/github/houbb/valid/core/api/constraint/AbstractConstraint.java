@@ -75,7 +75,7 @@ public abstract class AbstractConstraint<T> implements IConstraint {
      * @return 约束实现名称
      * @since 0.0.3
      */
-    protected String constraint() {
+    protected String constraintName() {
         // 获取当前实现类的名称
         return this.getClass().getSimpleName();
     }
@@ -142,7 +142,7 @@ public abstract class AbstractConstraint<T> implements IConstraint {
             result.pass(false).message(message);
         }
 
-        final String constraint = constraint();
+        final String constraint = constraintName();
         result.value(value).constraint(constraint);
         // 如果未通过校验，则添加预期值
         if(!result.pass()) {
@@ -195,7 +195,7 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         boolean supportClassType = this.supportClassType(valueClass);
         if(!supportClassType) {
             final String tips = String.format(I18N.get(I18N.Key.SUPPORT_CLASS_TYPE_TIPS),
-                    valueClass, this.constraint(), this.getSupportClassList());
+                    valueClass, this.constraintName(), this.getSupportClassList());
             throw new ClassCastException(tips);
         }
     }
