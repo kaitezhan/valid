@@ -1,6 +1,5 @@
 package com.github.houbb.valid.core.model;
 
-import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 
