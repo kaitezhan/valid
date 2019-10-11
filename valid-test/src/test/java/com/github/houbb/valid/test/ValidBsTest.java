@@ -4,14 +4,13 @@ import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
+import com.github.houbb.valid.api.api.validator.IValidatorEntry;
 import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.api.fail.Fails;
-import com.github.houbb.valid.core.api.validator.entry.ValidatorEntrys;
+import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
-import com.github.houbb.valid.core.model.ConstraintEntry;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import com.github.houbb.valid.test.model.User;
 import org.junit.Assert;
@@ -26,20 +25,32 @@ import java.util.Locale;
 public class ValidBsTest {
 
     /**
-     * 自定义非空判断实现
-     * @since 0.0.8
+     * 自定义非空约束
+     * @since 0.1.0
+     * @return 约束实现
      */
-    @Test
-    public void simpleTest() {
+    private IValidatorEntry notNullValidatorEntry() {
         final IConstraint constraint = new AbstractStrictConstraint() {
             @Override
             protected boolean pass(IConstraintContext context, Object value) {
                 return ObjectUtil.isNotNull(value);
             }
         };
+        return ValidatorEntryFactory.of(constraint);
+    }
 
-        ValidBs.on(null, ValidatorEntrys.validatorEntry(constraint))
-                .valid().result().print();
+    /**
+     * 自定义非空判断实现
+     * @since 0.0.8
+     */
+    @Test
+    public void simpleTest() {
+        ValidBs.on(null, new AbstractStrictConstraint() {
+            @Override
+            protected boolean pass(IConstraintContext context, Object value) {
+                return ObjectUtil.isNotNull(value);
+            }
+        }).valid().result().print();
     }
 
     /**
@@ -49,12 +60,9 @@ public class ValidBsTest {
     @Test
     public void i18nTest() {
         Locale.setDefault(Locale.ENGLISH);
-        ValidBs.newInstance().on(null, new AbstractStrictConstraint() {
-            @Override
-            protected boolean pass(IConstraintContext context, Object value) {
-                return ObjectUtil.isNotNull(value);
-            }
-        }).result().print();
+        ValidBs.on(null, notNullValidatorEntry())
+                .valid()
+                .result().print();
     }
 
     /**
@@ -63,12 +71,12 @@ public class ValidBsTest {
      */
     @Test
     public void messageTest() {
-        IResult result = ValidBs.newInstance()
-                .on(null, JsrConstraints.notNullConstraint())
-                .message("指定值必填")
-                .result();
+        final IValidatorEntry of = notNullValidatorEntry()
+                .message("指定值不能为空");
 
-        System.out.println(result);
+        ValidBs.on(null, of)
+                .valid()
+                .result().print();
     }
 
     /**
@@ -77,14 +85,13 @@ public class ValidBsTest {
      */
     @Test
     public void chainTest() {
-        IResult result = ValidBs.newInstance()
-                .fail(Fails.failOver())
-                .on("12", ConstraintChains.chain(JsrConstraints.sizeConstraint(5, 10),
-                        JsrConstraints.sizeConstraint(10, 20)))
-                .message("指定值必须满足约束链条件")
-                .result();
+        final IConstraint constraintChain = ConstraintChains.chain(JsrConstraints.sizeConstraint(5, 10),
+                JsrConstraints.sizeConstraint(10, 20));
 
-        System.out.println(result);
+        ValidBs.on("12", ValidatorEntryFactory.of(constraintChain))
+                .fail(Fails.failOver())
+                .result()
+                .print();
     }
 
     /**
@@ -93,14 +100,15 @@ public class ValidBsTest {
      */
     @Test
     public void multiConstraintTest() {
-        IResult result = ValidBs.newInstance()
+        IResult result = ValidBs
+                .on("12", ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(5, 10)),
+                        ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(10, 20)))
                 .fail(Fails.failOver())
-                .on("12", ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(5, 10)),
-                        ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(10, 20)))
+                .valid()
                 .result();
 
         Assert.assertEquals(2, result.notPassList().size());
-        System.out.println(result);
+        result.print();
     }
 
     /**
@@ -109,28 +117,18 @@ public class ValidBsTest {
      */
     @Test
     public void groupTest() {
-        IResult result = ValidBs.newInstance()
+        final IValidatorEntry of = ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(5, 10))
+                .group(String.class);
+        IResult result = ValidBs
+                .on("12", of)
                 .fail(Fails.failOver())
                 // 指定一个分组信息
-                .validGroup(String.class)
-                .on("12", ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(5, 10))
-                        .group(String.class),
-                        ConstraintEntry.newInstance(JsrConstraints.sizeConstraint(10, 20)))
-                .result();
-
-        Assert.assertEquals(1, result.notPassList().size());
-        System.out.println(result);
-    }
-
-    /**
-     * 结果输出测试
-     * @since 0.0.6
-     */
-    @Test
-    public void resultPrintTest() {
-        ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint())
+                .group(String.class)
+                .valid()
                 .result()
                 .print();
+
+        Assert.assertEquals(1, result.notPassList().size());
     }
 
     /**
@@ -139,7 +137,8 @@ public class ValidBsTest {
      */
     @Test(expected = ValidRuntimeException.class)
     public void resultThrowsExTest() {
-        ValidBs.newInstance().on(null, JsrConstraints.notNullConstraint())
+        ValidBs.on(null, notNullValidatorEntry())
+                .valid()
                 .result()
                 .throwsEx();
     }
@@ -150,12 +149,10 @@ public class ValidBsTest {
      */
     @Test
     public void beanValidTest() {
-//        Locale.setDefault(Locale.ENGLISH);
         User user = new User();
         user.sex("what").password("old").password2("new");
 
-        ValidBs.newInstance()
-                .on(user)
+        ValidBs.on(user)
                 .result()
                 .print();
     }

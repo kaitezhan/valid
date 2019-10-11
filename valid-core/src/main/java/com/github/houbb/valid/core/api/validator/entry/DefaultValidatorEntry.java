@@ -89,6 +89,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return message;
     }
 
+    @Override
     public DefaultValidatorEntry message(String message) {
         this.message = message;
         return this;
@@ -99,7 +100,8 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return group;
     }
 
-    public DefaultValidatorEntry group(Class[] group) {
+    @Override
+    public DefaultValidatorEntry group(Class... group) {
         this.group = group;
         return this;
     }

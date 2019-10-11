@@ -1,6 +1,7 @@
 package com.github.houbb.valid.test.jsr.constraint;
 
 import com.github.houbb.valid.api.api.result.IResult;
+import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
@@ -14,7 +15,7 @@ public class NullConstraintTest {
 
     @Test
     public void nullPassTest() {
-        IResult result = ValidBs.newInstance().on(null, JsrConstraints.nullConstraint())
+        IResult result = ValidBs.on(null, ValidatorEntryFactory.of(JsrConstraints.nullConstraint()))
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -22,7 +23,8 @@ public class NullConstraintTest {
 
     @Test
     public void nullNotPassTest() {
-        IResult result = ValidBs.newInstance().on("", JsrConstraints.nullConstraint())
+        IResult result = ValidBs.on("", ValidatorEntryFactory.of(JsrConstraints.nullConstraint()))
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);

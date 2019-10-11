@@ -18,7 +18,7 @@ public class FutureConstraintTest {
     @Test
     public void passTest() {
         Date testDate = DateUtil.getFormatDate("90120101", DateUtil.PURE_DATE_FORMAT);
-        IResult result = ValidBs.newInstance().on(testDate, JsrConstraints.futureConstraint())
+        IResult result = ValidBs.on(testDate, JsrConstraints.futureConstraint())
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -27,7 +27,7 @@ public class FutureConstraintTest {
     @Test
     public void passInclusiveTest() {
         Date testDate = DateUtil.getFormatDate("90120101", DateUtil.PURE_DATE_FORMAT);
-        IResult result = ValidBs.newInstance().on(testDate, JsrConstraints.futureConstraint(new Date()))
+        IResult result = ValidBs.on(testDate, JsrConstraints.futureConstraint(new Date()))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -35,7 +35,7 @@ public class FutureConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.newInstance().on(null, JsrConstraints.futureConstraint(new Date()))
+        IResult result = ValidBs.on(null, JsrConstraints.futureConstraint(new Date()))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -44,7 +44,8 @@ public class FutureConstraintTest {
     @Test
     public void notPassTest() {
         Date testDate = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);
-        IResult result = ValidBs.newInstance().on(testDate, JsrConstraints.futureConstraint(new Date()))
+        IResult result = ValidBs.on(testDate, JsrConstraints.futureConstraint(new Date()))
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);
@@ -56,7 +57,8 @@ public class FutureConstraintTest {
      */
     @Test(expected = ClassCastException.class)
     public void unSupportClassTypeTest() {
-        IResult result = ValidBs.newInstance().on(123, JsrConstraints.futureConstraint())
+        IResult result = ValidBs.on(123, JsrConstraints.futureConstraint())
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);

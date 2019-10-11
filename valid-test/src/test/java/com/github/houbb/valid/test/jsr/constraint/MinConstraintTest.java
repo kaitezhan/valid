@@ -1,6 +1,7 @@
 package com.github.houbb.valid.test.jsr.constraint;
 
 import com.github.houbb.valid.api.api.result.IResult;
+import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
@@ -14,7 +15,7 @@ public class MinConstraintTest {
 
     @Test
     public void passTest() {
-        IResult result = ValidBs.newInstance().on(101, JsrConstraints.minConstraint(100))
+        IResult result = ValidBs.on(101, ValidatorEntryFactory.of(JsrConstraints.minConstraint(100)))
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -22,7 +23,7 @@ public class MinConstraintTest {
 
     @Test
     public void passInclusiveTest() {
-        IResult result = ValidBs.newInstance().on(100, JsrConstraints.minConstraint(true, 100))
+        IResult result = ValidBs.on(100, ValidatorEntryFactory.of(JsrConstraints.minConstraint(true, 100)))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -30,7 +31,7 @@ public class MinConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.newInstance().on(null, JsrConstraints.minConstraint(100))
+        IResult result = ValidBs.on(null, ValidatorEntryFactory.of(JsrConstraints.minConstraint(100)))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -38,7 +39,8 @@ public class MinConstraintTest {
 
     @Test
     public void notPassTest() {
-        IResult result = ValidBs.newInstance().on(99, JsrConstraints.minConstraint(100))
+        IResult result = ValidBs.on(99, ValidatorEntryFactory.of(JsrConstraints.minConstraint(100)))
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);
@@ -49,7 +51,8 @@ public class MinConstraintTest {
      */
     @Test(expected = ClassCastException.class)
     public void classCastException() {
-        IResult result = ValidBs.newInstance().on(123.34f, JsrConstraints.minConstraint(100))
+        IResult result = ValidBs.on(123.34f, JsrConstraints.minConstraint(100))
+                .valid()
                 .result();
         System.out.println(result);
     }

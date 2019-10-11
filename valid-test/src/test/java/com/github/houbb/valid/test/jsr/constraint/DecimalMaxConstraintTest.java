@@ -14,7 +14,7 @@ public class DecimalMaxConstraintTest {
 
     @Test
     public void passTest() {
-        IResult result = ValidBs.newInstance().on(99, JsrConstraints.decimalMaxConstraint("100"))
+        IResult result = ValidBs.on(99, JsrConstraints.decimalMaxConstraint("100"))
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -22,7 +22,7 @@ public class DecimalMaxConstraintTest {
 
     @Test
     public void passInclusiveTest() {
-        IResult result = ValidBs.newInstance().on(100, JsrConstraints.decimalMaxConstraint(true, "100"))
+        IResult result = ValidBs.on(100, JsrConstraints.decimalMaxConstraint(true, "100"))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -30,7 +30,7 @@ public class DecimalMaxConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.newInstance().on(null, JsrConstraints.decimalMaxConstraint("100"))
+        IResult result = ValidBs.on(null, JsrConstraints.decimalMaxConstraint("100"))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -38,7 +38,8 @@ public class DecimalMaxConstraintTest {
 
     @Test
     public void notPassTest() {
-        IResult result = ValidBs.newInstance().on(101, JsrConstraints.decimalMaxConstraint("100"))
+        IResult result = ValidBs.on(101, JsrConstraints.decimalMaxConstraint("100"))
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);
@@ -46,7 +47,8 @@ public class DecimalMaxConstraintTest {
 
     @Test
     public void notPassNotInclusiveTest() {
-        IResult result = ValidBs.newInstance().on(100, JsrConstraints.decimalMaxConstraint(false,"100"))
+        IResult result = ValidBs.on(100, JsrConstraints.decimalMaxConstraint(false,"100"))
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);
@@ -57,7 +59,8 @@ public class DecimalMaxConstraintTest {
      */
     @Test(expected = ClassCastException.class)
     public void classCastException() {
-        IResult result = ValidBs.newInstance().on(123.34f, JsrConstraints.decimalMaxConstraint("100"))
+        IResult result = ValidBs.on(123.34f, JsrConstraints.decimalMaxConstraint("100"))
+                .valid()
                 .result();
         System.out.println(result);
     }

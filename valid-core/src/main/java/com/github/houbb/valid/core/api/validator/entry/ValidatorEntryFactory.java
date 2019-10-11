@@ -10,9 +10,9 @@ import com.github.houbb.valid.api.api.validator.IValidatorEntry;
  * @author binbin.hou
  * @since 0.1.0
  */
-public final class ValidatorEntrys {
+public final class ValidatorEntryFactory {
 
-    private ValidatorEntrys(){}
+    private ValidatorEntryFactory(){}
 
     /**
      * 指定校验的条件等相关信息
@@ -20,8 +20,8 @@ public final class ValidatorEntrys {
      * @since 0.1.0
      * @return 验证明细信息
      */
-    public static IValidatorEntry validatorEntry(final IConstraint constraint) {
-        return validatorEntry(constraint, null);
+    public static IValidatorEntry of(final IConstraint constraint) {
+        return of(constraint, null);
     }
 
     /**
@@ -31,9 +31,9 @@ public final class ValidatorEntrys {
      * @since 0.1.0
      * @return 验证明细信息
      */
-    public static IValidatorEntry validatorEntry(final IConstraint constraint,
+    public static IValidatorEntry of(final IConstraint constraint,
                                                  final String message) {
-        return validatorEntry(constraint, message, null);
+        return of(constraint, message, null);
     }
 
     /**
@@ -44,9 +44,9 @@ public final class ValidatorEntrys {
      * @since 0.1.0
      * @return 验证明细信息
      */
-    public static IValidatorEntry validatorEntry(final IConstraint constraint,
+    public static IValidatorEntry of(final IConstraint constraint,
                                           final String message, final ICondition condition) {
-        return validatorEntry(constraint, message, condition, null);
+        return of(constraint, message, condition, null);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class ValidatorEntrys {
      * @since 0.1.0
      * @return 验证明细信息
      */
-    public static IValidatorEntry validatorEntry(final IConstraint constraint,
+    public static IValidatorEntry of(final IConstraint constraint,
                               final String message, final ICondition condition,
                               final Class[] group) {
         ArgUtil.notNull(constraint, "constraint");

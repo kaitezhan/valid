@@ -2,6 +2,7 @@ package com.github.houbb.valid.core.api.result;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.guava.Guavas;
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.api.result.IResultHandler;
@@ -44,6 +45,9 @@ public class BaseResultHandler implements IResultHandler<IResult> {
     protected List<IConstraintResult> notPassList(final List<IConstraintResult> constraintResultList) {
         List<IConstraintResult> notPassList = Guavas.newArrayList();
 
+        if(CollectionUtil.isEmpty(constraintResultList)) {
+            return notPassList;
+        }
         for(IConstraintResult result : constraintResultList) {
             if(!result.pass()) {
                 notPassList.add(result);

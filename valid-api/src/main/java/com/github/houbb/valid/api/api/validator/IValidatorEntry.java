@@ -35,11 +35,27 @@ public interface IValidatorEntry {
     ICondition condition();
 
     /**
+     * 设置消息信息
+     * @param message 消息
+     * @return this
+     * @since 0.1.0
+     */
+    IValidatorEntry message(final String message);
+
+    /**
      * 约束提示信息
      * @return 提示信息
      * @since 0.1.0
      */
     String message();
+
+    /**
+     * 设置约束分组信息
+     * @param groupClass 分组信息
+     * @since 0.1.0
+     * @return this
+     */
+    IValidatorEntry group(final Class... groupClass);
 
     /**
      * 约束分组信息

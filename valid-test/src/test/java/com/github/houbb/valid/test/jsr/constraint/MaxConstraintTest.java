@@ -14,7 +14,7 @@ public class MaxConstraintTest {
 
     @Test
     public void passTest() {
-        IResult result = ValidBs.newInstance().on(99, JsrConstraints.maxConstraint(100))
+        IResult result = ValidBs.on(99, JsrConstraints.maxConstraint(100))
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -22,7 +22,7 @@ public class MaxConstraintTest {
 
     @Test
     public void passInclusiveTest() {
-        IResult result = ValidBs.newInstance().on(100, JsrConstraints.maxConstraint(true, 100))
+        IResult result = ValidBs.on(100, JsrConstraints.maxConstraint(true, 100))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -30,7 +30,7 @@ public class MaxConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.newInstance().on(null, JsrConstraints.maxConstraint(100))
+        IResult result = ValidBs.on(null, JsrConstraints.maxConstraint(100))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -38,7 +38,8 @@ public class MaxConstraintTest {
 
     @Test
     public void notPassTest() {
-        IResult result = ValidBs.newInstance().on(101, JsrConstraints.maxConstraint(100))
+        IResult result = ValidBs.on(101, JsrConstraints.maxConstraint(100))
+                .valid()
                 .result();
         Assert.assertFalse(result.pass());
         System.out.println(result);
@@ -49,7 +50,8 @@ public class MaxConstraintTest {
      */
     @Test(expected = ClassCastException.class)
     public void classCastException() {
-        IResult result = ValidBs.newInstance().on(123.34f, JsrConstraints.maxConstraint(100))
+        IResult result = ValidBs.on(123.34f, JsrConstraints.maxConstraint(100))
+                .valid()
                 .result();
         System.out.println(result);
     }

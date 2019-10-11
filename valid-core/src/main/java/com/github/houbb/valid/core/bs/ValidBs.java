@@ -5,6 +5,8 @@ import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.util.ArrayUtil;
+import com.github.houbb.heaven.util.util.CollectionUtil;
+import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.fail.IFail;
 import com.github.houbb.valid.api.api.result.IResult;
@@ -17,6 +19,7 @@ import com.github.houbb.valid.core.api.result.ResultHandlers;
 import com.github.houbb.valid.core.api.validator.DefaultValidator;
 import com.github.houbb.valid.core.api.validator.context.DefaultValidatorContext;
 import com.github.houbb.valid.core.api.validator.entry.DefaultValidatorEntry;
+import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +31,6 @@ import java.util.List;
  * <pre>
  * ValidBs
  * .on(value)
- * .valid()
  * .result()
  * .print();
  * </pre>
@@ -76,36 +78,86 @@ public final class ValidBs {
     private List<IConstraintResult> constraintResults;
 
     /**
+     * 是否已经执行验证
+     * @since 0.1.0
+     */
+    private volatile boolean validated = false;
+
+    /**
      * 指定验证的相关信息
      * （1）可以验证对象，也可以验证属性
      * （2）如果验证为 bean，会同时验证指定约束规则和注解相关约束规则。
      * @param value 对象信息
-     * @param validatorEntry 验证信息明细
+     * @param validatorEntries 验证信息明细
      * @return this
      * @since 0.1.0
      */
     public static ValidBs on(final Object value,
-                             final IValidatorEntry ... validatorEntry) {
+                             final IValidatorEntry ... validatorEntries) {
+        List<IValidatorEntry> validatorEntryList = ArrayUtil.arrayToList(validatorEntries);
+        return on(value, validatorEntryList);
+    }
+
+    /**
+     * 指定验证的相关信息
+     * （1）可以验证对象，也可以验证属性
+     * （2）如果验证为 bean，会同时验证指定约束规则和注解相关约束规则。
+     * @param value 对象信息
+     * @param validatorEntries 验证信息明细
+     * @return this
+     * @since 0.1.0
+     */
+    public static ValidBs on(final Object value,
+                             final Collection<? extends IValidatorEntry> validatorEntries) {
         ValidBs validBs = new ValidBs();
         validBs.value = value;
-        validBs.validators = buildValidatorEntryList(value, validatorEntry);
+        validBs.validators = buildValidatorEntries(value, validatorEntries);
         return validBs;
     }
 
     /**
+     * 指定验证的相关约束信息
+     * （1）可以验证对象，也可以验证属性
+     * （2）如果验证为 bean，会同时验证指定约束规则和注解相关约束规则。
+     *
+     * 这里必须至少指定一个 constraint，否则都没有参数时，二者会混淆。
+     * @param value 对象信息
+     * @param constraint 约束实现
+     * @param constraints 约束实现列表
+     * @return this
+     * @since 0.1.0
+     */
+    public static ValidBs on(final Object value,
+                             final IConstraint constraint,
+                             final IConstraint... constraints) {
+        List<IConstraint> constraintList = ArrayUtil.arrayToList(constraints);
+        constraintList.add(constraint);
+
+        List<IValidatorEntry> validatorEntryList = CollectionUtil.toList(constraintList,
+                new IHandler<IConstraint, IValidatorEntry>() {
+                    @Override
+                    public IValidatorEntry handle(IConstraint constraint) {
+                        return ValidatorEntryFactory.of(constraint);
+                    }
+                });
+
+        return on(value, validatorEntryList);
+    }
+
+    /**
      * 构建对应的验证明细列表
-     * @param validatorEntry 验证明细数组
+     * @param validatorEntryList 验证明细列表
      * @param value 元素信息
      * @return 列表
      * @since 0.1.0
      */
-    private static List<IValidatorEntry> buildValidatorEntryList(final Object value,
-                                                                 final IValidatorEntry ... validatorEntry) {
-        if(ArrayUtil.isEmpty(validatorEntry)) {
+    private static List<IValidatorEntry> buildValidatorEntries(final Object value,
+                                                               final Collection<? extends IValidatorEntry> validatorEntryList) {
+        if(CollectionUtil.isEmpty(validatorEntryList)) {
             return Collections.emptyList();
         }
 
-        return ArrayUtil.toList(validatorEntry, new IHandler<IValidatorEntry, IValidatorEntry>() {
+        return CollectionUtil.toList(validatorEntryList, new IHandler<IValidatorEntry, IValidatorEntry>() {
             @Override
             public IValidatorEntry handle(IValidatorEntry validatorEntry) {
                 ((DefaultValidatorEntry)validatorEntry).value(value);
@@ -143,6 +195,7 @@ public final class ValidBs {
      * 验证
      * （1）指定验证的验证器实现
      * （2）处理的结果保留在 result 结果中。
+     * （3）设置是否验证标志为 true
      * @param validator 验证器
      * @return this
      * @since 0.1.0
@@ -157,6 +210,7 @@ public final class ValidBs {
 
         // 执行
         this.constraintResults = validator.valid(context);
+        this.validated = true;
         return this;
     }
 
@@ -173,6 +227,7 @@ public final class ValidBs {
     /**
      * 对信息进行校验
      * （1）结合 {@link #fail} 失败模式
+     * （2）如果没有验证，则使用默认验证方式，验证一次。
      * @param resultHandler 结果处理方式
      * @return 结果
      * @since 0.0.2
@@ -182,6 +237,9 @@ public final class ValidBs {
         ArgUtil.notNull(resultHandler, "resultHandler");
 
         // 对结果进行处理
+        if(!validated) {
+            this.valid();
+        }
         return resultHandler.handle(this.constraintResults);
     }
 
