@@ -9,6 +9,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraint;
  * @author binbin.hou
  * @since 0.0.5
  */
+@Deprecated
 public class ConstraintEntry {
 
     /**

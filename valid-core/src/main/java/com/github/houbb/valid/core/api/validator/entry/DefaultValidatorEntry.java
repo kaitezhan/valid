@@ -1,137 +1,125 @@
-package com.github.houbb.valid.core.model;
+package com.github.houbb.valid.core.api.validator.entry;
 
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
+import com.github.houbb.valid.api.api.validator.IValidatorEntry;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 /**
- * 验证的明细信息
+ * 默认验证器上下文
+ *
+ * 希望后期可以拓展：
+ * <pre>
+ *  ValidatorEntryChain.notNull().notEmpty().size(12)
+ * </pre>
+ *
+ * or
+ *
+ * <pre>
+ *  ValidatorEntryChain.addValidatorEntry(XXX).addValidatorEntry(XXX);
+ * </pre>
+ *
+ * 直接使用链式调用的方式，生成一个完整的约束调用链。
+ * 允许用户自定定义。
  * @author binbin.hou
- * @since 0.0.2
- * @see ConstraintEntry 可以考虑继承这个类，暂时不做调整。
+ * @since 0.1.0
  */
-@Deprecated
-public class ValidEntry {
+public class DefaultValidatorEntry implements IValidatorEntry {
 
-    /**
-     * 待校验的值
-     */
     private Object value;
 
-    /**
-     * 约束实现类
-     */
     private IConstraint constraint;
 
-    /**
-     * 约束进行验证的条件
-     */
     private ICondition condition;
 
-    /**
-     * 拦截信息
-     * @since 0.0.4
-     */
     private String message;
 
-    /**
-     * 约束分组信息
-     * @since 0.0.5
-     */
     private Class[] group;
 
     /**
-     * 待验证约束分组信息
-     * @since 0.0.7
-     */
-    private Class[] validGroup;
-
-    /**
-     * 对象实例
-     * @since 0.0.9
+     * 对应的实例对象
+     * @since 0.1.0
      */
     private Object instance;
 
     /**
-     * 全部字段列表
-     * @since 0.0.9
+     * 对应的字段列表
+     * @since 0.1.0
      */
     private List<Field> fieldList;
 
-    public static ValidEntry newInstance() {
-        return new ValidEntry();
+    public static DefaultValidatorEntry newInstance() {
+        return new DefaultValidatorEntry();
     }
 
+    @Override
     public Object value() {
         return value;
     }
 
-    public ValidEntry value(Object value) {
+    public DefaultValidatorEntry value(Object value) {
         this.value = value;
         return this;
     }
 
+    @Override
     public IConstraint constraint() {
         return constraint;
     }
 
-    public ValidEntry constraint(IConstraint constraint) {
+    public DefaultValidatorEntry constraint(IConstraint constraint) {
         this.constraint = constraint;
         return this;
     }
 
+    @Override
     public ICondition condition() {
         return condition;
     }
 
-    public ValidEntry condition(ICondition condition) {
+    public DefaultValidatorEntry condition(ICondition condition) {
         this.condition = condition;
         return this;
     }
 
+    @Override
     public String message() {
         return message;
     }
 
-    public ValidEntry message(String message) {
+    public DefaultValidatorEntry message(String message) {
         this.message = message;
         return this;
     }
 
+    @Override
     public Class[] group() {
         return group;
     }
 
-    public ValidEntry group(Class[] group) {
+    public DefaultValidatorEntry group(Class[] group) {
         this.group = group;
         return this;
     }
 
-    public Class[] validGroup() {
-        return validGroup;
-    }
-
-    public ValidEntry validGroup(Class[] validGroup) {
-        this.validGroup = validGroup;
-        return this;
-    }
-
+    @Override
     public Object instance() {
         return instance;
     }
 
-    public ValidEntry instance(Object instance) {
+    public DefaultValidatorEntry instance(Object instance) {
         this.instance = instance;
         return this;
     }
 
+    @Override
     public List<Field> fieldList() {
         return fieldList;
     }
 
-    public ValidEntry fieldList(List<Field> fieldList) {
+    public DefaultValidatorEntry fieldList(List<Field> fieldList) {
         this.fieldList = fieldList;
         return this;
     }

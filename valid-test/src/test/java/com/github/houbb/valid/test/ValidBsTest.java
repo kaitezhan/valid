@@ -1,6 +1,7 @@
 package com.github.houbb.valid.test;
 
 import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
@@ -8,6 +9,7 @@ import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.api.fail.Fails;
+import com.github.houbb.valid.core.api.validator.entry.ValidatorEntrys;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.core.model.ConstraintEntry;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
@@ -29,12 +31,15 @@ public class ValidBsTest {
      */
     @Test
     public void simpleTest() {
-        ValidBs.newInstance().on(null, new AbstractStrictConstraint() {
+        final IConstraint constraint = new AbstractStrictConstraint() {
             @Override
             protected boolean pass(IConstraintContext context, Object value) {
                 return ObjectUtil.isNotNull(value);
             }
-        }).result().print();
+        };
+
+        ValidBs.on(null, ValidatorEntrys.validatorEntry(constraint))
+                .valid().result().print();
     }
 
     /**
