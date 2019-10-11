@@ -1,6 +1,5 @@
 package com.github.houbb.valid.api.annotation.constraint;
 
-import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.annotation.IAnnotationConstraint;
 
 import java.lang.annotation.*;
