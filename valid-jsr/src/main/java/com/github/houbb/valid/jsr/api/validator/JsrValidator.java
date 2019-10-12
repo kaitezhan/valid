@@ -6,6 +6,7 @@ import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.Optional;
 import com.github.houbb.valid.api.api.constraint.annotation.IAnnotationConstraint;
 import com.github.houbb.valid.core.api.validator.DefaultValidator;
+import com.github.houbb.valid.jsr.i18n.JsrAtMessageI18N;
 import com.github.houbb.valid.jsr.util.JsrAtConstraintMapUtil;
 
 import javax.validation.Constraint;
@@ -84,6 +85,17 @@ public class JsrValidator extends DefaultValidator {
             }
         }
         return constraintOptional;
+    }
+
+    /**
+     * 对注解消息进行 i18n 处理
+     * @param annotation 注解
+     * @return 处理后的信息
+     */
+    @Override
+    protected String getMessage(Annotation annotation) {
+        String message = super.getMessage(annotation);
+        return JsrAtMessageI18N.get(message);
     }
 
 }

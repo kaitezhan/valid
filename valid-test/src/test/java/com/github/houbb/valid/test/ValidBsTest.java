@@ -168,8 +168,8 @@ public class ValidBsTest {
      */
     @Test
     public void jsrAllFailTest() {
-        Date future = DateUtil.getFormatDate("90190101", DateUtil.PURE_DATE_FORMAT);;
-        Date past = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);;
+        Date future = DateUtil.getFormatDate("90190101", DateUtil.PURE_DATE_FORMAT);
+        Date past = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);
 
         JsrUser jsrUser = new JsrUser();
         jsrUser.assertFalse(true)
@@ -216,8 +216,8 @@ public class ValidBsTest {
      */
     @Test
     public void jsrAllPassTest() {
-        Date future = DateUtil.getFormatDate("90190101", DateUtil.PURE_DATE_FORMAT);;
-        Date past = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);;
+        Date future = DateUtil.getFormatDate("90190101", DateUtil.PURE_DATE_FORMAT);
+        Date past = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);
 
         JsrUser jsrUser = new JsrUser();
         jsrUser.assertFalse(false)

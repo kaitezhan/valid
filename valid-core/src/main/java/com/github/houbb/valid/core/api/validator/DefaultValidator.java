@@ -118,7 +118,7 @@ public class DefaultValidator extends AbstractValidator {
      * @return message() 方法对应的值。
      * @since 0.0.9
      */
-    private String getMessage(final Annotation annotation) {
+    protected String getMessage(final Annotation annotation) {
         return ReflectAnnotationUtil.getValueStr(annotation, AnnotationConst.MESSAGE);
     }
 

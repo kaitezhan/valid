@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * JSR 用户信息
  * @author binbin.hou
- * @since 0.0.9
+ * @since 0.1.1
  */
 public class JsrUser {
 
