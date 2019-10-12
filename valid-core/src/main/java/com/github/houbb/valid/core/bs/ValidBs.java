@@ -63,7 +63,7 @@ public final class ValidBs {
      * 用户自定义验证列表
      * @since 0.1.0
      */
-    private List<IValidatorEntry> validators;
+    private List<IValidatorEntry> validatorEntries;
 
     /**
      * 对象信息
@@ -107,11 +107,12 @@ public final class ValidBs {
      * @return this
      * @since 0.1.0
      */
-    public static ValidBs on(final Object value,
+    private static ValidBs on(final Object value,
                              final Collection<? extends IValidatorEntry> validatorEntries) {
         ValidBs validBs = new ValidBs();
+        validBs.validated = false;
         validBs.value = value;
-        validBs.validators = buildValidatorEntries(value, validatorEntries);
+        validBs.validatorEntries = buildValidatorEntries(value, validatorEntries);
         return validBs;
     }
 
@@ -196,32 +197,34 @@ public final class ValidBs {
      * （1）指定验证的验证器实现
      * （2）处理的结果保留在 result 结果中。
      * （3）设置是否验证标志为 true
-     * @param validator 验证器
+     * @param validators 验证器
      * @return this
      * @since 0.1.0
      */
-    public ValidBs valid(final IValidator validator) {
+    public ValidBs valid(final IValidator... validators) {
         // 验证上下文构建
         IValidatorContext context = DefaultValidatorContext.newInstance()
                 .fail(fail)
                 .group(group)
                 .value(value)
-                .validators(validators);
+                .validatorEntries(validatorEntries);
 
         // 执行
-        this.constraintResults = validator.valid(context);
+        if(ArrayUtil.isEmpty(validators)) {
+            this.constraintResults = Instances.singleton(DefaultValidator.class).valid(context);
+        } else {
+            this.constraintResults = Guavas.newArrayList();
+            // 循环调用
+            for(IValidator validator : validators) {
+                List<IConstraintResult> resultList = validator.valid(context);
+                if(CollectionUtil.isNotEmpty(resultList)) {
+                    this.constraintResults.addAll(resultList);
+                }
+            }
+        }
+
         this.validated = true;
         return this;
-    }
-
-    /**
-     * 验证
-     * （1）使用默认的验证器进行验证。
-     * @return this
-     * @since 0.1.0
-     */
-    public ValidBs valid() {
-        return this.valid(Instances.singleton(DefaultValidator.class));
     }
 
     /**

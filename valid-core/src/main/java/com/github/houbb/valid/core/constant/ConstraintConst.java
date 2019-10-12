@@ -3,10 +3,10 @@ package com.github.houbb.valid.core.constant;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.Optional;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
-import com.github.houbb.valid.core.api.constraint.annotation.AllEqualsConstraint;
-import com.github.houbb.valid.core.api.constraint.annotation.EnumRangesConstraint;
-import com.github.houbb.valid.core.api.constraint.annotation.HasNotNullConstraint;
-import com.github.houbb.valid.core.api.constraint.annotation.RangesConstraint;
+import com.github.houbb.valid.core.api.constraint.annotation.AtAllEqualsConstraint;
+import com.github.houbb.valid.core.api.constraint.annotation.AtEnumRangesConstraint;
+import com.github.houbb.valid.core.api.constraint.annotation.AtHasNotNullConstraint;
+import com.github.houbb.valid.core.api.constraint.annotation.AtRangesConstraint;
 import com.github.houbb.valid.core.i18n.I18N;
 
 import java.util.HashMap;
@@ -26,10 +26,10 @@ public final class ConstraintConst {
     private static final Map<Class, String> CONSTRAINT_MESSAGE_MAP = new HashMap<>();
 
     static {
-        CONSTRAINT_MESSAGE_MAP.put(AllEqualsConstraint.class, "AllEqualsConstraintMessage");
-        CONSTRAINT_MESSAGE_MAP.put(EnumRangesConstraint.class, "EnumRangesConstraintMessage");
-        CONSTRAINT_MESSAGE_MAP.put(HasNotNullConstraint.class, "HasNotNullConstraintMessage");
-        CONSTRAINT_MESSAGE_MAP.put(RangesConstraint.class, "RangesConstraintMessage");
+        CONSTRAINT_MESSAGE_MAP.put(AtAllEqualsConstraint.class, "AllEqualsConstraintMessage");
+        CONSTRAINT_MESSAGE_MAP.put(AtEnumRangesConstraint.class, "EnumRangesConstraintMessage");
+        CONSTRAINT_MESSAGE_MAP.put(AtHasNotNullConstraint.class, "HasNotNullConstraintMessage");
+        CONSTRAINT_MESSAGE_MAP.put(AtRangesConstraint.class, "RangesConstraintMessage");
     }
 
     private ConstraintConst(){}

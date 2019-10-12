@@ -5,6 +5,7 @@ import com.github.houbb.heaven.util.lang.NumUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
 import com.github.houbb.valid.core.constant.ContextAttrKeyConst;
+import com.github.houbb.valid.jsr.i18n.JsrI18N;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -122,7 +123,7 @@ abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
     @Override
     @SuppressWarnings("unchecked")
     protected String expectValue(IConstraintContext context) {
-        return String.format("integer digits [%d], fraction digits [%d]",
+        return String.format(JsrI18N.get(JsrI18N.Key.INTEGER_DIGITS_FRACTION_DIGITS),
                 integer, fraction);
     }
 
@@ -133,7 +134,7 @@ abstract class AbstractDigitsConstraint<T> extends AbstractConstraint<T> {
         final int integerDigits = (int) context.getAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_INTEGER_DIGITS);
         final int fractionDigits = (int) context.getAttr(ContextAttrKeyConst.SYS_CONSTRAINT_CTX_FRACTION_DIGITS);
 
-        return String.format("integer digits [%d], fraction digits [%d]",
+        return String.format(JsrI18N.get(JsrI18N.Key.INTEGER_DIGITS_FRACTION_DIGITS),
                 integerDigits, fractionDigits);
     }
 

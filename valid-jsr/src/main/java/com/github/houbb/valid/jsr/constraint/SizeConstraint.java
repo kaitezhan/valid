@@ -6,6 +6,7 @@ import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
 import com.github.houbb.valid.core.constant.ContextAttrKeyConst;
+import com.github.houbb.valid.jsr.i18n.JsrI18N;
 import com.github.houbb.valid.jsr.util.JsrSupportClassUtil;
 
 import java.util.Collection;
@@ -80,7 +81,7 @@ class SizeConstraint extends AbstractConstraint {
 
     @Override
     protected String expectValue(final IConstraintContext context) {
-        return "size must be in ["+min+","+max+"]";
+        return String.format(JsrI18N.get(JsrI18N.Key.SIZE_MUST_BE_IN), min, max);
     }
 
     @Override

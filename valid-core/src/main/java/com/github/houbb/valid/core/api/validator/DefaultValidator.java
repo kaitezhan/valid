@@ -20,7 +20,6 @@ import javax.validation.Valid;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,36 +32,6 @@ public class DefaultValidator extends AbstractValidator {
 
     /**
      * 构建验证明细列表
-     * @return 验证明细列表
-     * @since 0.1.0
-     */
-    @Override
-    protected List<IValidatorEntry> buildValidatorEntryList(final Object object) {
-        if(ObjectUtil.isNull(object)) {
-            return Collections.emptyList();
-        }
-
-        final Class clazz = object.getClass();
-        // 不处理的类型
-        if(ClassTypeUtil.isMap(clazz)
-                || ClassTypeUtil.isAbstractOrInterface(clazz)
-                || ClassTypeUtil.isPrimitive(clazz)
-                || ClassTypeUtil.isJavaBean(clazz)) {
-            return Collections.emptyList();
-        }
-
-        List<IValidatorEntry> validatorEntryList = Guavas.newArrayList();
-        List<Field> fieldList = ClassUtil.getAllFieldList(clazz);
-        for(Field field : fieldList) {
-            List<IValidatorEntry> fieldValidatorEntry = buildValidatorEntryList(fieldList, field, object);
-            validatorEntryList.addAll(fieldValidatorEntry);
-        }
-
-        return validatorEntryList;
-    }
-
-    /**
-     * 构建验证明细列表
      * TODO: 为了简化，暂时不考虑 {@link com.github.houbb.valid.api.annotation.condition.Condition} 的支持。
      *
      * @param fieldList 字段列表
@@ -71,8 +40,9 @@ public class DefaultValidator extends AbstractValidator {
      * @return 验证明细列表
      * @since 0.0.9
      */
+    @Override
     @SuppressWarnings("unchecked")
-    private List<IValidatorEntry> buildValidatorEntryList(final List<Field> fieldList,
+    protected List<IValidatorEntry> buildValidatorEntryList(final List<Field> fieldList,
                                                  final Field field,
                                                  final Object instance) {
         final List<IValidatorEntry> validatorEntryList = Guavas.newArrayList();

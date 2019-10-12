@@ -50,7 +50,7 @@ public class ValidBsTest {
             protected boolean pass(IConstraintContext context, Object value) {
                 return ObjectUtil.isNotNull(value);
             }
-        }).valid().result().print();
+        }).result().print();
     }
 
     /**

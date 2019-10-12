@@ -4,6 +4,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
+import com.github.houbb.valid.jsr.i18n.JsrI18N;
 
 /**
  * 是否满足正则表达式
@@ -36,7 +37,7 @@ class PatternConstraint extends AbstractConstraint<CharSequence> {
 
     @Override
     protected String expectValue(IConstraintContext context) {
-        return "match regex pattern " + regex;
+        return String.format(JsrI18N.get(JsrI18N.Key.MATCH_REGEX_PATTERN), regex);
     }
 
 }

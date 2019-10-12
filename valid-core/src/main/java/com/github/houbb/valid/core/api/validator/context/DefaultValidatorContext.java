@@ -19,7 +19,7 @@ public class DefaultValidatorContext implements IValidatorContext {
 
     private Class[] group;
 
-    private List<IValidatorEntry> validators;
+    private List<IValidatorEntry> validatorEntries;
 
     public static DefaultValidatorContext newInstance() {
         return new DefaultValidatorContext();
@@ -56,12 +56,12 @@ public class DefaultValidatorContext implements IValidatorContext {
     }
 
     @Override
-    public List<IValidatorEntry> validators() {
-        return validators;
+    public List<IValidatorEntry> validatorEntries() {
+        return validatorEntries;
     }
 
-    public DefaultValidatorContext validators(List<IValidatorEntry> validators) {
-        this.validators = validators;
+    public DefaultValidatorContext validatorEntries(List<IValidatorEntry> validatorEntries) {
+        this.validatorEntries = validatorEntries;
         return this;
     }
 }

@@ -40,6 +40,6 @@ public interface IValidatorContext {
      * @return 验证明细列表
      * @since 0.1.0
      */
-    List<IValidatorEntry> validators();
+    List<IValidatorEntry> validatorEntries();
 
 }

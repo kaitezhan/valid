@@ -1,15 +1,11 @@
-package com.github.houbb.valid.core.api.constraint.annotation;
+package com.github.houbb.valid.core.api.constraint;
 
 import com.github.houbb.heaven.annotation.NotThreadSafe;
-import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
-import com.github.houbb.valid.api.api.constraint.annotation.IAnnotationConstraint;
-import com.github.houbb.valid.core.annotation.constraint.HasNotNull;
-import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
 
 /**
- * 范围注解约束实现
+ * 范围约束实现
  *
  * （1）对于接口的调整思考：
  * 关于验证类，是属于一大类。
@@ -23,17 +19,16 @@ import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
  * @since 0.0.9
  */
 @NotThreadSafe
-public class HasNotNullConstraint extends AbstractConstraint implements IAnnotationConstraint<HasNotNull> {
+class HasNotNullConstraint extends AbstractConstraint {
 
     /**
-     * 注解信息
+     * 其他字段信息
+     * @since 0.1.1
      */
-    private HasNotNull annotation;
+    private final String[] otherFieldNames;
 
-    @Override
-    public void init(HasNotNull annotation) {
-        ArgUtil.notNull(annotation, "annotation");
-        this.annotation = annotation;
+    HasNotNullConstraint(String[] otherFieldNames) {
+        this.otherFieldNames = otherFieldNames;
     }
 
     @Override
@@ -44,7 +39,6 @@ public class HasNotNullConstraint extends AbstractConstraint implements IAnnotat
             return true;
         }
 
-        String[] otherFieldNames = annotation.value();
         for(String fieldName : otherFieldNames) {
             // 获取对应字段的值
             Object fieldValue = context.getFieldValue(fieldName);

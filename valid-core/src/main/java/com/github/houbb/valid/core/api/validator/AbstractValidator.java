@@ -2,6 +2,10 @@ package com.github.houbb.valid.core.api.validator;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.guava.Guavas;
+import com.github.houbb.heaven.util.lang.ObjectUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
+import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
@@ -17,6 +21,8 @@ import com.github.houbb.valid.core.api.condition.context.DefaultConditionContext
 import com.github.houbb.valid.core.api.constraint.context.DefaultConstraintContext;
 import com.github.houbb.valid.core.api.fail.context.DefaultFailContext;
 
+import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,11 +35,54 @@ public abstract class AbstractValidator implements IValidator {
 
     /**
      * 构建验证明细列表
-     * @param object 待验证对象
+     * TODO: 为了简化，暂时不考虑 {@link com.github.houbb.valid.api.annotation.condition.Condition} 的支持。
+     *
+     * @param fieldList 字段列表
+     * @param field 字段信息
+     * @param instance 实例
+     * @return 验证明细列表
+     * @since 0.1.1
+     */
+
+    protected abstract List<IValidatorEntry> buildValidatorEntryList(final List<Field> fieldList,
+                                                            final Field field,
+                                                            final Object instance);
+
+    /**
+     * 构建验证明细列表
+     * （1）null 对象直接返回
+     * （2）map/抽象类接口/jdk自带类/基础变量 直接返回
+     * （3）字段列表为空的，直接返回。
      * @return 验证明细列表
      * @since 0.1.0
      */
-    protected abstract List<IValidatorEntry> buildValidatorEntryList(final Object object);
+    protected List<IValidatorEntry> buildValidatorEntryList(final Object object) {
+        if(ObjectUtil.isNull(object)) {
+            return Collections.emptyList();
+        }
+
+        final Class clazz = object.getClass();
+        // 不处理的类型
+        if(ClassTypeUtil.isMap(clazz)
+                || ClassTypeUtil.isAbstractOrInterface(clazz)
+                || ClassTypeUtil.isPrimitive(clazz)
+                || ClassTypeUtil.isJdk(clazz)) {
+            return Collections.emptyList();
+        }
+        // 字段为空
+        List<Field> fieldList = ClassUtil.getAllFieldList(clazz);
+        if(CollectionUtil.isEmpty(fieldList)) {
+            return Collections.emptyList();
+        }
+
+        List<IValidatorEntry> validatorEntryList = Guavas.newArrayList();
+        for(Field field : fieldList) {
+            List<IValidatorEntry> fieldValidatorEntry = buildValidatorEntryList(fieldList, field, object);
+            validatorEntryList.addAll(fieldValidatorEntry);
+        }
+
+        return validatorEntryList;
+    }
 
     @Override
     public List<IConstraintResult> valid(IValidatorContext context) {
@@ -41,7 +90,7 @@ public abstract class AbstractValidator implements IValidator {
 
         // 构建完整的校验对象。
         List<IValidatorEntry> beanValidatorEntries = buildValidatorEntryList(context.value());
-        List<IValidatorEntry> allValidatorEntries = Guavas.newArrayList(context.validators());
+        List<IValidatorEntry> allValidatorEntries = Guavas.newArrayList(context.validatorEntries());
         allValidatorEntries.addAll(beanValidatorEntries);
         final Class[] validGroup = context.group();
         final IFail fail = context.fail();

@@ -6,7 +6,7 @@
 package com.github.houbb.valid.core.annotation.constraint;
 
 import com.github.houbb.valid.api.annotation.constraint.Constraint;
-import com.github.houbb.valid.core.api.constraint.annotation.EnumRangesConstraint;
+import com.github.houbb.valid.core.api.constraint.annotation.AtEnumRangesConstraint;
 
 import java.lang.annotation.*;
 
@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(EnumRangesConstraint.class)
+@Constraint(AtEnumRangesConstraint.class)
 public @interface EnumRanges {
 
     /**
