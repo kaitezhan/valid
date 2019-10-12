@@ -10,6 +10,8 @@ import com.github.houbb.valid.api.exception.ValidRuntimeException;
 import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
 import com.github.houbb.valid.core.api.constraint.chain.ConstraintChains;
 import com.github.houbb.valid.core.api.fail.Fails;
+import com.github.houbb.valid.core.api.result.ResultHandlers;
+import com.github.houbb.valid.core.api.validator.DefaultValidator;
 import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.api.validator.JsrValidator;
@@ -53,7 +55,7 @@ public class ValidBsTest {
         ValidBs.on(null, new AbstractStrictConstraint() {
             @Override
             protected boolean pass(IConstraintContext context, Object value) {
-                return ObjectUtil.isNotNull(value);
+                return value != null;
             }
         }).result().print();
     }
@@ -238,6 +240,16 @@ public class ValidBsTest {
                 .fail(Fails.failOver())
                 .valid(JsrValidator.getInstance())
                 .result()
+                .print();
+    }
+
+    @Test
+    public void allConfigTest() {
+        ValidBs.on("123", JsrConstraints.notNullConstraint())
+                .fail(Fails.failOver())
+                .group()
+                .valid(DefaultValidator.getInstance())
+                .result(ResultHandlers.simple())
                 .print();
     }
 

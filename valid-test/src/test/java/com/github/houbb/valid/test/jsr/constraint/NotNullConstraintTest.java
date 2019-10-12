@@ -23,11 +23,11 @@ public class NotNullConstraintTest {
 
     @Test
     public void notNullNotPassTest() {
-        IResult result = ValidBs.on(null, ValidatorEntryFactory.of(JsrConstraints.notNullConstraint()))
+        IResult result = ValidBs.on(null, JsrConstraints.notNullConstraint())
                 .valid()
-                .result();
+                .result()
+                .print();
         Assert.assertFalse(result.pass());
-        System.out.println(result);
     }
 
 }
