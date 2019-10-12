@@ -111,7 +111,7 @@ public final class JsrConstraints {
      * @since 0.0.3
      */
     public static IConstraint patternConstraint(final String regex) {
-        return new PastConstraint(regex);
+        return new PatternConstraint(regex);
     }
 
     /**

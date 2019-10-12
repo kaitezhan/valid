@@ -17,6 +17,6 @@ public interface IAnnotationConstraint<A extends Annotation> extends IConstraint
      * @param annotation 注解信息
      * @since 0.0.9
      */
-    void init(A annotation);
+    void initialize(A annotation);
 
 }

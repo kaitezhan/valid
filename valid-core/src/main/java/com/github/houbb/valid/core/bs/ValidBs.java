@@ -197,11 +197,13 @@ public final class ValidBs {
      * （1）指定验证的验证器实现
      * （2）处理的结果保留在 result 结果中。
      * （3）设置是否验证标志为 true
-     * @param validators 验证器
+     * @param validator 验证器
      * @return this
      * @since 0.1.0
      */
-    public ValidBs valid(final IValidator... validators) {
+    public ValidBs valid(final IValidator validator) {
+        ArgUtil.notNull(validator, "validator");
+
         // 验证上下文构建
         IValidatorContext context = DefaultValidatorContext.newInstance()
                 .fail(fail)
@@ -209,22 +211,18 @@ public final class ValidBs {
                 .value(value)
                 .validatorEntries(validatorEntries);
 
-        // 执行
-        if(ArrayUtil.isEmpty(validators)) {
-            this.constraintResults = Instances.singleton(DefaultValidator.class).valid(context);
-        } else {
-            this.constraintResults = Guavas.newArrayList();
-            // 循环调用
-            for(IValidator validator : validators) {
-                List<IConstraintResult> resultList = validator.valid(context);
-                if(CollectionUtil.isNotEmpty(resultList)) {
-                    this.constraintResults.addAll(resultList);
-                }
-            }
-        }
-
+        this.constraintResults = validator.valid(context);
         this.validated = true;
         return this;
+    }
+
+    /**
+     * 默认验证类验证
+     * @return this
+     * @since 0.1.0
+     */
+    public ValidBs valid() {
+        return this.valid(DefaultValidator.getInstance());
     }
 
     /**

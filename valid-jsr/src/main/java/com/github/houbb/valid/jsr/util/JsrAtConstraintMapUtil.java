@@ -15,9 +15,9 @@ import java.util.Map;
  * @author binbin.hou
  * @since 0.1.1
  */
-public final class JsrAnnotationMapUtil {
+public final class JsrAtConstraintMapUtil {
 
-    private JsrAnnotationMapUtil() {
+    private JsrAtConstraintMapUtil() {
     }
 
     private static final Map<Class<? extends Annotation>, IAnnotationConstraint> MAP;
@@ -45,7 +45,7 @@ public final class JsrAnnotationMapUtil {
      * @return 注解实现
      * @since 0.1.1
      */
-    public static IAnnotationConstraint getAnnotationConstraint(final Class<? extends Annotation> clazz) {
+    public static IAnnotationConstraint get(final Class<? extends Annotation> clazz) {
         return MAP.get(clazz);
     }
 

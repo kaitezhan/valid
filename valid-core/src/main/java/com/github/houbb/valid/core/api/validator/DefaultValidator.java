@@ -31,6 +31,16 @@ import java.util.List;
 public class DefaultValidator extends AbstractValidator {
 
     /**
+     * 获取单例实例
+     * @since 0.1.1
+     */
+    private static final DefaultValidator INSTANCE = new DefaultValidator();
+
+    public static DefaultValidator getInstance() {
+        return INSTANCE;
+    }
+
+    /**
      * 构建验证明细列表
      * TODO: 为了简化，暂时不考虑 {@link com.github.houbb.valid.api.annotation.condition.Condition} 的支持。
      *
@@ -57,7 +67,7 @@ public class DefaultValidator extends AbstractValidator {
 
             // 构建上下文
             IAnnotationConstraint annotationConstraint = constraintOptional.get();
-            annotationConstraint.init(annotation);
+            annotationConstraint.initialize(annotation);
             final Object fieldValue = ReflectFieldUtil.getValue(field, instance);
 
             IValidatorEntry validatorEntry = DefaultValidatorEntry.newInstance()
@@ -123,7 +133,7 @@ public class DefaultValidator extends AbstractValidator {
         Object object = ReflectAnnotationUtil.getValue(annotation, AnnotationConst.GROUP);
 
         if(ObjectUtil.isNull(object)) {
-            return null;
+            return new Class[0];
         }
 
         return (Class[]) object;
@@ -136,7 +146,7 @@ public class DefaultValidator extends AbstractValidator {
      * @return 约束实现类
      * @since 0.0.9
      */
-    private Optional<IAnnotationConstraint> constraintOptional(final Annotation annotation) {
+    protected Optional<IAnnotationConstraint> constraintOptional(final Annotation annotation) {
         Constraint constraint = annotation.annotationType().getAnnotation(Constraint.class);
         if (ObjectUtil.isNotNull(constraint)) {
             Class<? extends IAnnotationConstraint> clazz = constraint.value();

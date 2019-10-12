@@ -38,7 +38,7 @@ public abstract class AbstractAnnotationConstraint<A extends Annotation> impleme
     }
 
     @Override
-    public void init(A annotation) {
+    public void initialize(A annotation) {
         ArgUtil.notNull(annotation, annotationName());
         this.annotation = annotation;
     }
