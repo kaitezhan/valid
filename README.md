@@ -24,6 +24,10 @@ java 开发中，参数校验是非常常见的需求。
 
 - 支持用户自定义注解
 
+## 开源地址
+
+> [valid](https://github.com/houbb/valid)
+
 # 创作目的
 
 ## hibernate-validator 无法满足的场景
