@@ -604,13 +604,9 @@ DefaultResult{pass=false, notPassList=[DefaultConstraintResult{pass=false, messa
 
 ## 自引用问题
 
-有时候我们可能会引用自身，这个也做了测试。
-
-是符合预期的。
+有时候我们可能会引用自身，这个也做了测试，是符合预期的。
 
 参见 `ValidBsSelfValidBeanTest`
-
-==============================================
 
 # i18n 支持
 
@@ -666,7 +662,7 @@ public void i18nZhTest() {
 
 全部验证，将所有的属性都验证一遍。
 
-优点：可以一次性获得所有失败信息。避免日常接口调试中重复调用。
+优点：可以一次性获得所有失败信息。
 
 ## 创建方式
 
@@ -754,6 +750,8 @@ IResult result = ValidBs.on(jsrUser)
 ## 自定义验证器策略
 
 如果你想添加自己的实现，直接实现 IValidator，并且在 valid() 中指定即可。
+
+可以参考 DefaultValidator，建议继承自 `AbstractValidator`。
 
 # IResultHandler 结果处理策略接口详解
 
@@ -993,9 +991,7 @@ Assert.assertEquals(1, result.notPassList().size());
 
 你可以认为内置注解也是一种自定义注解。
 
-本框架的所有实现理念都是如此，可以认为所有的实现，都是 spi。
-
-都是可以被替换的。
+本框架的所有实现理念都是如此，可以认为所有的内置实现，都是可以被替换的。
 
 ## @AllEquals 注解解析
 
@@ -1083,12 +1079,6 @@ public interface IAnnotationConstraint<A extends Annotation> extends IConstraint
 }
 ```
 
-## 如何实现细节
-
-关于如何实现的细节，可以参考内置的注解即可。
-
-结合自己的需求，实现属于自己的注解。
-
 # 后期特性
 
 - 丰富 IConstraintResult 特性
@@ -1098,3 +1088,25 @@ public interface IAnnotationConstraint<A extends Annotation> extends IConstraint
 - @Condition 注解支持和 ICondition 的支持。
 
 - 集成  hibernate-validator 校验
+
+# 参考项目
+
+## JSR 标准
+
+[JSR 380](https://www.jcp.org/en/jsr/detail?id=380)
+
+[JSR 303](https://beanvalidation.org/1.0/spec/)
+
+[bean validation 2.0](https://beanvalidation.org/2.0/)
+
+## bean 验证框架
+
+[hibernate validate](http://hibernate.org/validator/)
+
+[apache bval](http://bval.apache.org/)
+
+## Fluent 框架
+
+[fluent-validator](https://github.com/neoremind/fluent-validator)
+
+[FluentValidation](https://github.com/JeremySkinner/FluentValidation)
