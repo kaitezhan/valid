@@ -1,9 +1,7 @@
 package com.github.houbb.valid.core.bs;
 
 import com.github.houbb.heaven.support.handler.IHandler;
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.common.ArgUtil;
-import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
@@ -13,13 +11,12 @@ import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.api.result.IResultHandler;
 import com.github.houbb.valid.api.api.validator.IValidator;
 import com.github.houbb.valid.api.api.validator.IValidatorContext;
-import com.github.houbb.valid.api.api.validator.IValidatorEntry;
+import com.github.houbb.valid.api.api.validator.IValidEntry;
 import com.github.houbb.valid.core.api.fail.Fails;
 import com.github.houbb.valid.core.api.result.ResultHandlers;
 import com.github.houbb.valid.core.api.validator.DefaultValidator;
 import com.github.houbb.valid.core.api.validator.context.DefaultValidatorContext;
-import com.github.houbb.valid.core.api.validator.entry.DefaultValidatorEntry;
-import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
+import com.github.houbb.valid.core.api.validator.entry.ValidEntry;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -63,7 +60,7 @@ public final class ValidBs {
      * 用户自定义验证列表
      * @since 0.1.0
      */
-    private List<IValidatorEntry> validatorEntries;
+    private List<IValidEntry> validatorEntries;
 
     /**
      * 对象信息
@@ -93,8 +90,8 @@ public final class ValidBs {
      * @since 0.1.0
      */
     public static ValidBs on(final Object value,
-                             final IValidatorEntry ... validatorEntries) {
-        List<IValidatorEntry> validatorEntryList = ArrayUtil.arrayToList(validatorEntries);
+                             final IValidEntry... validatorEntries) {
+        List<IValidEntry> validatorEntryList = ArrayUtil.arrayToList(validatorEntries);
         return on(value, validatorEntryList);
     }
 
@@ -108,7 +105,7 @@ public final class ValidBs {
      * @since 0.1.0
      */
     private static ValidBs on(final Object value,
-                             final Collection<? extends IValidatorEntry> validatorEntries) {
+                             final Collection<? extends IValidEntry> validatorEntries) {
         ValidBs validBs = new ValidBs();
         validBs.validated = false;
         validBs.value = value;
@@ -134,11 +131,11 @@ public final class ValidBs {
         List<IConstraint> constraintList = ArrayUtil.arrayToList(constraints);
         constraintList.add(constraint);
 
-        List<IValidatorEntry> validatorEntryList = CollectionUtil.toList(constraintList,
-                new IHandler<IConstraint, IValidatorEntry>() {
+        List<IValidEntry> validatorEntryList = CollectionUtil.toList(constraintList,
+                new IHandler<IConstraint, IValidEntry>() {
                     @Override
-                    public IValidatorEntry handle(IConstraint constraint) {
-                        return ValidatorEntryFactory.of(constraint);
+                    public IValidEntry handle(IConstraint constraint) {
+                        return ValidEntry.of(constraint);
                     }
                 });
 
@@ -152,16 +149,16 @@ public final class ValidBs {
      * @return 列表
      * @since 0.1.0
      */
-    private static List<IValidatorEntry> buildValidatorEntries(final Object value,
-                                                               final Collection<? extends IValidatorEntry> validatorEntryList) {
+    private static List<IValidEntry> buildValidatorEntries(final Object value,
+                                                           final Collection<? extends IValidEntry> validatorEntryList) {
         if(CollectionUtil.isEmpty(validatorEntryList)) {
             return Collections.emptyList();
         }
 
-        return CollectionUtil.toList(validatorEntryList, new IHandler<IValidatorEntry, IValidatorEntry>() {
+        return CollectionUtil.toList(validatorEntryList, new IHandler<IValidEntry, IValidEntry>() {
             @Override
-            public IValidatorEntry handle(IValidatorEntry validatorEntry) {
-                ((DefaultValidatorEntry)validatorEntry).value(value);
+            public IValidEntry handle(IValidEntry validatorEntry) {
+                ((ValidEntry)validatorEntry).value(value);
                 return validatorEntry;
             }
         });

@@ -2,7 +2,7 @@ package com.github.houbb.valid.core.api.validator.context;
 
 import com.github.houbb.valid.api.api.fail.IFail;
 import com.github.houbb.valid.api.api.validator.IValidatorContext;
-import com.github.houbb.valid.api.api.validator.IValidatorEntry;
+import com.github.houbb.valid.api.api.validator.IValidEntry;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class DefaultValidatorContext implements IValidatorContext {
 
     private Class[] group;
 
-    private List<IValidatorEntry> validatorEntries;
+    private List<IValidEntry> validatorEntries;
 
     public static DefaultValidatorContext newInstance() {
         return new DefaultValidatorContext();
@@ -56,11 +56,11 @@ public class DefaultValidatorContext implements IValidatorContext {
     }
 
     @Override
-    public List<IValidatorEntry> validatorEntries() {
+    public List<IValidEntry> validatorEntries() {
         return validatorEntries;
     }
 
-    public DefaultValidatorContext validatorEntries(List<IValidatorEntry> validatorEntries) {
+    public DefaultValidatorContext validatorEntries(List<IValidEntry> validatorEntries) {
         this.validatorEntries = validatorEntries;
         return this;
     }

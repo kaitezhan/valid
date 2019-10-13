@@ -19,7 +19,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraintContext;
  * @since 0.0.9
  */
 @NotThreadSafe
-class HasNotNullConstraint extends AbstractConstraint {
+class HasNotNullConstraint extends AbstractStrictConstraint {
 
     /**
      * 其他字段信息

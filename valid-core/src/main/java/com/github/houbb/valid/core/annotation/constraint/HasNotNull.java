@@ -30,12 +30,19 @@ public @interface HasNotNull {
      * 当前字段及其指定的字段 至少有一个不为 null
      * @return 指定的字段列表
      */
-    String[] value();
+    String[] value() default {};
 
     /**
      * 提示消息
      * @return 错误提示
      */
     String message() default "";
+
+    /**
+     * 分组信息
+     * @return 分组类
+     * @since 0.1.2
+     */
+    Class[] group() default {};
 
 }

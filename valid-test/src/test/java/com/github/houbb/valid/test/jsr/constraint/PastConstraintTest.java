@@ -2,7 +2,6 @@ package com.github.houbb.valid.test.jsr.constraint;
 
 import com.github.houbb.heaven.util.util.DateUtil;
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
@@ -19,7 +18,7 @@ public class PastConstraintTest {
     @Test
     public void passTest() {
         Date testDate = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);
-        IResult result = ValidBs.on(testDate, ValidatorEntryFactory.of(JsrConstraints.pastConstraint()))
+        IResult result = ValidBs.on(testDate, JsrConstraints.pastConstraint())
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -27,7 +26,7 @@ public class PastConstraintTest {
 
     @Test
     public void passInclusiveTest() {
-        IResult result = ValidBs.on(new Date(), ValidatorEntryFactory.of(JsrConstraints.pastConstraint(new Date())))
+        IResult result = ValidBs.on(new Date(), JsrConstraints.pastConstraint(new Date()))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -35,7 +34,7 @@ public class PastConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.on(null, ValidatorEntryFactory.of(JsrConstraints.pastConstraint(new Date())))
+        IResult result = ValidBs.on(null, JsrConstraints.pastConstraint(new Date()))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -44,7 +43,7 @@ public class PastConstraintTest {
     @Test
     public void notPassTest() {
         Date testDate = DateUtil.getFormatDate("90120101", DateUtil.PURE_DATE_FORMAT);
-        IResult result = ValidBs.on(testDate, ValidatorEntryFactory.of(JsrConstraints.pastConstraint(new Date())))
+        IResult result = ValidBs.on(testDate, JsrConstraints.pastConstraint(new Date()))
                 .valid()
                 .result();
         Assert.assertFalse(result.pass());
@@ -57,7 +56,7 @@ public class PastConstraintTest {
      */
     @Test(expected = ClassCastException.class)
     public void unSupportClassTypeTest() {
-        IResult result = ValidBs.on(123, ValidatorEntryFactory.of(JsrConstraints.pastConstraint()))
+        IResult result = ValidBs.on(123, JsrConstraints.pastConstraint())
                 .valid()
                 .result();
         Assert.assertFalse(result.pass());

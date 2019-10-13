@@ -41,7 +41,7 @@ public class GroupCondition implements ICondition {
             }
         }
 
-        return true;
+        return false;
     }
 
 }

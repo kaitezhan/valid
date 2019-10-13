@@ -1,7 +1,6 @@
 package com.github.houbb.valid.test.jsr.constraint;
 
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
@@ -15,7 +14,7 @@ public class SizeConstraintTest {
 
     @Test
     public void passTest() {
-        IResult result = ValidBs.on("23", ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(1,2)))
+        IResult result = ValidBs.on("23", JsrConstraints.sizeConstraint(1,2))
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -23,7 +22,7 @@ public class SizeConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.on(null, ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(1, 2)))
+        IResult result = ValidBs.on(null, JsrConstraints.sizeConstraint(1, 2))
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -31,7 +30,7 @@ public class SizeConstraintTest {
 
     @Test
     public void notPassTest() {
-        IResult result = ValidBs.on("12345", ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(1, 2)))
+        IResult result = ValidBs.on("12345", JsrConstraints.sizeConstraint(1, 2))
                 .valid()
                 .result();
         Assert.assertFalse(result.pass());
@@ -44,7 +43,7 @@ public class SizeConstraintTest {
      */
     @Test(expected = ClassCastException.class)
     public void unSupportClassTypeTest() {
-        IResult result = ValidBs.on(12345, ValidatorEntryFactory.of(JsrConstraints.sizeConstraint(1, 2)))
+        IResult result = ValidBs.on(12345, JsrConstraints.sizeConstraint(1, 2))
                 .valid()
                 .result();
     }

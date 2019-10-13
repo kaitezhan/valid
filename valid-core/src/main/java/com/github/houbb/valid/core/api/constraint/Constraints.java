@@ -14,9 +14,11 @@ public final class Constraints {
 
     /**
      * 全部相等约束
+     * （1）当前验证字段值和其他字段值全部相等
      * @param otherFields 其他字段名称
      * @return 约束实现
      * @since 0.1.1
+     * @see com.github.houbb.valid.core.annotation.constraint.AllEquals 全部相等注解
      */
     public static IConstraint allEqualsConstraint(String ... otherFields) {
         ArgUtil.notEmpty(otherFields, "otherFields");
@@ -25,22 +27,12 @@ public final class Constraints {
     }
 
     /**
-     * 枚举范围内约束
-     * @param enumClass 枚举类
-     * @return 约束类
-     * @since 0.1.1
-     */
-    public static IConstraint enumRangesConstraint(final Class<Enum> enumClass) {
-        ArgUtil.notNull(enumClass, "enumClass");
-
-        return new EnumRangesConstraint(enumClass);
-    }
-
-    /**
      * 拥有不为空的值约束
+     * （1）当前字段和其他指定字段，至少有一个为空的约束
      * @param otherFields 其他字段
      * @return 约束类
      * @since 0.1.1
+     * @see com.github.houbb.valid.core.annotation.constraint.HasNotNull 至少一个不为空
      */
     public static IConstraint hasNotNullConstraint(String ... otherFields) {
         ArgUtil.notEmpty(otherFields, "otherFields");
@@ -48,11 +40,26 @@ public final class Constraints {
     }
 
     /**
-     * 值再指定范围内约束
-     * （1）这里为了和注解保持一致性。
+     * 枚举范围内约束
+     * （1）当前值必须在枚举类对应枚举的 toString() 列表中。
+     * @param enumClass 枚举类，不可为空
+     * @return 约束类
+     * @since 0.1.1
+     * @see com.github.houbb.valid.core.annotation.constraint.EnumRanges 枚举类指定范围注解
+     */
+    public static IConstraint enumRangesConstraint(final Class<? extends Enum> enumClass) {
+        ArgUtil.notNull(enumClass, "enumClass");
+
+        return new EnumRangesConstraint(enumClass);
+    }
+
+    /**
+     * 值在指定范围内约束
+     * （1）这里为了和注解保持一致性，暂时只支持 String
      * @param strings 对象范围
      * @return 约束类
      * @since 0.1.1
+     * @see com.github.houbb.valid.core.annotation.constraint.Ranges String 指定范围内注解
      */
     public static IConstraint rangesConstraint(String ... strings) {
         ArgUtil.notEmpty(strings, "strings");

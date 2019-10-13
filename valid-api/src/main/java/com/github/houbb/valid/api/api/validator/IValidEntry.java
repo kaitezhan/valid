@@ -8,10 +8,11 @@ import java.util.List;
 
 /**
  * 校验明细信息接口
+ * TODO: ICondition 的自定义和 @Condition 一起，后期支持。
  * @author binbin.hou
  * @since 0.1.0
  */
-public interface IValidatorEntry {
+public interface IValidEntry {
 
     /**
      * 待校验的值
@@ -40,7 +41,7 @@ public interface IValidatorEntry {
      * @return this
      * @since 0.1.0
      */
-    IValidatorEntry message(final String message);
+    IValidEntry message(final String message);
 
     /**
      * 约束提示信息
@@ -55,7 +56,7 @@ public interface IValidatorEntry {
      * @since 0.1.0
      * @return this
      */
-    IValidatorEntry group(final Class... groupClass);
+    IValidEntry group(final Class... groupClass);
 
     /**
      * 约束分组信息

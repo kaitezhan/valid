@@ -1,7 +1,6 @@
 package com.github.houbb.valid.test.jsr.constraint;
 
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.core.api.validator.entry.ValidatorEntryFactory;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
@@ -15,7 +14,7 @@ public class AssertTrueConstraintTest {
 
     @Test
     public void passTest() {
-        IResult result = ValidBs.on(true, ValidatorEntryFactory.of(JsrConstraints.assertTrueConstraint()))
+        IResult result = ValidBs.on(true, JsrConstraints.assertTrueConstraint())
             .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -23,7 +22,7 @@ public class AssertTrueConstraintTest {
 
     @Test
     public void passNullTest() {
-        IResult result = ValidBs.on(null, ValidatorEntryFactory.of(JsrConstraints.assertTrueConstraint()))
+        IResult result = ValidBs.on(null, JsrConstraints.assertTrueConstraint())
                 .result();
         Assert.assertTrue(result.pass());
         System.out.println(result);
@@ -31,7 +30,7 @@ public class AssertTrueConstraintTest {
 
     @Test
     public void notPassTest() {
-        IResult result = ValidBs.on(false, ValidatorEntryFactory.of(JsrConstraints.assertTrueConstraint()))
+        IResult result = ValidBs.on(false, JsrConstraints.assertTrueConstraint())
                 .valid()
                 .result();
         Assert.assertFalse(result.pass());

@@ -1,8 +1,9 @@
 package com.github.houbb.valid.core.api.validator.entry;
 
+import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.valid.api.api.condition.ICondition;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
-import com.github.houbb.valid.api.api.validator.IValidatorEntry;
+import com.github.houbb.valid.api.api.validator.IValidEntry;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -26,16 +27,36 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.1.0
  */
-public class DefaultValidatorEntry implements IValidatorEntry {
+public class ValidEntry implements IValidEntry {
 
+    /**
+     * 待验证的值
+     * @since 0.1.0
+     */
     private Object value;
 
+    /**
+     * 约束实现
+     * @since 0.1.0
+     */
     private IConstraint constraint;
 
+    /**
+     * 约束对应的生效条件
+     * @since 0.1.0
+     */
     private ICondition condition;
 
+    /**
+     * 约束对应的消息提示
+     * @since 0.1.0
+     */
     private String message;
 
+    /**
+     * 分组信息
+     * @since 0.1.0
+     */
     private Class[] group;
 
     /**
@@ -50,8 +71,22 @@ public class DefaultValidatorEntry implements IValidatorEntry {
      */
     private List<Field> fieldList;
 
-    public static DefaultValidatorEntry newInstance() {
-        return new DefaultValidatorEntry();
+    /**
+     * 私有化构造器
+     * @since 0.1.2
+     */
+    private ValidEntry(){}
+
+    /**
+     * 创建一个对象实例
+     * @param constraint 约束实现
+     * @return 验证明细
+     * @since 0.1.2
+     */
+    public static ValidEntry of(final IConstraint constraint) {
+        ValidEntry validEntry = new ValidEntry();
+        validEntry.constraint(constraint);
+        return validEntry;
     }
 
     @Override
@@ -59,7 +94,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return value;
     }
 
-    public DefaultValidatorEntry value(Object value) {
+    public ValidEntry value(Object value) {
         this.value = value;
         return this;
     }
@@ -69,7 +104,9 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return constraint;
     }
 
-    public DefaultValidatorEntry constraint(IConstraint constraint) {
+    public ValidEntry constraint(IConstraint constraint) {
+        ArgUtil.notNull(constraint, "constraint");
+
         this.constraint = constraint;
         return this;
     }
@@ -79,7 +116,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return condition;
     }
 
-    public DefaultValidatorEntry condition(ICondition condition) {
+    public ValidEntry condition(ICondition condition) {
         this.condition = condition;
         return this;
     }
@@ -90,7 +127,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
     }
 
     @Override
-    public DefaultValidatorEntry message(String message) {
+    public ValidEntry message(String message) {
         this.message = message;
         return this;
     }
@@ -101,7 +138,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
     }
 
     @Override
-    public DefaultValidatorEntry group(Class... group) {
+    public ValidEntry group(Class... group) {
         this.group = group;
         return this;
     }
@@ -111,7 +148,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return instance;
     }
 
-    public DefaultValidatorEntry instance(Object instance) {
+    public ValidEntry instance(Object instance) {
         this.instance = instance;
         return this;
     }
@@ -121,7 +158,7 @@ public class DefaultValidatorEntry implements IValidatorEntry {
         return fieldList;
     }
 
-    public DefaultValidatorEntry fieldList(List<Field> fieldList) {
+    public ValidEntry fieldList(List<Field> fieldList) {
         this.fieldList = fieldList;
         return this;
     }

@@ -17,9 +17,9 @@ class EnumRangesConstraint extends AbstractContainsConstraint {
     /**
      * 枚举类
      */
-    private Class<Enum> enumClass;
+    private Class<? extends Enum> enumClass;
 
-    public EnumRangesConstraint(Class<Enum> enumClass) {
+    public EnumRangesConstraint(Class<? extends Enum> enumClass) {
         this.enumClass = enumClass;
     }
 
@@ -34,7 +34,7 @@ class EnumRangesConstraint extends AbstractContainsConstraint {
      * @return 枚举说明
      * @since 0.0.9
      */
-    private List<String> getEnumValues(Class<Enum> enumClass) {
+    private List<String> getEnumValues(Class<? extends Enum> enumClass) {
         Enum[] enums = enumClass.getEnumConstants();
 
         return ArrayUtil.toList(enums, new IHandler<Enum, String>() {

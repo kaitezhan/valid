@@ -126,6 +126,26 @@ public final class JsrConstraints {
     }
 
     /**
+     * 最大值默认为 {@link Integer#MAX_VALUE}
+     * @param min 最小值
+     * @return 约束条件
+     * @since 0.1.2
+     */
+    public static IConstraint sizeConstraintMin(final int min) {
+        return new SizeConstraint(min, Integer.MAX_VALUE);
+    }
+
+    /**
+     * 最小值默认为 0
+     * @param max 最大值
+     * @return 约束条件
+     * @since 0.1.2
+     */
+    public static IConstraint sizeConstraintMax(final int max) {
+        return new SizeConstraint(0, max);
+    }
+
+    /**
      * 位数约束
      * @param integer 整数
      * @param fraction 精度

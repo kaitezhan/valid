@@ -40,4 +40,11 @@ public @interface Ranges {
      */
     String message() default "";
 
+    /**
+     * 分组信息
+     * @return 分组类
+     * @since 0.1.2
+     */
+    Class[] group() default {};
+
 }

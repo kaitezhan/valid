@@ -12,8 +12,8 @@ import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.Optional;
 import com.github.houbb.valid.api.annotation.constraint.Constraint;
 import com.github.houbb.valid.api.api.constraint.annotation.IAnnotationConstraint;
-import com.github.houbb.valid.api.api.validator.IValidatorEntry;
-import com.github.houbb.valid.core.api.validator.entry.DefaultValidatorEntry;
+import com.github.houbb.valid.api.api.validator.IValidEntry;
+import com.github.houbb.valid.core.api.validator.entry.ValidEntry;
 import com.github.houbb.valid.core.constant.AnnotationConst;
 
 import javax.validation.Valid;
@@ -52,32 +52,30 @@ public class DefaultValidator extends AbstractValidator {
      */
     @Override
     @SuppressWarnings("unchecked")
-    protected List<IValidatorEntry> buildValidatorEntryList(final List<Field> fieldList,
-                                                 final Field field,
-                                                 final Object instance) {
-        final List<IValidatorEntry> validatorEntryList = Guavas.newArrayList();
+    protected List<IValidEntry> buildValidatorEntryList(final List<Field> fieldList,
+                                                        final Field field,
+                                                        final Object instance) {
+        final List<IValidEntry> validatorEntryList = Guavas.newArrayList();
 
         Annotation[] annotations = field.getAnnotations();
 
         for(Annotation annotation : annotations) {
             Optional<IAnnotationConstraint> constraintOptional = constraintOptional(annotation);
-            if(constraintOptional.isNotPresent()) {
-                continue;
-            }
-
-            // 构建上下文
-            IAnnotationConstraint annotationConstraint = constraintOptional.get();
-            annotationConstraint.initialize(annotation);
             final Object fieldValue = ReflectFieldUtil.getValue(field, instance);
 
-            IValidatorEntry validatorEntry = DefaultValidatorEntry.newInstance()
-                    .message(getMessage(annotation))
-                    .group(getGroup(annotation))
-                    .constraint(annotationConstraint)
-                    .fieldList(fieldList)
-                    .instance(instance)
-                    .value(fieldValue);
-            validatorEntryList.add(validatorEntry);
+            // 当前字段约束存在
+            if(constraintOptional.isPresent()) {
+                // 构建上下文
+                IAnnotationConstraint annotationConstraint = constraintOptional.get();
+                annotationConstraint.initialize(annotation);
+                IValidEntry validatorEntry = ValidEntry.of(annotationConstraint)
+                        .message(getMessage(annotation))
+                        .group(getGroup(annotation))
+                        .fieldList(fieldList)
+                        .instance(instance)
+                        .value(fieldValue);
+                validatorEntryList.add(validatorEntry);
+            }
 
             // 进一步处理 valid 明细
             Valid valid = field.getAnnotation(Valid.class);
@@ -88,7 +86,7 @@ public class DefaultValidator extends AbstractValidator {
                 if(ClassTypeUtil.isCollection(fieldClazz)) {
                     Collection collection = (Collection)fieldValue;
                     for(Object entry : collection) {
-                        List<IValidatorEntry> entryList = this.buildValidatorEntryList(entry);
+                        List<IValidEntry> entryList = this.buildValidatorEntryList(entry);
                         validatorEntryList.addAll(entryList);
                     }
                 } else if(ClassTypeUtil.isArray(fieldClazz)) {
@@ -96,14 +94,14 @@ public class DefaultValidator extends AbstractValidator {
                     ArrayUtil.toList(fieldValue, new IHandler() {
                         @Override
                         public Object handle(Object o) {
-                            List<IValidatorEntry> entryList = buildValidatorEntryList(o);
+                            List<IValidEntry> entryList = buildValidatorEntryList(o);
                             validatorEntryList.addAll(entryList);
                             return o;
                         }
                     });
                 } else {
                     // 其他场景
-                    List<IValidatorEntry> entryList = buildValidatorEntryList(fieldValue);
+                    List<IValidEntry> entryList = buildValidatorEntryList(fieldValue);
                     validatorEntryList.addAll(entryList);
                 }
             }

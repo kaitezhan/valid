@@ -1,6 +1,9 @@
 package com.github.houbb.valid.test.model;
 
+import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.annotation.constraint.AllEquals;
+import com.github.houbb.valid.core.annotation.constraint.EnumRanges;
+import com.github.houbb.valid.core.annotation.constraint.HasNotNull;
 import com.github.houbb.valid.core.annotation.constraint.Ranges;
 
 /**
@@ -13,7 +16,13 @@ public class User {
     /**
      * 名称
      */
+    @HasNotNull({"nickName"})
     private String name;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
 
     /**
      * 原始密码
@@ -31,6 +40,12 @@ public class User {
      */
     @Ranges({"boy", "girl"})
     private String sex;
+
+    /**
+     * 失败类型枚举
+     */
+    @EnumRanges(FailTypeEnum.class)
+    private String failType;
 
     public String name() {
         return name;
@@ -68,4 +83,21 @@ public class User {
         return this;
     }
 
+    public String nickName() {
+        return nickName;
+    }
+
+    public User nickName(String nickName) {
+        this.nickName = nickName;
+        return this;
+    }
+
+    public String failType() {
+        return failType;
+    }
+
+    public User failType(String failType) {
+        this.failType = failType;
+        return this;
+    }
 }

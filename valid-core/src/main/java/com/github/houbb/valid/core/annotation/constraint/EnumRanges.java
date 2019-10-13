@@ -30,12 +30,19 @@ public @interface EnumRanges {
      * 当前字段必须在枚举值指定的范围内
      * @return 指定的字段列表
      */
-    Class<Enum> value();
+    Class<? extends Enum> value();
 
     /**
      * 提示消息
      * @return 错误提示
      */
     String message() default "";
+
+    /**
+     * 分组信息
+     * @return 分组类
+     * @since 0.1.2
+     */
+    Class[] group() default {};
 
 }

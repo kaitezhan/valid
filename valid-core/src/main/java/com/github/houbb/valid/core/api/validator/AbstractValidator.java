@@ -13,7 +13,7 @@ import com.github.houbb.valid.api.api.fail.IFail;
 import com.github.houbb.valid.api.api.fail.IFailContext;
 import com.github.houbb.valid.api.api.validator.IValidator;
 import com.github.houbb.valid.api.api.validator.IValidatorContext;
-import com.github.houbb.valid.api.api.validator.IValidatorEntry;
+import com.github.houbb.valid.api.api.validator.IValidEntry;
 import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.api.condition.Conditions;
 import com.github.houbb.valid.core.api.condition.chain.ConditionChains;
@@ -44,9 +44,9 @@ public abstract class AbstractValidator implements IValidator {
      * @since 0.1.1
      */
 
-    protected abstract List<IValidatorEntry> buildValidatorEntryList(final List<Field> fieldList,
-                                                            final Field field,
-                                                            final Object instance);
+    protected abstract List<IValidEntry> buildValidatorEntryList(final List<Field> fieldList,
+                                                                 final Field field,
+                                                                 final Object instance);
 
     /**
      * 构建验证明细列表
@@ -56,7 +56,7 @@ public abstract class AbstractValidator implements IValidator {
      * @return 验证明细列表
      * @since 0.1.0
      */
-    protected List<IValidatorEntry> buildValidatorEntryList(final Object object) {
+    protected List<IValidEntry> buildValidatorEntryList(final Object object) {
         if(ObjectUtil.isNull(object)) {
             return Collections.emptyList();
         }
@@ -75,9 +75,9 @@ public abstract class AbstractValidator implements IValidator {
             return Collections.emptyList();
         }
 
-        List<IValidatorEntry> validatorEntryList = Guavas.newArrayList();
+        List<IValidEntry> validatorEntryList = Guavas.newArrayList();
         for(Field field : fieldList) {
-            List<IValidatorEntry> fieldValidatorEntry = buildValidatorEntryList(fieldList, field, object);
+            List<IValidEntry> fieldValidatorEntry = buildValidatorEntryList(fieldList, field, object);
             validatorEntryList.addAll(fieldValidatorEntry);
         }
 
@@ -89,14 +89,14 @@ public abstract class AbstractValidator implements IValidator {
         List<IConstraintResult> resultList = Guavas.newArrayList();
 
         // 构建完整的校验对象。
-        List<IValidatorEntry> beanValidatorEntries = buildValidatorEntryList(context.value());
-        List<IValidatorEntry> allValidatorEntries = Guavas.newArrayList(context.validatorEntries());
+        List<IValidEntry> beanValidatorEntries = buildValidatorEntryList(context.value());
+        List<IValidEntry> allValidatorEntries = Guavas.newArrayList(context.validatorEntries());
         allValidatorEntries.addAll(beanValidatorEntries);
         final Class[] validGroup = context.group();
         final IFail fail = context.fail();
 
         // 循环执行。
-        for(IValidatorEntry validatorEntry : allValidatorEntries) {
+        for(IValidEntry validatorEntry : allValidatorEntries) {
             if(conditionConstraint(validatorEntry, validGroup)) {
                 // 构建约束上下文
                 // fail 对于 chain 也要保证语义的一致性。
@@ -142,7 +142,7 @@ public abstract class AbstractValidator implements IValidator {
      * @return 是否需要执行
      * @since 0.0.5
      */
-    private boolean conditionConstraint(final IValidatorEntry validatorEntry,
+    private boolean conditionConstraint(final IValidEntry validatorEntry,
                                         final Class[] validGroup) {
         // 是否满足执行条件
         DefaultConditionContext conditionContext = DefaultConditionContext
