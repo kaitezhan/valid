@@ -101,7 +101,7 @@ Maven 3.X+
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>valid-jsr</artifactId>
-    <version>${project.version}</version>
+    <version>0.1.2</version>
 </dependency>
 ```
 
