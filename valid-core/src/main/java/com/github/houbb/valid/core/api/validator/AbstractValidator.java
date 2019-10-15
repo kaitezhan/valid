@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.validator;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.support.filter.IFilter;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
@@ -140,6 +141,29 @@ public abstract class AbstractValidator implements IValidator {
         return resultList;
     }
 
+    /**
+     * 构建符合条件的列表
+     * @param context 上下文
+     * @return 新的列表
+     * @since 0.1.3
+     */
+    private List<IValidEntry> buildConditionValidEntries(final IValidatorContext context) {
+        List<IValidEntry> validEntries = context.validatorEntries();
+
+        if(CollectionUtil.isEmpty(validEntries)) {
+            return validEntries;
+        }
+
+        final Class[] validGroup = context.group();
+
+        return CollectionUtil.filterList(validEntries, new IFilter<IValidEntry>() {
+            @Override
+            public boolean filter(IValidEntry iValidEntry) {
+                return conditionConstraint(iValidEntry, validGroup);
+            }
+        });
+    }
+
 
     /**
      * 符合指定条件的约束信息
@@ -150,7 +174,7 @@ public abstract class AbstractValidator implements IValidator {
      * @return 是否需要执行
      * @since 0.0.5
      */
-    protected boolean conditionConstraint(final IValidEntry validatorEntry,
+    private boolean conditionConstraint(final IValidEntry validatorEntry,
                                         final Class[] validGroup) {
         // 是否满足执行条件
         DefaultConditionContext conditionContext = DefaultConditionContext
