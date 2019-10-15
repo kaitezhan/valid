@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * 校验明细信息接口
- * TODO: ICondition 的自定义和 @Condition 一起，后期支持。
  * @author binbin.hou
  * @since 0.1.0
  */

@@ -20,4 +20,17 @@ public class AnnotationConst {
      * @since 0.0.9
      */
     public static final String MESSAGE = "message";
+
+    /**
+     * 包含
+     * @since 0.1.3
+     */
+    public static final String INCLUDE = "include";
+
+    /**
+     * 排除
+     * @since 0.1.3
+     */
+    public static final String EXCLUDE = "exclude";
+
 }

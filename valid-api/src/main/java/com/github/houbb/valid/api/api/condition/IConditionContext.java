@@ -28,5 +28,35 @@ public interface IConditionContext {
      */
     Class[] validGroup();
 
+    /**
+     * 设置属性值
+     * @param key key
+     * @param object 值
+     * @return this
+     * @since 0.1.3
+     */
+    IConditionContext putAttr(final String key, final Object object);
+
+    /**
+     * 获取属性值
+     * @param key key
+     * @return this
+     * @since 0.1.3
+     */
+    Object getAttr(final String key);
+
+    /**
+     * 根据字段名称，获取对应的字段值
+     * （1）如果对应字段列表为空，或者对象实例为 null，则返回 null
+     * （2）返回名称和指定 fieldName 相同的才返回对应的值信息。
+     *
+     * TRADE-OFF:
+     *
+     * 这样对于字段间的关系可以增强，但是不适合暴露太多信息，会让使用者变得混乱。
+     * @param fieldName 字段名称
+     * @return 该字段的值
+     * @since 0.1.3
+     */
+    Object getFieldValue(final String fieldName);
 
 }
