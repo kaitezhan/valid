@@ -28,6 +28,7 @@ import java.util.List;
 
 /**
  * 抽象的验证器实现
+ *
  * @author binbin.hou
  * @since 0.1.0
  */
@@ -36,8 +37,9 @@ public abstract class AbstractValidator implements IValidator {
 
     /**
      * 构建验证明细列表
+     *
      * @param context 上下文信息
-     * @param field 字段信息
+     * @param field   字段信息
      * @return 验证明细列表
      * @since 0.1.1
      */
@@ -49,20 +51,21 @@ public abstract class AbstractValidator implements IValidator {
      * （1）null 对象直接返回
      * （2）map/抽象类接口/jdk自带类/基础变量 直接返回
      * （3）字段列表为空的，直接返回。
-     * @param context 上下文信息
+     *
+     * @param context  上下文信息
      * @param instance 验证对象属性值
      * @return 验证明细列表
      * @since 0.1.0
      */
     protected List<IValidEntry> buildValidatorEntryList(final IValidEntryInstanceContext context,
                                                         final Object instance) {
-        if(ObjectUtil.isNull(instance)) {
+        if (ObjectUtil.isNull(instance)) {
             return Collections.emptyList();
         }
 
         final Class clazz = instance.getClass();
         // 不处理的类型
-        if(ClassTypeUtil.isMap(clazz)
+        if (ClassTypeUtil.isMap(clazz)
                 || ClassTypeUtil.isAbstractOrInterface(clazz)
                 || ClassTypeUtil.isPrimitive(clazz)
                 || ClassTypeUtil.isJdk(clazz)) {
@@ -70,7 +73,7 @@ public abstract class AbstractValidator implements IValidator {
         }
         // 字段为空
         List<Field> fieldList = ClassUtil.getAllFieldList(clazz);
-        if(CollectionUtil.isEmpty(fieldList)) {
+        if (CollectionUtil.isEmpty(fieldList)) {
             return Collections.emptyList();
         }
 
@@ -81,7 +84,7 @@ public abstract class AbstractValidator implements IValidator {
                 .group(context.group())
                 .fieldList(fieldList)
                 .instance(instance);
-        for(Field field : fieldList) {
+        for (Field field : fieldList) {
             List<IValidEntry> fieldValidatorEntry = this.buildValidatorEntryList(fieldContext, field);
             validatorEntryList.addAll(fieldValidatorEntry);
         }
@@ -93,47 +96,45 @@ public abstract class AbstractValidator implements IValidator {
     public List<IConstraintResult> valid(IValidatorContext context) {
         List<IConstraintResult> resultList = Guavas.newArrayList();
 
-        // 构建完整的校验对象。
-        List<IValidEntry> allValidatorEntries = Guavas.newArrayList(context.validatorEntries());
+        // 构建符合条件的自定义验证列表
+        List<IValidEntry> allValidatorEntries = buildConditionValidEntries(context);
 
-        // 实例上下文
+        // 获取 bean 对应的校验信息
         ValidEntryInstanceContext instanceContext = ValidEntryInstanceContext.newInstance()
                 .group(context.group());
         List<IValidEntry> beanValidatorEntries = buildValidatorEntryList(instanceContext, context.value());
         allValidatorEntries.addAll(beanValidatorEntries);
-        final Class[] validGroup = context.group();
+
         final IFail fail = context.fail();
 
         // 循环执行。
-        for(IValidEntry validatorEntry : allValidatorEntries) {
-            if(conditionConstraint(validatorEntry, validGroup)) {
-                // 构建约束上下文
-                // fail 对于 chain 也要保证语义的一致性。
-                IConstraintContext constraintContext = DefaultConstraintContext.newInstance()
-                        .fail(fail)
-                        .value(validatorEntry.value())
-                        .message(validatorEntry.message())
-                        .instance(validatorEntry.instance())
-                        .fieldList(validatorEntry.fieldList());
+        for (IValidEntry validatorEntry : allValidatorEntries) {
+            // 构建约束上下文
+            // fail 对于 chain 也要保证语义的一致性。
+            IConstraintContext constraintContext = DefaultConstraintContext.newInstance()
+                    .fail(fail)
+                    .value(validatorEntry.value())
+                    .message(validatorEntry.message())
+                    .instance(validatorEntry.instance())
+                    .fieldList(validatorEntry.fieldList());
 
-                IConstraintResult constraintResult = validatorEntry
-                        .constraint()
-                        .constraint(constraintContext);
+            IConstraintResult constraintResult = validatorEntry
+                    .constraint()
+                    .constraint(constraintContext);
 
-                resultList.add(constraintResult);
+            resultList.add(constraintResult);
 
-                // 根据失败实现进行处理 @since0.0.7
-                if(!constraintResult.pass()) {
-                    IFailContext failContext = DefaultFailContext.newInstance()
-                            .constraintResult(constraintResult)
-                            .constraintResultList(resultList);
+            // 根据失败实现进行处理 @since0.0.7
+            if (!constraintResult.pass()) {
+                IFailContext failContext = DefaultFailContext.newInstance()
+                        .constraintResult(constraintResult)
+                        .constraintResultList(resultList);
 
-                    FailTypeEnum failTypeEnum = fail.fail(failContext);
-                    if(FailTypeEnum.FAIL_FAST.equals(failTypeEnum)) {
-                        break;
-                    }
-                    // 后期可以添加更加丰富的失败处理策略
+                FailTypeEnum failTypeEnum = fail.fail(failContext);
+                if (FailTypeEnum.FAIL_FAST.equals(failTypeEnum)) {
+                    break;
                 }
+                // 后期可以添加更加丰富的失败处理策略
             }
         }
 
@@ -143,25 +144,27 @@ public abstract class AbstractValidator implements IValidator {
 
     /**
      * 构建符合条件的列表
+     *
      * @param context 上下文
      * @return 新的列表
      * @since 0.1.3
      */
     private List<IValidEntry> buildConditionValidEntries(final IValidatorContext context) {
+        List<IValidEntry> resultList = Guavas.newArrayList();
+
         List<IValidEntry> validEntries = context.validatorEntries();
 
-        if(CollectionUtil.isEmpty(validEntries)) {
-            return validEntries;
+        if (CollectionUtil.isEmpty(validEntries)) {
+            return resultList;
         }
 
         final Class[] validGroup = context.group();
-
-        return CollectionUtil.filterList(validEntries, new IFilter<IValidEntry>() {
-            @Override
-            public boolean filter(IValidEntry iValidEntry) {
-                return conditionConstraint(iValidEntry, validGroup);
+        for(IValidEntry iValidEntry : validEntries) {
+            if(conditionConstraint(iValidEntry, validGroup)) {
+                resultList.add(iValidEntry);
             }
-        });
+        }
+        return resultList;
     }
 
 
@@ -169,8 +172,9 @@ public abstract class AbstractValidator implements IValidator {
      * 符合指定条件的约束信息
      * （1）判断 condition
      * （2）判断 group 信息
+     *
      * @param validatorEntry 验证器明细
-     * @param validGroup 待验证分组信息
+     * @param validGroup     待验证分组信息
      * @return 是否需要执行
      * @since 0.0.5
      */
