@@ -116,6 +116,7 @@ public class ValidEntry implements IValidEntry {
         return condition;
     }
 
+    @Override
     public ValidEntry condition(ICondition condition) {
         this.condition = condition;
         return this;

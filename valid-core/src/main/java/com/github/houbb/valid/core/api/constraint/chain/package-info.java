@@ -25,7 +25,7 @@
  * </pre>
  *
  * 这里的所有的约束条件，除却 constraint 其他都是认为可以共用的。
- * 这里要考虑和 when() message() group() 等各种信息的兼容。
+ * 这里要考虑和 when() message() groupCondition() 等各种信息的兼容。
  * @since 0.0.4
  */
 package com.github.houbb.valid.core.api.constraint.chain;

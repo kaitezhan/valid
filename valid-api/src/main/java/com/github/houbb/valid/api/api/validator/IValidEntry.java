@@ -35,6 +35,14 @@ public interface IValidEntry {
     ICondition condition();
 
     /**
+     * 设置生效条件
+     * @param condition 生效条件
+     * @return this
+     * @since 0.1.3
+     */
+    IValidEntry condition(final ICondition condition);
+
+    /**
      * 设置消息信息
      * @param message 消息
      * @return this

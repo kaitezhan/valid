@@ -13,7 +13,7 @@ public class AnnotationConst {
      * 分组属性
      * @since 0.0.9
      */
-    public static final String GROUP = "group";
+    public static final String GROUP = "groupCondition";
 
     /**
      * 消息属性

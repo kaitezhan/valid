@@ -51,7 +51,7 @@ public final class ValidBs {
     /**
      * 验证组信息
      * （1）如果不指定，则说明验证所有约束条件
-     * （2）如果指定列表，则只验证符合当前 group 的约束条件。
+     * （2）如果指定列表，则只验证符合当前 groupCondition 的约束条件。
      * @since 0.1.0
      */
     private Class[] group;

@@ -10,7 +10,7 @@ import com.github.houbb.valid.api.api.condition.IConditionContext;
  *
  * 只关心当前实现，多个规则采用链式的形式。
  *
- * （1）比较当前 group 信息和 整体的分组信息
+ * （1）比较当前 groupCondition 信息和 整体的分组信息
  *
  * @author binbin.hou
  * @since 0.0.2
@@ -33,7 +33,7 @@ public class GroupCondition implements ICondition {
 
         // 遍历比较，如果有一个匹配，则直接返回 true
         for(Class validClass : validGroup) {
-            //设置匹配的 group 到 context 中
+            //设置匹配的 groupCondition 到 context 中
             for(Class constraintGroupClass : group) {
                 if(validClass == constraintGroupClass) {
                     return true;

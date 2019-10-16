@@ -1,6 +1,7 @@
 package com.github.houbb.valid.core.api.condition;
 
 import com.github.houbb.heaven.support.instance.impl.Instances;
+import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.valid.api.api.condition.ICondition;
 
 /**
@@ -17,7 +18,7 @@ public final class Conditions {
      * @since 0.0.6
      * @return 条件实现
      */
-    public static ICondition alwaysTrue() {
+    public static ICondition alwaysTrueCondition() {
         return Instances.singleton(AlwaysTrueCondition.class);
     }
 
@@ -26,7 +27,7 @@ public final class Conditions {
      * @since 0.0.6
      * @return 条件实现
      */
-    public static ICondition alwaysFalse() {
+    public static ICondition alwaysFalseCondition() {
         return Instances.singleton(AlwaysFalseCondition.class);
     }
 
@@ -37,6 +38,50 @@ public final class Conditions {
      */
     public static ICondition groupCondition() {
         return Instances.singleton(GroupCondition.class);
+    }
+
+    /**
+     * 预期相等
+     * @param expect 预期值
+     * @param fieldName 字段名称
+     * @return 条件
+     * @since 0.1.3
+     */
+    public static ICondition equalsCondition(final String expect, final String fieldName) {
+        ArgUtil.notNull(expect, "expect");
+        return new EqualsCondition(expect, fieldName);
+    }
+
+    /**
+     * 预期相等
+     * @param expect 预期值
+     * @return 条件
+     * @since 0.1.3
+     */
+    public static ICondition equalsCondition(final String expect) {
+        return equalsCondition(expect, null);
+    }
+
+    /**
+     * 预期不相等
+     * @param expect 预期值
+     * @param fieldName 字段名称
+     * @return 条件
+     * @since 0.1.3
+     */
+    public static ICondition notEqualsCondition(final Object expect, final String fieldName) {
+        ArgUtil.notNull(expect, "expect");
+        return new NotEqualsCondition(expect, fieldName);
+    }
+
+    /**
+     * 预期不相等
+     * @param expect 预期值
+     * @return 条件
+     * @since 0.1.3
+     */
+    public static ICondition notEqualsCondition(final Object expect) {
+        return notEqualsCondition(expect, null);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.github.houbb.valid.core.api.validator;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.support.filter.IFilter;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.reflect.ClassTypeUtil;
@@ -171,7 +170,7 @@ public abstract class AbstractValidator implements IValidator {
     /**
      * 符合指定条件的约束信息
      * （1）判断 condition
-     * （2）判断 group 信息
+     * （2）判断 groupCondition 信息
      *
      * @param validatorEntry 验证器明细
      * @param validGroup     待验证分组信息

@@ -231,7 +231,7 @@ public class DefaultValidator extends AbstractValidator {
         final List<Pair<Annotation, IAnnotationCondition>> conditionAtList = pair.getValueOne();
         final List<Pair<Annotation, IAnnotationConstraint>> constraintAtList = pair.getValueTwo();
 
-        //1. 条件列表为空
+        //1. 条件列表为空，则默认返回所有的约束列表
         if (CollectionUtil.isEmpty(conditionAtList)) {
             return constraintAtList;
         }
@@ -304,8 +304,9 @@ public class DefaultValidator extends AbstractValidator {
         List<Pair<Annotation, IAnnotationConstraint>> resultList = Guavas.newArrayList();
         for (Pair<Annotation, IAnnotationConstraint> pair : constrainsList) {
             final Class annotationClass = pair.getValueOne().getClass();
-            //includes 包含 && excludes 不包含
-            if (ArrayUtil.contains(includes, annotationClass)
+            //includes 包含 或者为空 && excludes 不包含
+            if ((ArrayUtil.isEmpty(includes)
+                    || ArrayUtil.contains(includes, annotationClass))
                     && ArrayUtil.notContains(excludes, annotationClass)) {
                 resultList.add(pair);
             }
@@ -313,6 +314,7 @@ public class DefaultValidator extends AbstractValidator {
 
         return resultList;
     }
+
 
     /**
      * 构建注解信息
