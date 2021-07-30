@@ -86,4 +86,12 @@ public interface IValidEntry {
      */
     List<Field> fieldList();
 
+    /**
+     * 当前字段信息
+     *
+     * @return 字段
+     * @since 0.1.4
+     */
+    Field currentField();
+
 }

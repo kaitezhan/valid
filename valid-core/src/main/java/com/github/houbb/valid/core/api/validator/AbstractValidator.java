@@ -115,7 +115,8 @@ public abstract class AbstractValidator implements IValidator {
                     .value(validatorEntry.value())
                     .message(validatorEntry.message())
                     .instance(validatorEntry.instance())
-                    .fieldList(validatorEntry.fieldList());
+                    .fieldList(validatorEntry.fieldList())
+                    .currentField(validatorEntry.currentField());
 
             IConstraintResult constraintResult = validatorEntry
                     .constraint()

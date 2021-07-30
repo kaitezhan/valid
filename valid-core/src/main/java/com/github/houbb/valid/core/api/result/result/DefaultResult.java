@@ -1,5 +1,8 @@
 package com.github.houbb.valid.core.api.result.result;
 
+import com.github.houbb.heaven.support.handler.IHandler;
+import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.valid.api.api.constraint.IConstraintResult;
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.api.exception.ValidRuntimeException;
@@ -69,7 +72,15 @@ public class DefaultResult implements IResult {
     @Override
     public IResult throwsEx() {
         if(!pass) {
-            final String message = this.notPassList.get(0).message();
+            //fixed: 0.1.4 提示所有的消息
+            List<String> failMessages = CollectionUtil.toList(this.notPassList, new IHandler<IConstraintResult, String>() {
+                @Override
+                public String handle(IConstraintResult iConstraintResult) {
+                    return iConstraintResult.message();
+                }
+            });
+
+            final String message = StringUtil.join(failMessages);
             throw new ValidRuntimeException(message);
         }
         return this;

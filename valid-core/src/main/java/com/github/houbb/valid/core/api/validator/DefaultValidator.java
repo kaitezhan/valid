@@ -80,7 +80,8 @@ public class DefaultValidator extends AbstractValidator {
                     .group(getGroup(annotation))
                     .fieldList(fieldContext.fieldList())
                     .instance(instance)
-                    .value(fieldValue);
+                    .value(fieldValue)
+                    .currentField(field);
             validatorEntryList.add(validatorEntry);
         }
 

@@ -13,6 +13,7 @@ import com.github.houbb.valid.core.constant.ConstraintConst;
 import com.github.houbb.valid.core.i18n.I18N;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -95,9 +96,10 @@ public abstract class AbstractConstraint<T> implements IConstraint {
         }
 
         // 获取默认内置注解的 i18n 消息
+        String fieldNamePrefix = getFieldNamePrefix(context);
         Optional<String> i18nMsg = ConstraintConst.getMessageI18n(this.getClass());
         if(i18nMsg.isPresent()) {
-            return i18nMsg.get();
+            return fieldNamePrefix + i18nMsg.get();
         }
 
         final String expectValue = expectValue(context);
@@ -105,10 +107,28 @@ public abstract class AbstractConstraint<T> implements IConstraint {
 
         // 描述调整，
         if(StringUtil.isEmpty(expectValue)) {
-            return String.format(I18N.get(I18N.Key.MESSAGE_VALUE_NOT_EXPECTED), actualValue);
+            return fieldNamePrefix + String.format(I18N.get(I18N.Key.MESSAGE_VALUE_NOT_EXPECTED), actualValue);
         }
 
-        return String.format(I18N.get(I18N.Key.MESSAGE_EXPECT_BUT_ACTUAL), expectValue, actualValue);
+        return fieldNamePrefix + String.format(I18N.get(I18N.Key.MESSAGE_EXPECT_BUT_ACTUAL), expectValue, actualValue);
+    }
+
+    /**
+     * 获取字段名的前缀
+     *
+     * 当前字段可能不存在，则直接返回 EMPTY
+     * @param context 上下文
+     * @return 结果
+     * @since 0.1.4
+     */
+    private String getFieldNamePrefix(final IConstraintContext context) {
+        Field currentField = context.currentField();
+        if(ObjectUtil.isNull(currentField)) {
+            return StringUtil.EMPTY;
+        }
+
+        String fieldName = currentField.getName();
+        return fieldName+": ";
     }
 
     /**

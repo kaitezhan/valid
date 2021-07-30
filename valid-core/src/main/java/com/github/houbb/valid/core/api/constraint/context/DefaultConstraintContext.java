@@ -54,6 +54,12 @@ public class DefaultConstraintContext implements IConstraintContext {
      */
     private Object instance;
 
+    /**
+     * 当前字段
+     * @since 0.1.4
+     */
+    private Field currentField;
+
     public static DefaultConstraintContext newInstance() {
         return new DefaultConstraintContext();
     }
@@ -127,6 +133,17 @@ public class DefaultConstraintContext implements IConstraintContext {
 
     public DefaultConstraintContext instance(Object instance) {
         this.instance = instance;
+        return this;
+    }
+
+    @Override
+    public Field currentField() {
+        return currentField;
+    }
+
+    @Override
+    public DefaultConstraintContext currentField(Field currentField) {
+        this.currentField = currentField;
         return this;
     }
 }

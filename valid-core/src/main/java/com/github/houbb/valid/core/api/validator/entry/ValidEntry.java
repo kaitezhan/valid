@@ -72,6 +72,12 @@ public class ValidEntry implements IValidEntry {
     private List<Field> fieldList;
 
     /**
+     * 当前字段
+     * @since 0.1.4
+     */
+    private Field currentField;
+
+    /**
      * 私有化构造器
      * @since 0.1.2
      */
@@ -164,4 +170,13 @@ public class ValidEntry implements IValidEntry {
         return this;
     }
 
+    @Override
+    public Field currentField() {
+        return currentField;
+    }
+
+    public ValidEntry currentField(Field currentField) {
+        this.currentField = currentField;
+        return this;
+    }
 }

@@ -101,8 +101,70 @@ Maven 3.X+
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>valid-jsr</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.4</version>
 </dependency>
+```
+
+## 工具类
+
+`ValidHelper` 校验工具类提供了最简单的使用方式。
+
+failFast 快速失败;  failOver 全部验证后返回。
+
+```java
+User user = new User();
+user.sex("what").password("old").password2("new");
+
+ValidHelper.failOver(user);
+```
+
+会抛出 ValidRuntimeException 异常，异常的信息如下：
+
+```
+name: 值 <null> 不是预期值,password: 值 <old> 不是预期值,sex: 值 <what> 不是预期值
+```
+
+其中 User 的定义如下：
+
+```java
+public class User {
+
+    /**
+     * 名称
+     */
+    @HasNotNull({"nickName"})
+    private String name;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
+
+    /**
+     * 原始密码
+     */
+    @AllEquals("password2")
+    private String password;
+
+    /**
+     * 新密码
+     */
+    private String password2;
+
+    /**
+     * 性别
+     */
+    @Ranges({"boy", "girl"})
+    private String sex;
+
+    /**
+     * 失败类型枚举
+     */
+    @EnumRanges(FailTypeEnum.class)
+    private String failType;
+
+    //Getter and Setter
+}
 ```
 
 ## 例子
@@ -1099,14 +1161,7 @@ public interface IAnnotationConstraint<A extends Annotation> extends IConstraint
 
 [bean validation 2.0](https://beanvalidation.org/2.0/)
 
-## bean 验证框架
+# ROAD-MAP
 
-[hibernate validate](http://hibernate.org/validator/)
+- [ ] springboot 整合
 
-[apache bval](http://bval.apache.org/)
-
-## Fluent 框架
-
-[fluent-validator](https://github.com/neoremind/fluent-validator)
-
-[FluentValidation](https://github.com/JeremySkinner/FluentValidation)

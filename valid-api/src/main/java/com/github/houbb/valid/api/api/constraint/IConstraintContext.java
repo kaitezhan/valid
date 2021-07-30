@@ -2,6 +2,8 @@ package com.github.houbb.valid.api.api.constraint;
 
 import com.github.houbb.valid.api.api.fail.IFail;
 
+import java.lang.reflect.Field;
+
 /**
  * 约束条件上下文接口
  * @author binbin.hou
@@ -60,5 +62,20 @@ public interface IConstraintContext {
      * @since 0.0.9
      */
     Object getFieldValue(final String fieldName);
+
+    /**
+     * 当前字段
+     * @return 当前字段
+     * @since 0.1.4
+     */
+    Field currentField();
+
+    /**
+     * 当前字段
+     * @param field 设置当前字段
+     * @return 当前字段
+     * @since 0.1.4
+     */
+    IConstraintContext currentField(final Field field);
 
 }
