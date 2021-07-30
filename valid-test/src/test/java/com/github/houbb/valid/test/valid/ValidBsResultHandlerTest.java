@@ -1,7 +1,6 @@
 package com.github.houbb.valid.test.valid;
 
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.core.api.fail.Fails;
 import com.github.houbb.valid.core.api.result.ResultHandlers;
 import com.github.houbb.valid.core.bs.ValidBs;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
@@ -22,7 +21,7 @@ public class ValidBsResultHandlerTest {
     @Test
     public void simpleTest() {
         IResult result = ValidBs.on("12", JsrConstraints.sizeConstraintMin(2))
-                .result(ResultHandlers.simple())
+                .valid(ResultHandlers.simple())
                 .print();
 
         Assert.assertTrue(result.pass());
@@ -35,7 +34,7 @@ public class ValidBsResultHandlerTest {
     @Test
     public void detailTest() {
         IResult result = ValidBs.on("12", JsrConstraints.sizeConstraintMin(2))
-                .result(ResultHandlers.detail())
+                .valid(ResultHandlers.detail())
                 .print();
 
         Assert.assertTrue(result.pass());

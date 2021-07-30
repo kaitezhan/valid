@@ -198,7 +198,7 @@ public final class ValidBs {
      * @return this
      * @since 0.1.0
      */
-    public ValidBs valid(final IValidator validator) {
+    public ValidBs validator(final IValidator validator) {
         ArgUtil.notNull(validator, "validator");
 
         // 验证上下文构建
@@ -218,8 +218,8 @@ public final class ValidBs {
      * @return this
      * @since 0.1.0
      */
-    public ValidBs valid() {
-        return this.valid(DefaultValidator.getInstance());
+    public ValidBs validator() {
+        return this.validator(DefaultValidator.getInstance());
     }
 
     /**
@@ -231,12 +231,12 @@ public final class ValidBs {
      * @since 0.0.2
      * @param <T> 自定义处理结果泛型
      */
-    public <T> T result(final IResultHandler<T> resultHandler) {
+    public <T> T valid(final IResultHandler<T> resultHandler) {
         ArgUtil.notNull(resultHandler, "resultHandler");
 
         // 对结果进行处理
         if(!validated) {
-            this.valid();
+            this.validator();
         }
         return resultHandler.handle(this.constraintResults);
     }
@@ -246,8 +246,8 @@ public final class ValidBs {
      * @return 结果
      * @since 0.0.2
      */
-    public IResult result() {
-        return this.result(ResultHandlers.simple());
+    public IResult valid() {
+        return this.valid(ResultHandlers.simple());
     }
 
 }

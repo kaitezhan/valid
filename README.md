@@ -101,7 +101,7 @@ Maven 3.X+
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>valid-jsr</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
 </dependency>
 ```
 
@@ -109,13 +109,13 @@ Maven 3.X+
 
 `ValidHelper` 校验工具类提供了最简单的使用方式。
 
-failFast 快速失败;  failOver 全部验证后返回。
+failFast 快速失败结果;  failOver 全部验证后返回结果。
 
 ```java
 User user = new User();
 user.sex("what").password("old").password2("new");
 
-ValidHelper.failOver(user);
+ValidHelper.failOverThrow(user);
 ```
 
 会抛出 ValidRuntimeException 异常，异常的信息如下：

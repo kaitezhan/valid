@@ -26,7 +26,7 @@ public class ValidBsCoreBeanTest {
 
         IResult result = ValidBs.on(user)
                 .fail(Fails.failOver())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertFalse(result.pass());
@@ -40,7 +40,7 @@ public class ValidBsCoreBeanTest {
 
         IResult result = ValidBs.on(user)
                 .fail(Fails.failOver())
-                .result();
+                .valid();
 
         Assert.assertTrue(result.pass());
     }

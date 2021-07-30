@@ -7,8 +7,6 @@ import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Locale;
-
 /**
  * 失败处理策略验证
  * @author binbin.hou
@@ -25,7 +23,7 @@ public class ValidBsFailTest {
         IResult result = ValidBs.on("12", JsrConstraints.sizeConstraintMin(3),
                 JsrConstraints.patternConstraint("[678]{3}"))
                 .fail(Fails.failFast())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertEquals(1, result.notPassList().size());
@@ -40,7 +38,7 @@ public class ValidBsFailTest {
         IResult result = ValidBs.on("12", JsrConstraints.sizeConstraintMin(3),
                 JsrConstraints.patternConstraint("[678]{3}"))
                 .fail(Fails.failOver())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertEquals(2, result.notPassList().size());

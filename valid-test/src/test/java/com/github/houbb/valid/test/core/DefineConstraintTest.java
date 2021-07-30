@@ -3,10 +3,8 @@ package com.github.houbb.valid.test.core;
 import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.api.api.constraint.IConstraintContext;
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.api.constraint.AbstractConstraint;
 import com.github.houbb.valid.core.api.constraint.AbstractStrictConstraint;
-import com.github.houbb.valid.core.api.constraint.Constraints;
 import com.github.houbb.valid.core.bs.ValidBs;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +27,7 @@ public class DefineConstraintTest {
             protected boolean pass(IConstraintContext context, Object value) {
                 return value != null;
             }
-        }).result();
+        }).valid();
 
         Assert.assertFalse(result.pass());
     }
@@ -44,11 +42,11 @@ public class DefineConstraintTest {
         };
 
         IResult nullValid = ValidBs.on(null, assertTrueConstraint)
-                .result();
+                .valid();
         Assert.assertTrue(nullValid.pass());
 
         IResult falseValid = ValidBs.on(false, assertTrueConstraint)
-                .result();
+                .valid();
         Assert.assertFalse(falseValid.pass());
     }
 

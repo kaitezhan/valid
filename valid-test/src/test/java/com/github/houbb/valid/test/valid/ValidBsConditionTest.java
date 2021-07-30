@@ -44,13 +44,13 @@ public class ValidBsConditionTest {
 
         IResult result = ValidBs.on("12", validEntry.condition(condition))
                 .fail(Fails.failFast())
-                .result(ResultHandlers.detail())
+                .valid(ResultHandlers.detail())
                 .print();
         Assert.assertFalse(result.pass());
 
         IResult result2 = ValidBs.on("12", validEntry.condition(condition2))
                 .fail(Fails.failFast())
-                .result(ResultHandlers.detail())
+                .valid(ResultHandlers.detail())
                 .print();
         Assert.assertTrue(result2.pass());
     }

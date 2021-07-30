@@ -19,7 +19,7 @@ public class FutureConstraintTest {
     public void passTest() {
         Date testDate = DateUtil.getFormatDate("90120101", DateUtil.PURE_DATE_FORMAT);
         IResult result = ValidBs.on(testDate, JsrConstraints.futureConstraint())
-            .result();
+            .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -28,7 +28,7 @@ public class FutureConstraintTest {
     public void passInclusiveTest() {
         Date testDate = DateUtil.getFormatDate("90120101", DateUtil.PURE_DATE_FORMAT);
         IResult result = ValidBs.on(testDate, JsrConstraints.futureConstraint(new Date()))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -36,7 +36,7 @@ public class FutureConstraintTest {
     @Test
     public void passNullTest() {
         IResult result = ValidBs.on(null, JsrConstraints.futureConstraint(new Date()))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -45,8 +45,8 @@ public class FutureConstraintTest {
     public void notPassTest() {
         Date testDate = DateUtil.getFormatDate("20190101", DateUtil.PURE_DATE_FORMAT);
         IResult result = ValidBs.on(testDate, JsrConstraints.futureConstraint(new Date()))
-                .valid()
-                .result();
+                .validator()
+                .valid();
         Assert.assertFalse(result.pass());
         System.out.println(result);
     }
@@ -58,8 +58,8 @@ public class FutureConstraintTest {
     @Test(expected = ClassCastException.class)
     public void unSupportClassTypeTest() {
         IResult result = ValidBs.on(123, JsrConstraints.futureConstraint())
-                .valid()
-                .result();
+                .validator()
+                .valid();
         Assert.assertFalse(result.pass());
         System.out.println(result);
     }

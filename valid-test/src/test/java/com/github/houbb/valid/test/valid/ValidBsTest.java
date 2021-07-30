@@ -22,7 +22,7 @@ public class ValidBsTest {
     @Test
     public void helloValidTest() {
         IResult result = ValidBs.on(null, JsrConstraints.notNullConstraint())
-                .result()
+                .valid()
                 .print();
         Assert.assertFalse(result.pass());
     }
@@ -35,8 +35,8 @@ public class ValidBsTest {
         IResult result = ValidBs.on(null, JsrConstraints.notNullConstraint())
                 .fail(Fails.failFast())
                 .group()
-                .valid(DefaultValidator.getInstance())
-                .result()
+                .validator(DefaultValidator.getInstance())
+                .valid()
                 .print();
         Assert.assertFalse(result.pass());
     }
@@ -52,7 +52,7 @@ public class ValidBsTest {
 
         ValidBs.on("12", constraintChain)
                 .fail(Fails.failOver())
-                .result()
+                .valid()
                 .print();
     }
 
@@ -66,8 +66,8 @@ public class ValidBsTest {
                 .on("12", JsrConstraints.sizeConstraint(5, 10),
                         JsrConstraints.sizeConstraint(10, 20))
                 .fail(Fails.failOver())
-                .valid()
-                .result();
+                .validator()
+                .valid();
 
         Assert.assertEquals(2, result.notPassList().size());
         result.print();

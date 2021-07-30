@@ -15,7 +15,7 @@ public class SizeConstraintTest {
     @Test
     public void passTest() {
         IResult result = ValidBs.on("23", JsrConstraints.sizeConstraint(1,2))
-            .result();
+            .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -23,7 +23,7 @@ public class SizeConstraintTest {
     @Test
     public void passNullTest() {
         IResult result = ValidBs.on(null, JsrConstraints.sizeConstraint(1, 2))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -31,8 +31,8 @@ public class SizeConstraintTest {
     @Test
     public void notPassTest() {
         IResult result = ValidBs.on("12345", JsrConstraints.sizeConstraint(1, 2))
-                .valid()
-                .result();
+                .validator()
+                .valid();
         Assert.assertFalse(result.pass());
         System.out.println(result);
     }
@@ -44,8 +44,8 @@ public class SizeConstraintTest {
     @Test(expected = ClassCastException.class)
     public void unSupportClassTypeTest() {
         IResult result = ValidBs.on(12345, JsrConstraints.sizeConstraint(1, 2))
-                .valid()
-                .result();
+                .validator()
+                .valid();
     }
 
 }

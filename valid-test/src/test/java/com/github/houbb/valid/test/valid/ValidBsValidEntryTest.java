@@ -23,7 +23,7 @@ public class ValidBsValidEntryTest {
         IValidEntry validEntry = ValidEntry.of(JsrConstraints.notNullConstraint());
 
         IResult result = ValidBs.on(null, validEntry)
-            .result()
+            .valid()
             .print();
 
         Assert.assertFalse(result.pass());
@@ -39,8 +39,8 @@ public class ValidBsValidEntryTest {
                 .message("自定义：指定值不能为空");
 
         IResult result = ValidBs.on(null, validEntry)
-                .valid()
-                .result();
+                .validator()
+                .valid();
 
         Assert.assertEquals("自定义：指定值不能为空", result.notPassList().get(0).message());
     }
@@ -62,7 +62,7 @@ public class ValidBsValidEntryTest {
                 .on("12", firstEntry, otherEntry)
                 .group(String.class)
                 .fail(Fails.failOver())
-                .result();
+                .valid();
 
         Assert.assertEquals(1, result.notPassList().size());
     }

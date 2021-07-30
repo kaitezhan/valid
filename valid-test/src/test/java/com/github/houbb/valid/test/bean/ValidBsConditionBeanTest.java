@@ -27,8 +27,8 @@ public class ValidBsConditionBeanTest {
 
         IResult result = ValidBs.on(conditionUser)
                 .fail(Fails.failOver())
-                .valid(JsrValidator.getInstance())
-                .result(ResultHandlers.detail())
+                .validator(JsrValidator.getInstance())
+                .valid(ResultHandlers.detail())
                 .print();
 
         Assert.assertFalse(result.pass());
@@ -46,8 +46,8 @@ public class ValidBsConditionBeanTest {
 
         IResult result = ValidBs.on(conditionUser)
                 .fail(Fails.failOver())
-                .valid(JsrValidator.getInstance())
-                .result(ResultHandlers.detail())
+                .validator(JsrValidator.getInstance())
+                .valid(ResultHandlers.detail())
                 .print();
 
         Assert.assertFalse(result.pass());

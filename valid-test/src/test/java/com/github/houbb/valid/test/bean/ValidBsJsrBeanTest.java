@@ -45,8 +45,8 @@ public class ValidBsJsrBeanTest {
 
         IResult result = ValidBs.on(jsrUser)
                 .fail(Fails.failOver())
-                .valid(JsrValidator.getInstance())
-                .result()
+                .validator(JsrValidator.getInstance())
+                .valid()
                 .print();
 
         Assert.assertFalse(result.pass());
@@ -79,8 +79,8 @@ public class ValidBsJsrBeanTest {
         ;
         IResult result = ValidBs.on(jsrUser)
                 .fail(Fails.failOver())
-                .valid(JsrValidator.getInstance())
-                .result();
+                .validator(JsrValidator.getInstance())
+                .valid();
 
         Assert.assertTrue(result.pass());
     }

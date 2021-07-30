@@ -23,7 +23,7 @@ public class ValidBsI18NTest {
     public void i18nEnTest() {
         Locale.setDefault(Locale.ENGLISH);
         IResult result = ValidBs.on(null, JsrConstraints.notNullConstraint())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertEquals("Expect is <not null>, but actual is <null>.", result.notPassList().get(0).message());
@@ -37,7 +37,7 @@ public class ValidBsI18NTest {
     public void i18nZhTest() {
         Locale.setDefault(Locale.CHINESE);
         IResult result = ValidBs.on(null, JsrConstraints.notNullConstraint())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertEquals("预期值为 <not null>，实际值为 <null>", result.notPassList().get(0).message());

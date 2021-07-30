@@ -15,7 +15,7 @@ public class AssertTrueConstraintTest {
     @Test
     public void passTest() {
         IResult result = ValidBs.on(true, JsrConstraints.assertTrueConstraint())
-            .result();
+            .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -23,7 +23,7 @@ public class AssertTrueConstraintTest {
     @Test
     public void passNullTest() {
         IResult result = ValidBs.on(null, JsrConstraints.assertTrueConstraint())
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -31,8 +31,8 @@ public class AssertTrueConstraintTest {
     @Test
     public void notPassTest() {
         IResult result = ValidBs.on(false, JsrConstraints.assertTrueConstraint())
-                .valid()
-                .result();
+                .validator()
+                .valid();
         Assert.assertFalse(result.pass());
         System.out.println(result);
     }

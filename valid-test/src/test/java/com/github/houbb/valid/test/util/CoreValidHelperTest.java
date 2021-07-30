@@ -1,7 +1,8 @@
 package com.github.houbb.valid.test.util;
 
 import com.github.houbb.valid.api.exception.ValidRuntimeException;
-import com.github.houbb.valid.core.util.ValidHelper;
+import com.github.houbb.valid.core.util.CoreValidHelper;
+import com.github.houbb.valid.jsr.util.JsrValidHelper;
 import com.github.houbb.valid.test.model.User;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import org.junit.Test;
  * @author binbin.hou
  * @since 0.1.4
  */
-public class ValidHelperTest {
+public class CoreValidHelperTest {
 
     @Test
     public void failOverTest() {
@@ -19,7 +20,7 @@ public class ValidHelperTest {
             User user = new User();
             user.sex("what").password("old").password2("new");
 
-            ValidHelper.failOver(user);
+            JsrValidHelper.failOverThrow(user);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -30,7 +31,7 @@ public class ValidHelperTest {
         User user = new User();
         user.sex("what").password("old").password2("new");
 
-        ValidHelper.failFast(user);
+        CoreValidHelper.failFastThrow(user);
     }
 
 }

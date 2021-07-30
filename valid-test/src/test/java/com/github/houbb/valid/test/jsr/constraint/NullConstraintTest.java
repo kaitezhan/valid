@@ -15,7 +15,7 @@ public class NullConstraintTest {
     @Test
     public void nullPassTest() {
         IResult result = ValidBs.on(null, JsrConstraints.nullConstraint())
-            .result();
+            .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -23,8 +23,8 @@ public class NullConstraintTest {
     @Test
     public void nullNotPassTest() {
         IResult result = ValidBs.on("", JsrConstraints.nullConstraint())
-                .valid()
-                .result();
+                .validator()
+                .valid();
         Assert.assertFalse(result.pass());
         System.out.println(result);
     }

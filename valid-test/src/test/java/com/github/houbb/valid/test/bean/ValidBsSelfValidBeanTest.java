@@ -31,7 +31,7 @@ public class ValidBsSelfValidBeanTest {
 
         IResult result = ValidBs.on(selfValidUser)
                 .fail(Fails.failOver())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertFalse(result.pass());
@@ -49,7 +49,7 @@ public class ValidBsSelfValidBeanTest {
 
         IResult result = ValidBs.on(selfValidUser)
                 .fail(Fails.failOver())
-                .result()
+                .valid()
                 .print();
 
         Assert.assertTrue(result.pass());

@@ -18,7 +18,7 @@ public class DigitsConstraintTest {
     @Test
     public void passIntegerTest() {
         IResult result = ValidBs.on(12345, JsrConstraints.digitsConstraint(5))
-            .result();
+            .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -26,7 +26,7 @@ public class DigitsConstraintTest {
     @Test
     public void passLongTest() {
         IResult result = ValidBs.on(12345L, JsrConstraints.digitsConstraint(5))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -34,7 +34,7 @@ public class DigitsConstraintTest {
     @Test
     public void passStringTest() {
         IResult result = ValidBs.on("12345", JsrConstraints.digitsConstraint(5))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -43,7 +43,7 @@ public class DigitsConstraintTest {
     public void passBigIntegerTest() {
         BigInteger bigInteger = new BigInteger("12345");
         IResult result = ValidBs.on(bigInteger, JsrConstraints.digitsConstraint(5))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -52,7 +52,7 @@ public class DigitsConstraintTest {
     public void passBigDecimalTest() {
         BigDecimal bigInteger = new BigDecimal("12345");
         IResult result = ValidBs.on(bigInteger, JsrConstraints.digitsConstraint(5))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -60,7 +60,7 @@ public class DigitsConstraintTest {
     @Test
     public void passFractionTest() {
         IResult result = ValidBs.on("2.23", JsrConstraints.digitsConstraint(1,2))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -68,7 +68,7 @@ public class DigitsConstraintTest {
     @Test
     public void passNullTest() {
         IResult result = ValidBs.on(null, JsrConstraints.digitsConstraint(1, 2))
-                .result();
+                .valid();
         Assert.assertTrue(result.pass());
         System.out.println(result);
     }
@@ -76,8 +76,8 @@ public class DigitsConstraintTest {
     @Test
     public void notPassTest() {
         IResult result = ValidBs.on("123456", JsrConstraints.digitsConstraint(5))
-                .valid()
-                .result();
+                .validator()
+                .valid();
         Assert.assertFalse(result.pass());
         System.out.println(result);
     }
@@ -89,8 +89,8 @@ public class DigitsConstraintTest {
     @Test(expected = ClassCastException.class)
     public void unSupportClassTypeTest() {
         IResult result = ValidBs.on(12345, JsrConstraints.sizeConstraint(1, 2))
-                .valid()
-                .result();
+                .validator()
+                .valid();
     }
 
 }

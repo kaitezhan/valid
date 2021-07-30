@@ -1,7 +1,6 @@
 package com.github.houbb.valid.test.core;
 
 import com.github.houbb.valid.api.api.result.IResult;
-import com.github.houbb.valid.api.constant.enums.FailTypeEnum;
 import com.github.houbb.valid.core.api.constraint.Constraints;
 import com.github.houbb.valid.core.bs.ValidBs;
 import org.junit.Assert;
@@ -18,7 +17,7 @@ public class RangesConstraintTest {
     public void notPassTest() {
         IResult result = ValidBs.on("DEFINE", Constraints.rangesConstraint("FAIL_OVER",
                 "FAIL_FAST"))
-            .result();
+            .valid();
 
         Assert.assertFalse(result.pass());
     }
@@ -27,7 +26,7 @@ public class RangesConstraintTest {
     public void passTest(){
         IResult result = ValidBs.on("FAIL_OVER", Constraints.rangesConstraint("FAIL_OVER",
                 "FAIL_FAST"))
-                .result();
+                .valid();
 
         Assert.assertTrue(result.pass());
     }

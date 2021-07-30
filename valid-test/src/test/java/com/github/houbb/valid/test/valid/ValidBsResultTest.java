@@ -22,7 +22,7 @@ public class ValidBsResultTest {
     @Test(expected = ValidRuntimeException.class)
     public void methodsTest() {
         IResult result = ValidBs.on("12", JsrConstraints.sizeConstraintMin(3))
-                .result(ResultHandlers.detail())
+                .valid(ResultHandlers.detail())
                 .print()
                 .throwsEx();
 
