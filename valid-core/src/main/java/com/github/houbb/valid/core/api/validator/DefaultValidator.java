@@ -76,8 +76,6 @@ public class DefaultValidator extends AbstractValidator {
             IAnnotationConstraint annotationConstraint = pair.getValueTwo();
             annotationConstraint.initialize(annotation);
 
-
-
             IValidEntry validatorEntry = ValidEntry.of(annotationConstraint)
                     .message(getMessage(annotation))
                     .group(getGroup(annotation))
