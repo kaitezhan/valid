@@ -1,7 +1,16 @@
 package com.github.houbb.valid.jsr.util;
 
+import com.github.houbb.heaven.util.lang.reflect.ClassUtil;
+import com.github.houbb.heaven.util.util.Optional;
 import com.github.houbb.valid.api.api.constraint.annotation.IAnnotationConstraint;
 import com.github.houbb.valid.jsr.constraint.annotation.*;
+import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
+import org.hibernate.validator.constraints.br.TituloEleitoral;
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.PESEL;
+import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.validation.Constraint;
 import javax.validation.constraints.*;
@@ -20,23 +29,48 @@ public final class JsrAtConstraintMapUtil {
     private JsrAtConstraintMapUtil() {
     }
 
-    private static final Map<Class<? extends Annotation>, IAnnotationConstraint> MAP;
+    //FIXED 1.6.0 避免相同的注解，属性被覆盖。
+    private static final Map<Class<? extends Annotation>, Class<? extends IAnnotationConstraint>> MAP;
 
     static {
-        MAP = new HashMap<>(16);
-        MAP.put(Null.class, new AtNullConstraint());
-        MAP.put(NotNull.class, new AtNotNullConstraint());
-        MAP.put(AssertTrue.class, new AtAssertTrueConstraint());
-        MAP.put(AssertFalse.class, new AtAssertFalseConstraint());
-        MAP.put(Past.class, new AtPastConstraint());
-        MAP.put(Future.class, new AtFutureConstraint());
-        MAP.put(Pattern.class, new AtPatternConstraint());
-        MAP.put(Size.class, new AtSizeConstraint());
-        MAP.put(Min.class, new AtMinConstraint());
-        MAP.put(Max.class, new AtMaxConstraint());
-        MAP.put(DecimalMax.class, new AtDecimalMaxConstraint());
-        MAP.put(DecimalMin.class, new AtDecimalMinConstraint());
-        MAP.put(Digits.class, new AtDigitsConstraint());
+        MAP = new HashMap<>(32);
+        MAP.put(Null.class, AtNullConstraint.class);
+        MAP.put(NotNull.class, AtNotNullConstraint.class);
+        MAP.put(AssertTrue.class, AtAssertTrueConstraint.class);
+        MAP.put(AssertFalse.class, AtAssertFalseConstraint.class);
+        MAP.put(Past.class, AtPastConstraint.class);
+        MAP.put(Future.class, AtFutureConstraint.class);
+        MAP.put(Pattern.class, AtPatternConstraint.class);
+        MAP.put(Size.class, AtSizeConstraint.class);
+        MAP.put(Min.class, AtMinConstraint.class);
+        MAP.put(Max.class, AtMaxConstraint.class);
+        MAP.put(DecimalMax.class, AtDecimalMaxConstraint.class);
+        MAP.put(DecimalMin.class, AtDecimalMinConstraint.class);
+        MAP.put(Digits.class, AtDigitsConstraint.class);
+
+        //hibernate-validator
+        MAP.put(CNPJ.class, AtCNPJConstraint.class);
+        MAP.put(CodePointLength.class, AtCodePointLengthConstraint.class);
+        MAP.put(CPF.class, AtCPFConstraint.class);
+        MAP.put(CreditCardNumber.class, AtCreditCardNumberConstraint.class);
+        MAP.put(EAN.class, AtEANConstraint.class);
+        MAP.put(Email.class, AtEmailConstraint.class);
+        MAP.put(ISBN.class, AtISBNConstraint.class);
+        MAP.put(Length.class, AtLengthConstraint.class);
+        MAP.put(LuhnCheck.class, AtLuhnCheckConstraint.class);
+        MAP.put(Mod10Check.class, AtMod10CheckConstraint.class);
+        MAP.put(Mod11Check.class, AtMod11CheckConstraint.class);
+        MAP.put(NIP.class, AtNIPConstraint.class);
+        MAP.put(Normalized.class, AtNormalizedConstraint.class);
+        MAP.put(NotBlank.class, AtNotBlankConstraint.class);
+        MAP.put(NotEmpty.class, AtNotEmptyConstraint.class);
+        MAP.put(ParameterScriptAssert.class, AtParameterScriptAssertConstraint.class);
+        MAP.put(PESEL.class, AtPESELConstraint.class);
+        MAP.put(REGON.class, AtREGONConstraint.class);
+        MAP.put(ScriptAssert.class, AtScriptAssertConstraint.class);
+        MAP.put(TituloEleitoral.class, AtTituloEleitoralConstraint.class);
+        MAP.put(UniqueElements.class, AtUniqueElementsConstraint.class);
+        MAP.put(URL.class, AtURLConstraint.class);
     }
 
     /**
@@ -46,7 +80,8 @@ public final class JsrAtConstraintMapUtil {
      * @since 0.1.1
      */
     public static IAnnotationConstraint get(final Class<? extends Annotation> clazz) {
-        return MAP.get(clazz);
+        Class<? extends IAnnotationConstraint> annotationClazz = MAP.get(clazz);
+        return ClassUtil.newInstance(annotationClazz);
     }
 
 }

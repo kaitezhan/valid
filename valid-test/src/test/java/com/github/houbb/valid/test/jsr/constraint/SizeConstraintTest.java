@@ -2,7 +2,10 @@ package com.github.houbb.valid.test.jsr.constraint;
 
 import com.github.houbb.valid.api.api.result.IResult;
 import com.github.houbb.valid.core.bs.ValidBs;
+import com.github.houbb.valid.jsr.api.validator.JsrValidator;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
+import com.github.houbb.valid.jsr.util.JsrValidHelper;
+import com.github.houbb.valid.test.model.JsrRegisterUser;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,6 +14,14 @@ import org.junit.Test;
  * @since 0.0.3
  */
 public class SizeConstraintTest {
+
+    @Test
+    public void registerTest(){
+        JsrRegisterUser registerUser = new JsrRegisterUser();
+        registerUser.setCode("123456");
+        registerUser.setEmail("12345678910");
+        JsrValidHelper.failOverThrow(registerUser);
+    }
 
     @Test
     public void passTest() {

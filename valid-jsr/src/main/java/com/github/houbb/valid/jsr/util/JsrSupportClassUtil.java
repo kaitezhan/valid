@@ -48,6 +48,12 @@ public final class JsrSupportClassUtil {
      */
     private static final List<Class> ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST;
 
+    /**
+     * UK_ELEMENTS 支持类型列表
+     * @since 0.0.3
+     */
+    private static final List<Class> UK_ELEMENTS_SUPPORT_CLASS_LIST;
+
     static {
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST = Guavas.newArrayList(11);
         DECIMAL_MAX_MIN_SUPPORT_CLASS_LIST.add(CharSequence.class);
@@ -88,6 +94,12 @@ public final class JsrSupportClassUtil {
         ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST = Guavas.newArrayList(2);
         ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST.add(boolean.class);
         ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST.add(Boolean.class);
+
+        UK_ELEMENTS_SUPPORT_CLASS_LIST = Guavas.newArrayList(4);
+        UK_ELEMENTS_SUPPORT_CLASS_LIST.add(CharSequence.class);
+        UK_ELEMENTS_SUPPORT_CLASS_LIST.add(Collection.class);
+        UK_ELEMENTS_SUPPORT_CLASS_LIST.add(Map.class);
+        UK_ELEMENTS_SUPPORT_CLASS_LIST.add(Array.class);
     }
 
     /**
@@ -136,6 +148,15 @@ public final class JsrSupportClassUtil {
      */
     public static List<Class> getAssertTrueFalseSupportClassList() {
         return ASSERT_TRUE_FALSE_SUPPORT_CLASS_LIST;
+    }
+
+    /**
+     * 获取不重复的元素支持类型
+     * @return 结果
+     * @since 0.2.0
+     */
+    public static List<Class> getUkElementsSupportClassList() {
+        return UK_ELEMENTS_SUPPORT_CLASS_LIST;
     }
 
 }

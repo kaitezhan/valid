@@ -80,6 +80,7 @@ public class JsrValidator extends DefaultValidator {
                 }
 
                 // 如果为空，则直接看有没有对应注解实现
+                // FIXED 1.6.0 不能使用 MAP，会导致相同的注解属性覆盖。
                 IAnnotationConstraint annotationConstraint = JsrAtConstraintMapUtil.get(annotation.annotationType());
                 return Optional.ofNullable(annotationConstraint);
             }

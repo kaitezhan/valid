@@ -249,4 +249,88 @@ public final class JsrConstraints {
     public static IConstraint maxConstraint(final long expect) {
         return new MaxConstraint(expect);
     }
+
+    /**
+     * 不能为空格
+     * @return 空格
+     * @since 0.2.0
+     */
+    public static IConstraint notBlankConstraint() {
+        return new NotBlankConstraint();
+    }
+
+    /**
+     * 不能为空
+     * @return 为空
+     * @since 0.2.0
+     */
+    public static IConstraint notEmptyConstraint() {
+        return new NotEmptyConstraint();
+    }
+
+    /**
+     * 长度约束
+     * @param min 最小值
+     * @param max 最大值
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint lengthConstraint(final int min, final int max) {
+        return new LengthConstraint(min, max);
+    }
+
+    /**
+     * cnpj约束
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint cnpjConstraint() {
+        return new CNPJConstraint();
+    }
+
+    /**
+     * CPF 约束
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint cpfConstraint() {
+        return new CPFConstraint();
+    }
+
+    /**
+     * URL 约束
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint urlConstraint() {
+        return new URLConstraint();
+    }
+
+    /**
+     * EMAIL 约束
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint emailConstraint() {
+        return new EmailConstraint();
+    }
+
+    /**
+     * uniqueElements 约束
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint uniqueElementsConstraint() {
+        return new UniqueElementsConstraint();
+    }
+
+    /**
+     * Range 约束
+     * @return 长度约束
+     * @since 0.2.0
+     */
+    public static IConstraint rangeConstraint(long min, long max) {
+        return new RangeConstraint(min, max);
+    }
+
 }

@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author binbin.hou
  * @since 0.0.3
  */
-public class AssertFalseConstraintTest {
+public class NotBlankConstraintTest {
 
     @Test
     public void passTest() {

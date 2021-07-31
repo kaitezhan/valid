@@ -1165,3 +1165,12 @@ public interface IAnnotationConstraint<A extends Annotation> extends IConstraint
 
 - [ ] springboot 整合
 
+- [ ] 更多注解
+
+phone
+
+idNo
+
+银行卡
+
+- [ ] i18N 對應的描述信息
