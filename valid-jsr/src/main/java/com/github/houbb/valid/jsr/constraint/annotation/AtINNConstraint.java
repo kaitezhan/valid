@@ -5,6 +5,7 @@ import com.github.houbb.valid.api.api.constraint.IConstraint;
 import com.github.houbb.valid.core.api.constraint.annotation.AbstractAnnotationConstraint;
 import com.github.houbb.valid.jsr.constraint.JsrConstraints;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.ru.INN;
 
 /**
  * CNPJ 信息
@@ -12,11 +13,11 @@ import org.hibernate.validator.constraints.br.CNPJ;
  * @since 0.2.0
  */
 @ThreadSafe
-public class AtCNPJConstraint extends AbstractAnnotationConstraint<CNPJ> {
+public class AtINNConstraint extends AbstractAnnotationConstraint<INN> {
 
     @Override
-    protected IConstraint buildConstraint(CNPJ annotation) {
-        return JsrConstraints.cnpjConstraint();
+    protected IConstraint buildConstraint(INN annotation) {
+        throw new UnsupportedOperationException();
     }
 
 }
