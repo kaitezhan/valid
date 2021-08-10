@@ -169,7 +169,7 @@
 
     <!--============================== ADD For sonatype START ==============================-->
     <name>valid</name>
-    <description>The valid framework for java compile time annotation.</description>
+    <description>The valid framework for java.</description>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
